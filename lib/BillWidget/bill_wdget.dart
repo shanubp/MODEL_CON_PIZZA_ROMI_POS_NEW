@@ -147,163 +147,166 @@ class _billWidgetState extends State<billWidget> {
             Expanded(
                 flex: 3,
                 child: Container(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          if(progress!=0){
-                            // List incredients=[];
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            if(progress!=0){
+                              // List incredients=[];
+                              int i=0;
+                              for(int k=0;k<items.length;k++){
+                                if(items[k]['pdtname']==widget.name
+                                    &&items[k]['price']==widget.price
+                                    && items[k]['addOns'].toString()==widget.addOns.toString()
+                                    && items[k]['addMore'].toString()==widget.addMore.toString()
+                                    && items[k]['addLess'].toString()==widget.addLess.toString()
+                                    && items[k]['remove'].toString()==widget.remove.toString()
+                                ){
+                                  i=k;
+
+                                  break;
+                                }
+                              }
+                              items.removeAt(i);
+
+                              if (progress != 1) {
+                                items.insert(i,{
+                                  'pdtname': widget.name ,
+                                  'arabicName': widget.arabicName,
+                                  'price': widget.price,
+                                  'qty': progress - 1,
+                                  'addOns': widget.addOns,
+                                  'addOnArabic':widget.addOnsArabic,
+                                  'addOnPrice': widget.addOnPrice,
+
+
+                                  'addLess':widget.addLess,
+                                  'addMore': widget.addMore,
+                                  'remove': widget.remove,
+                                  'removeArabic':widget.removeArabic,
+                                  'addLessArabic':widget.addLessArabic,
+                                  'addMoreArabic':widget.addMoreArabic,
+                                  'addMorePrice':widget.addMorePrice,
+                                  'addLessPrice':widget.addLessPrice,
+                                  'removePrice':widget.removePrice,
+
+                                  "category":widget.category,
+                                  "variants":widget.variants,
+                                  "variantName":widget.variantName,
+                                  "variantNameArabic":widget.variantNameArabic,
+                                  'ingredients':widget.ingredients,
+                                  'return':false,
+                                  'returnQty':0
+
+                                });
+                              }
+                              FirebaseFirestore.instance.collection(
+                                  'tables')
+                                  .doc(currentBranchId)
+                                  .collection('tables')
+                                  .doc(selectedTable).update(
+                                  {'items': items
+                                  });
+
+                              setState(() {
+                                progress = progress - 1;
+
+
+                              });
+                            }
+                          },
+                          icon:  const FaIcon(
+                            FontAwesomeIcons.minusCircle,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          iconSize: 20,
+                        ),
+                        Text(arabicLanguage?arabicNumber.convert(progress.toString()):progress.toString()),
+                        IconButton(
+                          onPressed: () {
+
                             int i=0;
+                            List incredients=[];
+                            // List varIncredient=[];
                             for(int k=0;k<items.length;k++){
                               if(items[k]['pdtname']==widget.name
                                   &&items[k]['price']==widget.price
-                                  && items[k]['addOns'].toString()==widget.addOns.toString()
-                                  && items[k]['addMore'].toString()==widget.addMore.toString()
-                                  && items[k]['addLess'].toString()==widget.addLess.toString()
-                                  && items[k]['remove'].toString()==widget.remove.toString()
+                                   && items[k]['addOns'].toString()==widget.addOns.toString()
+                                   && items[k]['addMore'].toString()==widget.addMore.toString()
+                                   && items[k]['addLess'].toString()==widget.addLess.toString()
+                                   && items[k]['remove'].toString()==widget.remove.toString()
                               ){
-                                i=k;
 
+                                i=k;
+                                incredients=items[k]["ingredients"];
+                                // for( var i in incredients){
+                                //   i["quantity"]=i["quantity"]+i["SingleQty"];
+                                // }
+                                // varIncredient=items[k]['variants']['ingredients'];
+                                // for( var j in varIncredient){
+                                //   j["quantity"]=j["quantity"]+j["SingleQty"];
+                                // }
                                 break;
                               }
                             }
                             items.removeAt(i);
+                            items.insert(i,{
+                              'pdtname': widget.name ,
+                              'arabicName':widget.arabicName,
+                              'price':widget.price,
+                              'qty':progress+1,
+                              'addOns':widget.addOns,
+                              'addOnArabic':widget.addOnsArabic,
+                              'addOnPrice':widget.addOnPrice,
 
-                            if (progress != 1) {
-                              items.insert(i,{
-                                'pdtname': widget.name ,
-                                'arabicName': widget.arabicName,
-                                'price': widget.price,
-                                'qty': progress - 1,
-                                'addOns': widget.addOns,
-                                'addOnArabic':widget.addOnsArabic,
-                                'addOnPrice': widget.addOnPrice,
+                              'addLess':widget.addLess,
+                              'addMore': widget.addMore,
+                              'remove': widget.remove,
+                              'removeArabic':widget.removeArabic,
+                              'addLessArabic':widget.addLessArabic,
+                              'addMoreArabic':widget.addMoreArabic,
+                              'addMorePrice':widget.addMorePrice,
+                              'addLessPrice':widget.addLessPrice,
+                              'removePrice':widget.removePrice,
 
+                              "category":widget.category,
+                              'ingredients':incredients,
+                              "variants":widget.variants,
+                              "variantName":widget.variantName,
+                              "variantNameArabic":widget.variantNameArabic,
+                              'return':false,
+                              'returnQty':0
 
-                                'addLess':widget.addLess,
-                                'addMore': widget.addMore,
-                                'remove': widget.remove,
-                                'removeArabic':widget.removeArabic,
-                                'addLessArabic':widget.addLessArabic,
-                                'addMoreArabic':widget.addMoreArabic,
-                                'addMorePrice':widget.addMorePrice,
-                                'addLessPrice':widget.addLessPrice,
-                                'removePrice':widget.removePrice,
-
-                                "category":widget.category,
-                                "variants":widget.variants,
-                                "variantName":widget.variantName,
-                                "variantNameArabic":widget.variantNameArabic,
-                                'ingredients':widget.ingredients,
-                                'return':false,
-                                'returnQty':0
-
-                              });
                             }
-                            FirebaseFirestore.instance.collection(
-                                'tables')
+                            );
+
+
+                            FirebaseFirestore.instance.collection('tables')
                                 .doc(currentBranchId)
                                 .collection('tables')
                                 .doc(selectedTable).update(
-                                {'items': items
+                                {
+                                  'items' :items
                                 });
 
                             setState(() {
-                              progress = progress - 1;
-
+                              progress = progress + 1;
 
                             });
-                          }
-                        },
-                        icon:  const FaIcon(
-                          FontAwesomeIcons.minusCircle,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        iconSize: 20,
-                      ),
-                      Text(arabicLanguage?arabicNumber.convert(progress.toString()):progress.toString()),
-                      IconButton(
-                        onPressed: () {
-
-                          int i=0;
-                          List incredients=[];
-                          // List varIncredient=[];
-                          for(int k=0;k<items.length;k++){
-                            if(items[k]['pdtname']==widget.name
-                                &&items[k]['price']==widget.price
-                                 && items[k]['addOns'].toString()==widget.addOns.toString()
-                                 && items[k]['addMore'].toString()==widget.addMore.toString()
-                                 && items[k]['addLess'].toString()==widget.addLess.toString()
-                                 && items[k]['remove'].toString()==widget.remove.toString()
-                            ){
-
-                              i=k;
-                              incredients=items[k]["ingredients"];
-                              // for( var i in incredients){
-                              //   i["quantity"]=i["quantity"]+i["SingleQty"];
-                              // }
-                              // varIncredient=items[k]['variants']['ingredients'];
-                              // for( var j in varIncredient){
-                              //   j["quantity"]=j["quantity"]+j["SingleQty"];
-                              // }
-                              break;
-                            }
-                          }
-                          items.removeAt(i);
-                          items.insert(i,{
-                            'pdtname': widget.name ,
-                            'arabicName':widget.arabicName,
-                            'price':widget.price,
-                            'qty':progress+1,
-                            'addOns':widget.addOns,
-                            'addOnArabic':widget.addOnsArabic,
-                            'addOnPrice':widget.addOnPrice,
-
-                            'addLess':widget.addLess,
-                            'addMore': widget.addMore,
-                            'remove': widget.remove,
-                            'removeArabic':widget.removeArabic,
-                            'addLessArabic':widget.addLessArabic,
-                            'addMoreArabic':widget.addMoreArabic,
-                            'addMorePrice':widget.addMorePrice,
-                            'addLessPrice':widget.addLessPrice,
-                            'removePrice':widget.removePrice,
-
-                            "category":widget.category,
-                            'ingredients':incredients,
-                            "variants":widget.variants,
-                            "variantName":widget.variantName,
-                            "variantNameArabic":widget.variantNameArabic,
-                            'return':false,
-                            'returnQty':0
-
-                          }
-                          );
-
-
-                          FirebaseFirestore.instance.collection('tables')
-                              .doc(currentBranchId)
-                              .collection('tables')
-                              .doc(selectedTable).update(
-                              {
-                                'items' :items
-                              });
-
-                          setState(() {
-                            progress = progress + 1;
-
-                          });
-                        },
-                        icon: const FaIcon(
-                          FontAwesomeIcons.plusCircle,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        iconSize: 20,
-                      )
-                    ],
+                          },
+                          icon: const FaIcon(
+                            FontAwesomeIcons.plusCircle,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          iconSize: 20,
+                        )
+                      ],
+                    ),
                   ),
                 )
             ),

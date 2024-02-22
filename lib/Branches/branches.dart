@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:awafi_pos/auth/auth_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';

@@ -26,11 +26,11 @@ class _LoginState extends State<Login> {
   void initState() {
 
     super.initState();
-    userName = TextEditingController();
-    passWord = TextEditingController();
+    // userName = TextEditingController();
+    // passWord = TextEditingController();
 
-    // userName = TextEditingController(text: 'tester@gmail.com');
-    // passWord = TextEditingController(text: "123456");
+    userName = TextEditingController(text: 'test@gmail.com');
+    passWord = TextEditingController(text: "123456");
     passwordVisibility = false;
   }
   _getDevicelist() async {

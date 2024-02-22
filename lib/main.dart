@@ -1226,7 +1226,9 @@ List previousItems=[];
     return base64encoder.convert(qrCodeAsBytes);
   }
 
-  abc(int invNo,double discount,List items,int token,String selectedTable,double deliveryAmount,double pc,double pb,double bal,double netTotal, String dropdownvalue, ) async {
+  abc(int invNo,double discount,List items,int token,String selectedTable,
+      double deliveryAmount,double pc,double pb,double bal,double netTotal,
+      String dropdownvalue, ) async {
 try {
   print("abc start");
   print(DateTime.now());
@@ -1252,49 +1254,48 @@ try {
 
   final im.Image? image1 = im.decodeImage(capturedImage1);
   print("here");
-
   bytes += generator.image(image1!,);
 
-  capturedImage10= await    screenshotController
-      .captureFromWidget(Container(
-    color: Colors.white,
-    width: printWidth*3,
-    child: ListView(
-
-        shrinkWrap: true,
-        // physics: NeverScrollableScrollPhysics(),
-        children:[
-
-
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Date :', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
-              Text('${DateTime.now().toString().substring(0, 19)}', style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
-
-            ],
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text('Order Type', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
-          //     Text(approve ? "Credit User" :dropdownvalue, style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
-          //
-          //   ],
-          // ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children:  [
-              Text('Invoice No:',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
-              Text('$invNo',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
-            ],),
-        ]
-    ),
-  ));
-
-  final im.Image? image10 = im.decodeImage(capturedImage10);
-  bytes += generator.image(image10!);
+  // capturedImage10= await    screenshotController
+  //     .captureFromWidget(Container(
+  //   color: Colors.white,
+  //   width: printWidth*3,
+  //   child: ListView(
+  //
+  //       shrinkWrap: true,
+  //       // physics: NeverScrollableScrollPhysics(),
+  //       children:[
+  //
+  //
+  //
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text('Date :', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
+  //             Text('${DateTime.now().toString().substring(0, 19)}', style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
+  //
+  //           ],
+  //         ),
+  //         // Row(
+  //         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         //   children: [
+  //         //     Text('Order Type', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
+  //         //     Text(approve ? "Credit User" :dropdownvalue, style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
+  //         //
+  //         //   ],
+  //         // ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children:  [
+  //             Text('Invoice No:',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
+  //             Text('$invNo',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
+  //           ],),
+  //       ]
+  //   ),
+  // ));
+  //
+  // final im.Image? image10 = im.decodeImage(capturedImage10);
+  // bytes += generator.image(image10!);
 
 
   bytes +=generator.text("-------------------------------------------",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,));
@@ -1496,17 +1497,30 @@ try {
 
 
 
+  // var capturedImage2 = await screenshotController
+  //     .captureFromWidget(Container(
+  //   width: printWidth * 3,
+  //
+  //   child: ListView.builder(
+  //       shrinkWrap: true,
+  //       itemCount: itemWidgets.length,
+  //       itemBuilder: (context, index) {
+  //         return itemWidgets[index];
+  //       }),
+  // ));
+
+
   var capturedImage2 = await screenshotController
       .captureFromWidget(Container(
-    width: printWidth * 3,
+      width: printWidth * 3,
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(itemWidgets.length, (index) {
+            return itemWidgets[index];
+          }),
+          ),
+      ));
 
-    child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: itemWidgets.length,
-        itemBuilder: (context, index) {
-          return itemWidgets[index];
-        }),
-  ));
   print(DateTime.now());
 
   final im.Image? image2 = im.decodeImage(capturedImage2);
