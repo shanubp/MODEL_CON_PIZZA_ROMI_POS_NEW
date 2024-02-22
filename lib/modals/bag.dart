@@ -1,6 +1,8 @@
 
 import 'package:awafi_pos/backend/backend.dart';
 
+import '../model/newProduct_Model.dart';
+
 class Bag {
    String color;
    String cut;
@@ -8,7 +10,7 @@ class Bag {
   double quantity;
   String size;
    String unit;
-  NewProductsRecord product;
+   NewProductModel product;
   double promoDiscount;
 
 

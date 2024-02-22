@@ -17,6 +17,8 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'main.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
+import 'model/newProduct_Model.dart';
+
 List offCategoryLowercase=[];
 int qty=0;
 Map <String,dynamic>addOn={};
@@ -69,7 +71,7 @@ class _ProductCardState extends State<ProductCard> {
   int _itemCount = 1;
   bool ?userLiked;
   bool exist =false;
-  NewProductsRecord? product;
+  NewProductModel? product;
   Map<String, dynamic>? currentItem;
   @override
   void initState() {
@@ -122,8 +124,9 @@ class _ProductCardState extends State<ProductCard> {
     try {
 
       double totRating = 0;
-      int noRating = product!.ones+product!.twos+product!.threes+product!.fours+product!.fives;
-      totRating=(1.00*product!.ones)+(2.00*product!.twos)+(3.00*product!.threes)+(4.00*product!.fours)+(5.00*product!.fives);
+      int noRating = product!.ones!+product!.twos!+product!.threes!+product!.fours!+product!.fives!;
+      totRating=(1.00*product!.ones!)+(2.00*product!.twos!)+(3.00*product!.threes!)+(4.00*product!.fours!)
+          +(5.00*product!.fives!);
       setState(() {
         totalReviews = noRating;
         avgRating =noRating==0?0: (totRating / noRating);

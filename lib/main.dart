@@ -3478,7 +3478,11 @@ set(){
                                                         print(double.tryParse(item['addMorePrice'].toString()));
                                                         print(double.tryParse(item['removePrice'].toString()));
 
-                                                        totalAmount += (double.tryParse(item['price'].toString())! + double.tryParse(item['addOnPrice']??0)!+double.tryParse(item['addLessPrice']??0)!+double.tryParse(item['addMorePrice']??0)!+ double.tryParse(item['removePrice']??0)!) * item['qty'];
+                                                        totalAmount += (double.tryParse(item['price'].toString())! +
+                                                            double.tryParse(item['addOnPrice'].toString())!
+                                                            +double.tryParse(item['addLessPrice'].toString())!
+                                                            +double.tryParse(item['addMorePrice'].toString())!
+                                                            + double.tryParse(item['removePrice'].toString())!) * item['qty'];
                                                         print("totalAmountttttttttttttttttttttttttttttttttttttttt");
                                                         print(totalAmount);
                                                         double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0))??0;
