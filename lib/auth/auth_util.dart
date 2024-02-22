@@ -122,5 +122,6 @@ Future verifySmsCode({
 }
 
 DocumentReference? get currentUserReference => currentUser?.user != null
-    ? UsersRecord.collection.doc(currentUser!.user!.uid)
+    // ? UsersRecord.collection.doc(currentUser!.user!.uid)
+    ? FirebaseFirestore.instance.collection("users").doc(currentUser!.user!.uid)
     : null;
