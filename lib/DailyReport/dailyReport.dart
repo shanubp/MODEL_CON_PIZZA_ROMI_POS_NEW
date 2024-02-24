@@ -1905,38 +1905,55 @@ if(mounted) {
                               // DataCell(Text(usrBalance.toStringAsFixed(2))),
                               DataCell(InkWell(
                                   onTap: () async {
-                                    if(salesList.isNotEmpty){
-                                      if(blue) {
+
+
+                                    if (salesList.isNotEmpty) {
+                                      if (blue) {
                                         bluetooth!.printCustom('Sales Reports', 2, 1);
                                         bluetooth!.printNewLine();
                                         bluetooth!.printCustom(
-                                            'From ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedFromDate)} To ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedOutDate)}', 1,
+                                            'From ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedFromDate)} To ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedOutDate)}',
+                                            1,
                                             1);
                                         bluetooth!.printNewLine();
-                                        // bluetooth.printCustom('  user Name: ${posUsers[index]['name']}', 1, 0);
-                                        // bluetooth.printCustom('  user Name: ${posUsers[index]['name']}', 1, 0);
-                                        ScreenshotController screenshotController = ScreenshotController();
-                                        var  capturedImage1= await    screenshotController
+                                        // bluetooth!.printCustom('  user Name: ${posUsers[index]['name']}', 1, 0);
+                                        // bluetooth!.printCustom('  user Name: ${posUsers[index]['name']}', 1, 0);
+                                        ScreenshotController screenshotController =
+                                        ScreenshotController();
+                                        var capturedImage1 = await screenshotController
                                             .captureFromWidget(Container(
                                             color: Colors.white,
-                                            width: printWidth*2,
+                                            width: printWidth * 2,
                                             height: 55,
-                                            child:
-                                            Column(
-                                              mainAxisAlignment:MainAxisAlignment.center,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                               children: [
-                                                Text('CASHIER : ${posUsers[index]['name']}',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
-                                                 Text('  المحاسب :${posUsers[index]['arabicName']} ',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
-
-                                              ],)));
+                                                Text(
+                                                  'CASHIER : ${posUsers[index]['name']}',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  '  المحاسب :${posUsers[index]['arabicName']} ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ],
+                                            )));
                                         bluetooth!.printImageBytes(capturedImage1);
 
                                         bluetooth!.printNewLine();
                                         bluetooth!.printCustom(
-                                            '           No         Bill No      Amt', 1, 0);
+                                            '           No         Bill No      Amt',
+                                            1,
+                                            0);
                                         bluetooth!.printCustom(
                                             '..................................', 1, 1);
-
 
                                         int i = 1;
                                         double total = 0;
@@ -1946,7 +1963,10 @@ if(mounted) {
                                           for (var item in sale) {
                                             print(item);
                                             if (item.get('currentUserId') == uId) {
-                                              bluetooth!.printCustom('           $i         ${item['invoiceNo']}         ${item['grandTotal']}', 1, 0);
+                                              bluetooth!.printCustom(
+                                                  '           $i         ${item['invoiceNo']}         ${item['grandTotal']}',
+                                                  1,
+                                                  0);
 
                                               total += item['grandTotal'];
                                               i++;
@@ -1956,26 +1976,110 @@ if(mounted) {
                                         bluetooth!.printCustom(
                                             '................................', 1, 1);
                                         bluetooth!.printCustom(
-                                            'CASH  = ${userTotalSaleAmountInCash.toStringAsFixed(2)}', 1, 1);
+                                            'CASH  = ${userTotalSaleAmountInCash.toStringAsFixed(2)}',
+                                            1,
+                                            1);
                                         bluetooth!.printNewLine();
                                         bluetooth!.printCustom(
-                                            'BANK  = ${(userTotalSaleAmountInBank.toStringAsFixed(2))}', 1, 1);
+                                            'BANK  = ${(userTotalSaleAmountInBank.toStringAsFixed(2))}',
+                                            1,
+                                            1);
                                         bluetooth!.printNewLine();
                                         bluetooth!.printCustom(
-                                            'Total : ${(userTotalSaleAmount.toStringAsFixed(2))}       ', 2, 2);
+                                            'Total : ${(userTotalSaleAmount.toStringAsFixed(2))}       ',
+                                            2,
+                                            2);
                                         bluetooth!.printNewLine();
                                         bluetooth!.printNewLine();
                                         bluetooth!.printNewLine();
                                         bluetooth!.printNewLine();
                                         bluetooth!.paperCut();
-
-                                      }else{
-                                        daily_user_report(salesList,posUsers[index]['name'],userTotalSaleAmountInCash.toStringAsFixed(2),(userTotalSaleAmountInBank.toStringAsFixed(2)),(userTotalSaleAmount.toStringAsFixed(2)),posUsers[index].id.toString(),posUsers[index]['arabicName']);
+                                      } else {
+                                        daily_user_report(
+                                            salesList,
+                                            posUsers[index]['name'],
+                                            userTotalSaleAmountInCash.toStringAsFixed(2),
+                                            (userTotalSaleAmountInBank
+                                                .toStringAsFixed(2)),
+                                            (userTotalSaleAmount.toStringAsFixed(2)),
+                                            posUsers[index].id.toString(),
+                                            posUsers[index]['arabicName']);
                                       }
-
-                                    }else{
+                                    } else {
                                       showUploadMessage(context, 'No Sales');
                                     }
+
+                                    // if(salesList.isNotEmpty){
+                                    //   if(blue) {
+                                    //     bluetooth!.printCustom('Sales Reports', 2, 1);
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printCustom(
+                                    //         'From ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedFromDate)} To ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedOutDate)}', 1,
+                                    //         1);
+                                    //     bluetooth!.printNewLine();
+                                    //     // bluetooth.printCustom('  user Name: ${posUsers[index]['name']}', 1, 0);
+                                    //     // bluetooth.printCustom('  user Name: ${posUsers[index]['name']}', 1, 0);
+                                    //     ScreenshotController screenshotController = ScreenshotController();
+                                    //     var  capturedImage1= await    screenshotController
+                                    //         .captureFromWidget(Container(
+                                    //         color: Colors.white,
+                                    //         width: printWidth*2,
+                                    //         height: 55,
+                                    //         child:
+                                    //         Column(
+                                    //           mainAxisAlignment:MainAxisAlignment.center,
+                                    //           children: [
+                                    //             Text('CASHIER : ${posUsers[index]['name']}',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
+                                    //              Text('  المحاسب :${posUsers[index]['arabicName']} ',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
+                                    //
+                                    //           ],)));
+                                    //     bluetooth!.printImageBytes(capturedImage1);
+                                    //
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printCustom(
+                                    //         '           No         Bill No      Amt', 1, 0);
+                                    //     bluetooth!.printCustom(
+                                    //         '..................................', 1, 1);
+                                    //
+                                    //
+                                    //     int i = 1;
+                                    //     double total = 0;
+                                    //     if (sale != null) {
+                                    //       String uId = posUsers[index].id;
+                                    //
+                                    //       for (var item in sale) {
+                                    //         print(item);
+                                    //         if (item.get('currentUserId') == uId) {
+                                    //           bluetooth!.printCustom('           $i         ${item['invoiceNo']}         ${item['grandTotal']}', 1, 0);
+                                    //
+                                    //           total += item['grandTotal'];
+                                    //           i++;
+                                    //         }
+                                    //       }
+                                    //     }
+                                    //     bluetooth!.printCustom(
+                                    //         '................................', 1, 1);
+                                    //     bluetooth!.printCustom(
+                                    //         'CASH  = ${userTotalSaleAmountInCash.toStringAsFixed(2)}', 1, 1);
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printCustom(
+                                    //         'BANK  = ${(userTotalSaleAmountInBank.toStringAsFixed(2))}', 1, 1);
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printCustom(
+                                    //         'Total : ${(userTotalSaleAmount.toStringAsFixed(2))}       ', 2, 2);
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.printNewLine();
+                                    //     bluetooth!.paperCut();
+                                    //
+                                    //   }else{
+                                    //     daily_user_report(salesList,posUsers[index]['name'],userTotalSaleAmountInCash.toStringAsFixed(2),(userTotalSaleAmountInBank.toStringAsFixed(2)),(userTotalSaleAmount.toStringAsFixed(2)),posUsers[index].id.toString(),posUsers[index]['arabicName']);
+                                    //   }
+                                    //
+                                    // }else{
+                                    //   showUploadMessage(context, 'No Sales');
+                                    // }
                                   },
                                   child: CircleAvatar(backgroundColor: Color(0xFF2b0e10),radius: 17,child: Icon(Icons.print,size: 18,),))),
                             ]);

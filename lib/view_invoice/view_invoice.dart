@@ -122,8 +122,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     capturedImage10 = await screenshotController.captureFromWidget(Container(
       color: Colors.white,
       width: printWidth * 3,
-      child: ListView(
-          shrinkWrap: true,
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+      // ListView(
+      //     shrinkWrap: true,
           // physics: NeverScrollableScrollPhysics(),
           children: [
             Row(
@@ -272,7 +274,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
-          child: ListView(shrinkWrap: true, children: [
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+          // ListView(shrinkWrap: true,
+              children: [
             Container(
               width: printWidth * 3.2,
               child: Column(
@@ -443,12 +448,18 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     if (itemWidgets1.length > 0) {
       var capturedIm = await screenshotController.captureFromWidget(Container(
         width: printWidth * 3,
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: itemWidgets1.length,
-            itemBuilder: (context, index) {
-              return itemWidgets1[index];
-            }),
+        child:  Column(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(itemWidgets1.length, (index) {
+            return itemWidgets1[index];
+          }),
+        ),
+        // ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: itemWidgets1.length,
+        //     itemBuilder: (context, index) {
+        //       return itemWidgets1[index];
+        //     }),
       ));
 
       final im.Image? image20 = im.decodeImage(capturedIm);
@@ -726,7 +737,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             border: Border(),
             color: Colors.white,
           ),
-          child: ListView(shrinkWrap: true, children: [
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+          // ListView(shrinkWrap: true,
+              children: [
             Container(
               width: printWidth * 3,
               child: Row(
@@ -838,12 +852,18 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     var capturedImage2 = await screenshotController.captureFromWidget(Container(
       width: printWidth * 3,
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: itemWidgets.length,
-          itemBuilder: (context, index) {
-            return itemWidgets[index];
-          }),
+      child:  Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(itemWidgets.length, (index) {
+          return itemWidgets[index];
+        }),
+      ),
+      // ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: itemWidgets.length,
+      //     itemBuilder: (context, index) {
+      //       return itemWidgets[index];
+      //     }),
     ));
     final im.Image? image2 = im.decodeImage(capturedImage2);
     bytes += generator.image(image2!);
@@ -851,12 +871,18 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     var capturedImage20 =
         await screenshotController.captureFromWidget(Container(
       width: printWidth * 3,
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: itemWidgets1.length,
-          itemBuilder: (context, index) {
-            return itemWidgets1[index];
-          }),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(itemWidgets1.length, (index) {
+          return itemWidgets1[index];
+        }),
+      ),
+      // ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: itemWidgets1.length,
+      //     itemBuilder: (context, index) {
+      //       return itemWidgets1[index];
+      //     }),
     ));
     final im.Image? image20 = im.decodeImage(capturedImage20);
     bytes += generator.image(image20!);
