@@ -357,26 +357,41 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
     }
-    if(itemWidgets1.length>0){
+    // if(itemWidgets1.length>0){
+    //   var capturedIm = await screenshotController
+    //       .captureFromWidget(Container(
+    //     width: printWidth*3,
+    //     child:Column(
+    //       children:List.generate(itemWidgets1.length, (index){
+    //         return itemWidgets1[index];
+    //       }),
+    //     ),
+    //
+    //   ));
+    //
+    //   final im.Image? image2 = im.decodeImage(capturedIm);
+    //   bytes += generator.imageRaster(image2!);
+    //   itemWidgets1=[];
+    // }
+
+    if (itemWidgets1.isNotEmpty) {
       var capturedIm = await screenshotController
           .captureFromWidget(Container(
-        width: printWidth*3,
-        child:Column(
-          children:List.generate(itemWidgets1.length, (index){
+        width: printWidth * 3,
+
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(itemWidgets1.length, (index) {
             return itemWidgets1[index];
           }),
         ),
-        // ListView.builder(
-        //     shrinkWrap: true,
-        //     itemCount: itemWidgets1.length,
-        //     itemBuilder: (context, index) {
-        //       return itemWidgets1[index];
-        //     }),
+
       ));
 
       final im.Image? image2 = im.decodeImage(capturedIm);
       bytes += generator.imageRaster(image2!);
-      itemWidgets1=[];
+      // imageList.add(image2!);
+      itemWidgets1 = [];
     }
     List<Widget> itemWidgets2=[];
     itemWidgets.add( Column(
@@ -490,18 +505,15 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
       width: printWidth*3,
 
       child:Column(
+        mainAxisSize: MainAxisSize.min,
         children:List.generate(itemWidgets.length, (index){
           return itemWidgets[index];
         }),
       ),
 
-      // ListView.builder(
-      //     shrinkWrap: true,
-      //     itemCount: itemWidgets.length,
-      //     itemBuilder: (context, index) {
-      //       return itemWidgets[index];
-      //     }),
-    ));
+    )
+
+    );
 
     final im.Image? image2 = im.decodeImage(capturedImage2);
     bytes += generator.imageRaster(image2!);
