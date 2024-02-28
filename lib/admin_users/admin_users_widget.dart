@@ -1,4 +1,4 @@
-import 'package:awafi_pos/backend/schema/index.dart';
+// import 'package:awafi_pos/backend/schema/index.dart';
 import 'package:awafi_pos/main.dart';
 import 'package:awafi_pos/model/admin_users_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

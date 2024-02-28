@@ -12,7 +12,7 @@ import 'package:awafi_pos/bill.dart';
 import 'package:awafi_pos/services/shoppingBagService.dart';
 import 'package:awafi_pos/services/userService.dart';
 import 'Branches/branches.dart';
-import 'backend/schema/new_products_record.dart';
+// import 'backend/schema/new_products_record.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'main.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';

@@ -137,8 +137,10 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
         .captureFromWidget(Container(
       color: Colors.white,
       width: printWidth*3,
-      child: ListView(
-          shrinkWrap: true,
+      child:  Column(
+          mainAxisSize: MainAxisSize.min,
+      // ListView(
+      //     shrinkWrap: true,
           // physics: NeverScrollableScrollPhysics(),
           children:[
             Row(
@@ -215,13 +217,16 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
 
       itemWidgets1.add(
           Container(
+              width: printWidth * 3,
               padding: const EdgeInsets.all(1.0),
               decoration: const BoxDecoration(
                 color: Colors.white,
               ),
 
-              child: ListView(
-                  shrinkWrap: true,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+              // ListView(
+              //     shrinkWrap: true,
                   children:[
                     Container(
                       width: printWidth*3,
@@ -355,12 +360,18 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
             .captureFromWidget(Container(
           width: printWidth*3,
 
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: itemWidgets1.length,
-              itemBuilder: (context, index) {
-                return itemWidgets1[index];
-              }),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(itemWidgets1.length, (index) {
+              return itemWidgets1[index];
+            }),
+          ),
+          // ListView.builder(
+          //     shrinkWrap: true,
+          //     itemCount: itemWidgets1.length,
+          //     itemBuilder: (context, index) {
+          //       return itemWidgets1[index];
+          //     }),
         ));
 
         final im.Image? image2 = im.decodeImage(capturedIm);
@@ -374,17 +385,23 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
     }
-    if(itemWidgets1.length>0){
+    if(itemWidgets1.isNotEmpty){
       var capturedIm = await screenshotController
           .captureFromWidget(Container(
         width: printWidth*3,
 
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: itemWidgets1.length,
-            itemBuilder: (context, index) {
-              return itemWidgets1[index];
-            }),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(itemWidgets1.length, (index) {
+            return itemWidgets1[index];
+          }),
+        ),
+        // ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: itemWidgets1.length,
+        //     itemBuilder: (context, index) {
+        //       return itemWidgets1[index];
+        //     }),
       ));
 
       final im.Image? image2 = im.decodeImage(capturedIm);
@@ -518,7 +535,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
     String qrTotal = grantTotal.toStringAsFixed(2);
     itemWidgets.add(Container(
       color: Colors.white,
-      width: printWidth*2.4,
+      width: printWidth*3.1,
       height: qrCode + 100,
 
       child: Row(
@@ -540,12 +557,18 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
         .captureFromWidget(Container(
       width: printWidth*3,
 
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: itemWidgets.length,
-          itemBuilder: (context, index) {
-            return itemWidgets[index];
-          }),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(itemWidgets.length, (index) {
+          return itemWidgets[index];
+        }),
+      ),
+      // ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: itemWidgets.length,
+      //     itemBuilder: (context, index) {
+      //       return itemWidgets[index];
+      //     }),
     ));
 
     final im.Image? image2 = im.decodeImage(capturedImage2);
@@ -962,37 +985,37 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                           List addlessName=[];
                           List removeName=[];
 
-                          List<dynamic> addOn = bag[index]['addOn'];
-                          List<dynamic> addLess = bag[index]['addLess'];
-                          List<dynamic> addMore = bag[index]['addMore'];
-                          List<dynamic> remove = bag[index]['remove'];
+                          List<dynamic>? addOn = bag[index]['addOn'];
+                          List<dynamic>? addLess = bag[index]['addLess'];
+                          List<dynamic>? addMore = bag[index]['addMore'];
+                          List<dynamic>? remove = bag[index]['remove'];
 
-                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'];
-                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'];
-                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'];
-                          List<dynamic> arabicRemove = bag[index]['removeArabic'];
+                          List<dynamic>? arabicAddOn = bag[index]['addOnArabic'];
+                          List<dynamic>? arabicAddLess = bag[index]['addLessArabic'];
+                          List<dynamic>? arabicAddMore = bag[index]['addMoreArabic'];
+                          List<dynamic>? arabicRemove = bag[index]['removeArabic'];
 
 
-                          if(addOn.isNotEmpty){
+                          if(addOn!.isNotEmpty){
                             for(Map<String,dynamic> items in addOn){
                               addOnName.add(items['addOn']);
                               //   addOnPrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(remove.isNotEmpty){
+                          if(remove!.isNotEmpty){
                             for(Map<String,dynamic> items in remove){
 
                               removeName.add(items['addOn']);
                               // removePrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(addMore.isNotEmpty){
+                          if(addMore!.isNotEmpty){
                             for(Map<String,dynamic> items in addMore){
                               addmoreName.add(items['addOn']);
                               // addmorePrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(addLess.isNotEmpty){
+                          if(addLess!.isNotEmpty){
                             for(Map<String,dynamic> items in addLess){
 
                               addlessName.add(items['addOn']);
@@ -2417,7 +2440,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                       //
                                       // }elseif(data[0]['table']!='Home Delivery'){
                                       // double  netTotal=  dinnerCertificate?0.00:(double.tryParse(paidCashOrder.text??0) +(double.tryParse(paidBankOrder.text??0)));
-                                      double  netTotal=  dinnerCertificate?0.00:(double.tryParse(data[0]['total']))!-double.tryParse(discountVale.text)!;
+                                      double  netTotal=  approve?0.00:(double.tryParse(data[0]['total']))!-double.tryParse(discountVale.text)!;
                                       double totalSum=(double.tryParse(data[0]['total']))!- double.tryParse(discountVale.text)!;
                                       // double  bankPaid1=totalSum-double.tryParse(paidCashOrder.text);
                                       double  bankPaid1=amexPaid+visaPaid+madaPaid+masterPaid;

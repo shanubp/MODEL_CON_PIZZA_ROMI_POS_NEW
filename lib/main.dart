@@ -1017,8 +1017,9 @@ class _HomeBodyState extends State<HomeBody> {
             color: Colors.white,
           ),
 
-          child: ListView(
-              shrinkWrap: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+              // shrinkWrap: true,
               children: [
                 Container(
                   width: printWidth * 3,
@@ -1173,12 +1174,15 @@ class _HomeBodyState extends State<HomeBody> {
         itemImage = await screenshotController
             .captureFromWidget(Container(
           width: printWidth * 3,
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: itemWidgets1.length,
-              itemBuilder: (context, index) {
+          child: Column(
+              // shrinkWrap: true,
+            mainAxisSize: MainAxisSize.min,
+              children:List.generate(itemWidgets1.length, (index) {
                 return itemWidgets1[index];
-              }),
+              })
+
+
+              ),
 
         ));
 
@@ -1193,12 +1197,12 @@ class _HomeBodyState extends State<HomeBody> {
           .captureFromWidget(Container(
         width: printWidth * 3,
 
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: itemWidgets1.length,
-            itemBuilder: (context, index) {
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children:List.generate(itemWidgets1.length, (index) {
               return itemWidgets1[index];
-            }),
+            })
+        )
       ));
 
       final im.Image? image22 = im.decodeImage(capturedIm);
@@ -1410,7 +1414,7 @@ class _HomeBodyState extends State<HomeBody> {
       if (itemWidgets1.length == itemCount) {
         itemImage = await screenshotController
             .captureFromWidget(Container(
-          width: printWidth * 4,
+          width: printWidth * 3,
 
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -5553,7 +5557,7 @@ set(){
                                                                                                 invoiceNo,
                                                                                                 double
                                                                                                     .tryParse(
-                                                                                                    discount)!,
+                                                                                                    discount)??0,
                                                                                                 items,
                                                                                                 token,
                                                                                                 selectedTable,

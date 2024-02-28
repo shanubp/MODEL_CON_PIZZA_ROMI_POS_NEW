@@ -9,7 +9,7 @@ import 'package:awafi_pos/Branches/branches.dart';
 import 'package:awafi_pos/product_card.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'backend/backend.dart';
-import 'backend/schema/categories_record.dart';
+// import 'backend/schema/categories_record.dart';
 import 'main.dart';
 
 class ItemsPage extends StatefulWidget {
