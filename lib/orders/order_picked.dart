@@ -130,9 +130,9 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
     kotBytes=[];
     final Uint8List imgBytes = data!.buffer.asUint8List();
     final im.Image? image = im.decodeImage(imgBytes);
-    bytes += generator.image(image!);
+    bytes += generator.imageRaster(image!);
     final im.Image? image1 = im.decodeImage(capturedImage1);
-    bytes += generator.image(image1!);
+    bytes += generator.imageRaster(image1!);
     capturedImage10= await    screenshotController
         .captureFromWidget(Container(
       color: Colors.white,
@@ -162,7 +162,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
     )
     );
     final im.Image? image10 = im.decodeImage(capturedImage10);
-    bytes += generator.image(image10!);
+    bytes += generator.imageRaster(image10!);
     bytes +=generator.text("-------------------------------------------",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,));
 
     bytes +=generator.text("TABLE : $tableName",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2));
@@ -172,7 +172,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
 
     final im.Image? imagehead = im.decodeImage(capturedhead);
 
-    bytes += generator.image(imagehead!,);
+    bytes += generator.imageRaster(imagehead!,);
 
     // final im.Image image13 = im.decodeImage(capturedImage12);
     // bytes += generator.image(image13);
@@ -364,7 +364,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
         ));
 
         final im.Image? image2 = im.decodeImage(capturedIm);
-        bytes += generator.image(image2!);
+        bytes += generator.imageRaster(image2!);
         itemWidgets1=[];
       }
 
@@ -388,7 +388,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
       ));
 
       final im.Image? image2 = im.decodeImage(capturedIm);
-      bytes += generator.image(image2!);
+      bytes += generator.imageRaster(image2!);
       itemWidgets1=[];
     }
     List<Widget> itemWidgets2=[];
@@ -519,6 +519,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
     itemWidgets.add(Container(
       color: Colors.white,
       width: printWidth*2.4,
+      height: qrCode + 100,
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -548,9 +549,9 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
     ));
 
     final im.Image? image2 = im.decodeImage(capturedImage2);
-    bytes += generator.image(image2!);
+    bytes += generator.imageRaster(image2!);
     final im.Image? footer = im.decodeImage(footerImage);
-    bytes += generator.image(footer!,);
+    bytes += generator.imageRaster(footer!,);
     bytes += generator.feed(2);
 
     bytes += generator.cut();

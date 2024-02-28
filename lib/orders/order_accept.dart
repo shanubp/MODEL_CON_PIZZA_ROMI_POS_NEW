@@ -98,23 +98,20 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
 
     final Uint8List imgBytes = data!.buffer.asUint8List();
     final im.Image? image = im.decodeImage(imgBytes);
-    bytes += generator.image(image!);
+    bytes += generator.imageRaster(image!);
 
 
     final im.Image? image1 = im.decodeImage(capturedImage1);
-    bytes += generator.image(image1!);
+    bytes += generator.imageRaster(image1!);
     capturedImage10= await    screenshotController
         .captureFromWidget(Container(
       color: Colors.white,
       width: printWidth*3,
-      child: ListView(
-
-          shrinkWrap: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+          // shrinkWrap: true,
           // physics: NeverScrollableScrollPhysics(),
           children:[
-
-
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -138,7 +135,7 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
     )
     );
     final im.Image? image10 = im.decodeImage(capturedImage10);
-    bytes += generator.image(image10!);
+    bytes += generator.imageRaster(image10!);
     bytes +=generator.text("-------------------------------------------",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,));
 
     bytes +=generator.text("TABLE : $tableName",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2));
@@ -148,7 +145,7 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
 
     final im.Image? imagehead = im.decodeImage(capturedhead);
 
-    bytes += generator.image(imagehead!,);
+    bytes += generator.imageRaster(imagehead!,);
 
     // final im.Image image13 = im.decodeImage(capturedImage12);
     // bytes += generator.image(image13);
@@ -199,8 +196,9 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
                 color: Colors.white,
               ),
 
-              child: ListView(
-                  shrinkWrap: true,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                  // shrinkWrap: true,
                   children:[
                     Container(
                       width: printWidth*3,
@@ -334,16 +332,22 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
             .captureFromWidget(Container(
           width: printWidth*3,
 
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: itemWidgets1.length,
-              itemBuilder: (context, index) {
-                return itemWidgets1[index];
-              }),
+          child:Column(
+            children:List.generate(itemWidgets1.length, (index){
+              return itemWidgets1[index];
+            }),
+          ),
+
+          // ListView.builder(
+          //     shrinkWrap: true,
+          //     itemCount: itemWidgets1.length,
+          //     itemBuilder: (context, index) {
+          //       return itemWidgets1[index];
+          //     }),
         ));
 
         final im.Image? image2 = im.decodeImage(capturedIm);
-        bytes += generator.image(image2!);
+        bytes += generator.imageRaster(image2!);
         itemWidgets1=[];
       }
 
@@ -357,17 +361,21 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
       var capturedIm = await screenshotController
           .captureFromWidget(Container(
         width: printWidth*3,
-
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: itemWidgets1.length,
-            itemBuilder: (context, index) {
-              return itemWidgets1[index];
-            }),
+        child:Column(
+          children:List.generate(itemWidgets1.length, (index){
+            return itemWidgets1[index];
+          }),
+        ),
+        // ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: itemWidgets1.length,
+        //     itemBuilder: (context, index) {
+        //       return itemWidgets1[index];
+        //     }),
       ));
 
       final im.Image? image2 = im.decodeImage(capturedIm);
-      bytes += generator.image(image2!);
+      bytes += generator.imageRaster(image2!);
       itemWidgets1=[];
     }
     List<Widget> itemWidgets2=[];
@@ -460,8 +468,8 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
     String qrTotal = grantTotal.toStringAsFixed(2);
     itemWidgets.add(Container(
       color: Colors.white,
-      width: printWidth*2.4,
-
+      height: qrCode + 100,
+      width: printWidth*3.1,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -481,18 +489,24 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
         .captureFromWidget(Container(
       width: printWidth*3,
 
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: itemWidgets.length,
-          itemBuilder: (context, index) {
-            return itemWidgets[index];
-          }),
+      child:Column(
+        children:List.generate(itemWidgets.length, (index){
+          return itemWidgets[index];
+        }),
+      ),
+
+      // ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: itemWidgets.length,
+      //     itemBuilder: (context, index) {
+      //       return itemWidgets[index];
+      //     }),
     ));
 
     final im.Image? image2 = im.decodeImage(capturedImage2);
-    bytes += generator.image(image2!);
+    bytes += generator.imageRaster(image2!);
     final im.Image? footer = im.decodeImage(footerImage);
-    bytes += generator.image(footer!,);
+    bytes += generator.imageRaster(footer!,);
     bytes += generator.feed(2);
 
     bytes += generator.cut();
@@ -757,45 +771,45 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
                         itemBuilder: (BuildContext context,int index){
 
 
-                          double addOnPrice=double.tryParse(bag[index]['addOnPrice'].toString())!;
-                          double addmorePrice=double.tryParse(bag[index]['addMorePrice'].toString())!;
-                          double addlessPrice=double.tryParse(bag[index]['addLessPrice'].toString())!;
-                          double removePrice=double.tryParse(bag[index]['removePrice'].toString())!;
+                          double addOnPrice=double.tryParse(bag[index]['addOnPrice'].toString())??0;
+                          double addmorePrice=double.tryParse(bag[index]['addMorePrice'].toString())??0;
+                          double addlessPrice=double.tryParse(bag[index]['addLessPrice'].toString())??0;
+                          double removePrice=double.tryParse(bag[index]['removePrice'].toString())??0;
 
                           List addOnName=[];
                           List addmoreName=[];
                           List addlessName=[];
                           List removeName=[];
 
-                          List<dynamic> addOn = bag[index]['addOn'];
-                          List<dynamic> addLess = bag[index]['addLess'];
-                          List<dynamic> addMore = bag[index]['addMore'];
-                          List<dynamic> remove = bag[index]['remove'];
+                          List<dynamic>? addOn = bag[index]['addOn'];
+                          List<dynamic>? addLess = bag[index]['addLess'];
+                          List<dynamic>? addMore = bag[index]['addMore'];
+                          List<dynamic>? remove = bag[index]['remove'];
 
-                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'];
-                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'];
-                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'];
-                          List<dynamic> arabicRemove = bag[index]['removeArabic'];
+                          List<dynamic>? arabicAddOn = bag[index]['addOnArabic'];
+                          List<dynamic>? arabicAddLess = bag[index]['addLessArabic'];
+                          List<dynamic>? arabicAddMore = bag[index]['addMoreArabic'];
+                          List<dynamic>? arabicRemove = bag[index]['removeArabic'];
 
-                          if(addOn.isNotEmpty){
+                          if(addOn!.isNotEmpty){
                             for(Map<String,dynamic> items in addOn){
                               addOnName.add(items['addOn']);
                               //   addOnPrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(remove.isNotEmpty){
+                          if(remove!.isNotEmpty){
                             for(Map<String,dynamic> items in remove){
                               removeName.add(items['addOn']);
                               // removePrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(addMore.isNotEmpty){
+                          if(addMore!.isNotEmpty){
                             for(Map<String,dynamic> items in addMore){
                               addmoreName.add(items['addOn']);
                               // addmorePrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(addLess.isNotEmpty){
+                          if(addLess!.isNotEmpty){
                             for(Map<String,dynamic> items in addLess){
                               addlessName.add(items['addOn']);
                               // addlessPrice+=double.tryParse(items['price']);

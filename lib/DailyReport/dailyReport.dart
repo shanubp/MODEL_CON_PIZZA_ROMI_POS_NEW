@@ -107,78 +107,217 @@ class _DailyReportsWidgetState extends State<DailyReportsWidget> {
     print("end");
 
   }
-  daily_user_report(posUsers,name,cash ,bank,total, UID,arabicName)async{
+  // daily_user_report(posUsers,name,cash ,bank,total, UID,arabicName)async{
+  //   final CapabilityProfile profile = await CapabilityProfile.load();
+  //   final generator = Generator(PaperSize.mm80, profile);
+  //   bytes = [];
+  //   bytes += generator.text('Sales Reports ', styles: const PosStyles(align: PosAlign.center,underline: false));
+  //   bytes+=generator.feed(2);
+  //   bytes += generator.text('From ${DateFormat("dd-MM-yyyy hh:mm aaa").format(selectedFromDate)} To ${DateFormat("dd-MM-yyyy hh:mm aaa").format(selectedOutDate)}', styles: PosStyles(align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1,underline: false));
+  //   bytes+=generator.feed(2);
+  //   ScreenshotController screenshotController = ScreenshotController();
+  //   var  capturedImage1= await    screenshotController
+  //       .captureFromWidget(Container(
+  //       color: Colors.white,
+  //       width: printWidth*2,
+  //       height: 55,
+  //       child:
+  //       Column(
+  //         mainAxisAlignment:MainAxisAlignment.center,
+  //         children: [
+  //           Text('CASHIER : $name',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
+  //             Text(' $arabicName  : المحاسب ''  المحاسب :$arabicName ',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
+  //
+  //         ],)));
+  //   final im.Image? image1 = im.decodeImage(capturedImage1);
+  //   bytes += generator.image(image1!,);
+  //   bytes += generator.text('................................................', styles: const PosStyles(align: PosAlign.center,underline: false));
+  //   bytes+=generator.feed(1);
+  //   // bytes += generator.text('No    Bill No    Amt', styles: const PosStyles(align: PosAlign.center,underline: false));
+  //   bytes += generator.row([
+  //     PosColumn(text:"NO",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //     PosColumn(text:"BILL NO",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //     PosColumn(text:"AMOUNT",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //   ]);
+  //   bytes += generator.text('................................................', styles: const PosStyles(align: PosAlign.center,underline: false));
+  //   int i=0;
+  //   double total=0;
+  //   for(var data in sale){
+  //     if (data.get('currentUserId') == UID) {
+  //       i++;
+  //       bytes += generator.row([
+  //         PosColumn(text:"$i",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //         PosColumn(text:"${data['invoiceNo']}",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //         PosColumn(text:"${data['grandTotal'].toStringAsFixed(2)}",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //       ]);
+  //       bytes+=generator.feed(1);
+  //       total += data['grandTotal'];
+  //     }
+  //
+  //   }
+  //   bytes += generator.text('................................................', styles: PosStyles(align: PosAlign.center,underline: false));
+  //   bytes += generator.feed(2);
+  //   bytes += generator.text('Cash = $cash', styles: PosStyles(align: PosAlign.center,underline: false));
+  //   bytes += generator.text('Bank = $bank', styles: PosStyles(align: PosAlign.center,underline: false));
+  //   bytes += generator.text('credit Sale = ${totalCreditSales.toStringAsFixed(2)}', styles: PosStyles(align: PosAlign.center,underline: false));
+  //   bytes +=generator.text('Total : ${total.toStringAsFixed(2)}',styles: const PosStyles(align: PosAlign.center));
+  //   bytes += generator.feed(2);
+  //   // bytes += generator.text('Dinner Sale = ${totalDinnerSaleAmount.toStringAsFixed(2)}', styles: PosStyles(align: PosAlign.center,underline: false));
+  //
+  //   // bytes +=generator.text('أمير',styles: const PosStyles(align: PosAlign.center));
+  //
+  //   bytes += generator.feed(2);
+  //
+  //   bytes += generator.cut();
+  //   try {
+  //
+  //     flutterUsbPrinter.write(Uint8List.fromList(bytes));
+  //   }
+  //   catch (error) {
+  //     print(error.toString(),);
+  //   }
+  //   print("end");
+  //
+  // }
+
+  daily_user_report(posUsers, name, cash, bank, total, UID, arabicName) async {
     final CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
     bytes = [];
-    bytes += generator.text('Sales Reports ', styles: const PosStyles(align: PosAlign.center,underline: false));
-    bytes+=generator.feed(2);
-    bytes += generator.text('From ${DateFormat("dd-MM-yyyy hh:mm aaa").format(selectedFromDate)} To ${DateFormat("dd-MM-yyyy hh:mm aaa").format(selectedOutDate)}', styles: PosStyles(align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1,underline: false));
-    bytes+=generator.feed(2);
+    bytes += generator.text('Sales Reports ',
+        styles: const PosStyles(align: PosAlign.center, underline: false));
+    bytes += generator.text(
+        'From ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedFromDate)} To ${DateFormat("yyyy-MM-dd hh:mm aaa").format(selectedOutDate)}',
+        styles: PosStyles(
+            align: PosAlign.center,
+            height: PosTextSize.size1,
+            width: PosTextSize.size1,
+            underline: false));
+    // bytes += generator.text('User Name(المحاسب):- $name',styles: const PosStyles(align: PosAlign.center,underline: false));
     ScreenshotController screenshotController = ScreenshotController();
-    var  capturedImage1= await    screenshotController
-        .captureFromWidget(Container(
+    var capturedImage1 = await screenshotController.captureFromWidget(Container(
         color: Colors.white,
-        width: printWidth*2,
+        width: printWidth * 2,
         height: 55,
-        child:
-        Column(
-          mainAxisAlignment:MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('CASHIER : $name',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
-              Text(' $arabicName  : المحاسب ''  المحاسب :$arabicName ',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
+            Text(
+              'CASHIER : $name',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '  المحاسب :$arabicName ',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        )));
+    final im.Image image1 = im.decodeImage(capturedImage1)!;
+    bytes += generator.imageRaster(
+      image1,
+    );
 
-          ],)));
-    final im.Image? image1 = im.decodeImage(capturedImage1);
-    bytes += generator.image(image1!,);
-    bytes += generator.text('................................................', styles: const PosStyles(align: PosAlign.center,underline: false));
-    bytes+=generator.feed(1);
+    bytes += generator.feed(2);
+
+    bytes += generator.text('................................................',
+        styles: const PosStyles(align: PosAlign.center, underline: false));
+    bytes += generator.feed(1);
     // bytes += generator.text('No    Bill No    Amt', styles: const PosStyles(align: PosAlign.center,underline: false));
     bytes += generator.row([
-      PosColumn(text:"NO",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-      PosColumn(text:"BILL NO",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-      PosColumn(text:"AMOUNT",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+      PosColumn(
+          text: "NO",
+          styles: PosStyles(
+              bold: true,
+              align: PosAlign.left,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1),
+          width: 4),
+      PosColumn(
+          text: "BILL NO",
+          styles: PosStyles(
+              bold: true,
+              align: PosAlign.center,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1),
+          width: 4),
+      PosColumn(
+          text: "AMOUNT",
+          styles: PosStyles(
+              bold: true,
+              align: PosAlign.right,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1),
+          width: 4),
     ]);
-    bytes += generator.text('................................................', styles: const PosStyles(align: PosAlign.center,underline: false));
-    int i=0;
-    double total=0;
-    for(var data in sale){
+    bytes += generator.text('................................................',
+        styles: const PosStyles(align: PosAlign.center, underline: false));
+    int i = 0;
+    double total = 0;
+    for (var data in sale) {
       if (data.get('currentUserId') == UID) {
         i++;
         bytes += generator.row([
-          PosColumn(text:"$i",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-          PosColumn(text:"${data['invoiceNo']}",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-          PosColumn(text:"${data['grandTotal'].toStringAsFixed(2)}",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+          PosColumn(
+              text: "$i",
+              styles: PosStyles(
+                  bold: true,
+                  align: PosAlign.left,
+                  height: PosTextSize.size1,
+                  width: PosTextSize.size1),
+              width: 4),
+          PosColumn(
+              text: "${data['invoiceNo']}",
+              styles: PosStyles(
+                  bold: true,
+                  align: PosAlign.center,
+                  height: PosTextSize.size1,
+                  width: PosTextSize.size1),
+              width: 4),
+          PosColumn(
+              text: "${data['grandTotal'].toStringAsFixed(2)}",
+              styles: PosStyles(
+                  bold: true,
+                  align: PosAlign.right,
+                  height: PosTextSize.size1,
+                  width: PosTextSize.size1),
+              width: 4),
         ]);
-        bytes+=generator.feed(1);
+        bytes += generator.feed(1);
         total += data['grandTotal'];
       }
-
     }
-    bytes += generator.text('................................................', styles: PosStyles(align: PosAlign.center,underline: false));
-    bytes += generator.feed(2);
-    bytes += generator.text('Cash = $cash', styles: PosStyles(align: PosAlign.center,underline: false));
-    bytes += generator.text('Bank = $bank', styles: PosStyles(align: PosAlign.center,underline: false));
-    bytes += generator.text('credit Sale = ${totalCreditSales.toStringAsFixed(2)}', styles: PosStyles(align: PosAlign.center,underline: false));
-    bytes +=generator.text('Total : ${total.toStringAsFixed(2)}',styles: const PosStyles(align: PosAlign.center));
-    bytes += generator.feed(2);
-    // bytes += generator.text('Dinner Sale = ${totalDinnerSaleAmount.toStringAsFixed(2)}', styles: PosStyles(align: PosAlign.center,underline: false));
+    bytes += generator.text('........................',
+        styles: PosStyles(align: PosAlign.center, underline: false));
+    bytes += generator.text('Cash = $cash',
+        styles: PosStyles(align: PosAlign.center, underline: false));
+    bytes += generator.text('Bank = $bank',
+        styles: PosStyles(align: PosAlign.center, underline: false));
+    bytes += generator.text('credit sale = $totalCreditSales',
+        styles: PosStyles(align: PosAlign.center, underline: false));
 
-    // bytes +=generator.text('أمير',styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.text('Total : ${total.toStringAsFixed(2)}',
+        styles: const PosStyles(align: PosAlign.center));
 
     bytes += generator.feed(2);
 
     bytes += generator.cut();
     try {
-
       flutterUsbPrinter.write(Uint8List.fromList(bytes));
-    }
-    catch (error) {
-      print(error.toString(),);
+    } catch (error) {
+      print(
+        error.toString(),
+      );
     }
     print("end");
-
+    print(Timestamp.now().seconds);
   }
+
   dailyPrint() async {
     final CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);

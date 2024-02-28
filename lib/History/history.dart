@@ -30,6 +30,8 @@ class _history_View_WidgetState extends State<history_View_Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Timestamp? datePicked1;
   Timestamp? datePicked2;
+
+  get imgBytes => null;
   @override
   void initState() {
     super.initState();
@@ -127,81 +129,902 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       DateTime salesDate,
       double pc,
       double pb,
-      double bal, String orderType, ) async {
+      double bal, String orderType,)
+  // async {
+  //   print('start');
+  //   final CapabilityProfile profile = await CapabilityProfile.load();
+  //
+  //   final generator = Generator(PaperSize.mm80, profile);
+  //   const PaperSize paper1 = PaperSize.mm80;
+  //   var profile1 = await CapabilityProfile.load();
+  //   var printer1 = NetworkPrinter(paper1, profile1);
+  //   List<int> bytes = [];
+  //
+  //   final Uint8List imgBytes = data!.buffer.asUint8List();
+  //   final im.Image? image = im.decodeImage(imgBytes);
+  //   bytes += generator.image(image!);
+  //
+  //   final im.Image? image1 = im.decodeImage(capturedImage1);
+  //   bytes += generator.image(image1!);
+  //   // bytes += generator.row([
+  //   //   PosColumn(text:"Date :",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //   //   PosColumn(text:"${DateTime.now().toString().substring(0, 19)} ",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 8)
+  //   // ]);
+  //   // bytes += generator.row(
+  //   //     [
+  //   //       PosColumn(text: "Invoice No:",styles: const PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
+  //   //       PosColumn(text: "$invNo ",styles: const PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4)
+  //   //     ]);
+  //   capturedImage10 = await screenshotController.captureFromWidget(Container(
+  //     color: Colors.white,
+  //     width: printWidth * 3,
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //     // ListView(shrinkWrap: true,
+  //         // physics: NeverScrollableScrollPhysics(),
+  //         children: [
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               Text(
+  //                 'Date :',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize + 2,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //               Text(
+  //                 '${DateTime.now().toString().substring(0, 19)}',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //             ],
+  //           ),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               Text(
+  //                 'Invoice No:',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize + 5,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //               Text(
+  //                 '$invNo',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize + 5,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //             ],
+  //           ),
+  //         ]),
+  //   ));
+  //   final im.Image? image10 = im.decodeImage(capturedImage10);
+  //   bytes += generator.image(image10!);
+  //
+  //   bytes += generator.text("-------------------------------------------",
+  //       styles: PosStyles(
+  //         bold: true,
+  //         align: PosAlign.center,
+  //         height: PosTextSize.size2,
+  //       ));
+  //
+  //   bytes += generator.text("ORDER TYPE : $orderType",
+  //       styles: PosStyles(
+  //           bold: true,
+  //           align: PosAlign.center,
+  //           height: PosTextSize.size2,
+  //           width: PosTextSize.size2));
+  //
+  //   bytes += generator.text("-------------------------------------------",
+  //       styles: PosStyles(
+  //         bold: true,
+  //         align: PosAlign.center,
+  //         height: PosTextSize.size2,
+  //       ));
+  //
+  //   //HEAD IMAGE
+  //   // final Uint8List imgBytes1 = data1.buffer.asUint8List();
+  //   // final im.Image image11 = im.decodeImage(imgBytes1);
+  //   // bytes += generator.image(image11);
+  //
+  //   // var capturedhead= await    screenshotController
+  //   //     .captureFromWidget(Container(
+  //   //   color: Colors.white,
+  //   //   width: printWidth*3,
+  //   //   height: 85,
+  //   //
+  //   //   child: Column(
+  //   //     children: [
+  //   //       Row(
+  //   //         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //   //         children:   [
+  //   //           //pdt
+  //   //           Expanded(
+  //   //             child: Column(
+  //   //               crossAxisAlignment: CrossAxisAlignment.start,
+  //   //               children: [
+  //   //
+  //   //                 Text('منتج',
+  //   //                   style:  TextStyle(
+  //   //                     fontFamily: 'GE Dinar One Medium',
+  //   //                     fontSize: fontSize,
+  //   //                     fontWeight: FontWeight.w600,
+  //   //                     color: Colors.black,
+  //   //                   ),
+  //   //                 ),
+  //   //                 Text('ITEM',
+  //   //                   style:  TextStyle(
+  //   //                       color: Colors.black,
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //               ],
+  //   //             ),
+  //   //           ),
+  //   //           Container(
+  //   //             width: 45,
+  //   //             child: Column(
+  //   //               crossAxisAlignment: CrossAxisAlignment.start,
+  //   //               children: [
+  //   //
+  //   //                 Text('كمية',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //                 Text('QTY',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //               ],
+  //   //             ),
+  //   //           ),
+  //   //           Container(
+  //   //             width: 45,
+  //   //             child: Column(
+  //   //               crossAxisAlignment: CrossAxisAlignment.start,
+  //   //               children: [
+  //   //
+  //   //                 Text('سعر',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //                 Text('RATE',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //               ],
+  //   //             ),
+  //   //           ),
+  //   //           Container(
+  //   //             width: 45,
+  //   //             child: Column(
+  //   //               crossAxisAlignment: CrossAxisAlignment.start,
+  //   //               children: [
+  //   //
+  //   //                 Text('ضريبة',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //                 Text('VAT',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //               ],
+  //   //             ),
+  //   //           ),
+  //   //           Container(
+  //   //             width: 50,
+  //   //             child: Column(
+  //   //               crossAxisAlignment: CrossAxisAlignment.start,
+  //   //               children: [
+  //   //
+  //   //                 Text('المجموع',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //                 Text('TOTAL',
+  //   //                   style:  TextStyle(
+  //   //                       fontFamily: 'GE Dinar One Medium',
+  //   //                       color: Colors.black,
+  //   //                       fontSize: fontSize,
+  //   //                       fontWeight: FontWeight.w600),
+  //   //                 ),
+  //   //               ],
+  //   //             ),
+  //   //           ),
+  //   //         ],
+  //   //       ),
+  //   //       Container(
+  //   //           decoration: const BoxDecoration(
+  //   //             color: Colors.white,
+  //   //           ),
+  //   //           child:  Center(child: Text('-------------------------------------------',
+  //   //             style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
+  //   //       ),
+  //   //     ],
+  //   //   ),
+  //   // ));
+  //   final im.Image? imagehead = im.decodeImage(capturedhead);
+  //   bytes += generator.image(
+  //     imagehead!,
+  //   );
+  //   print("$capturedhead--------------------");
+  //
+  //   String itemString = '';
+  //   String itemStringArabic = '';
+  //   String itemTotal = '';
+  //   String itemGrossTotal = '';
+  //   String itemTax = '';
+  //   String addON = '';
+  //
+  //   double? deliveryCharge = 0;
+  //   double grantTotal = 0;
+  //   double totalAmount = 0;
+  //   String arabic = '';
+  //   String english = '';
+  //   String addOnArabic = '';
+  //   addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
+  //   Map<String, dynamic> config = Map();
+  //   List<Widget> itemWidgets = [];
+  //   List<Widget> itemWidgets1 = [];
+  //   for (Map<String, dynamic> item in items) {
+  //     var addOnPrice =  item['addOnPrice']??0-item['removePrice']??0-item['addLessPrice']??0+item['addMorePrice']??0;
+  //     double total = (double.tryParse(item['price'].toString())! + addOnPrice) *
+  //         double.tryParse(item['qty'].toString())!;
+  //     double grossTotal = total * 100 / 115;
+  //     double vat =
+  //         (double.tryParse(item['price'].toString())! + addOnPrice) * 15 / 115;
+  //     newAddOn = item['addOns']??''+item['addLess']??''+item['addMore']??''+item['remove']??'';
+  //     arabic = item['arabicName'];
+  //     english = item['pdtname'];
+  //
+  //     grantTotal += total;
+  //
+  //     deliveryCharge = item['deliveryCharge'] == null
+  //         ? 0
+  //         : double.tryParse(item['deliveryCharge'].toString());
+  //     newAddOn = item['addOns']??''+item['addLess']??''+item['addMore']??''+item['remove']??'';
+  //     newAddOnArabic = item['addOnArabic']??''+item['addLessArabic']??''+item['addMoreArabic']??''+item['removeArabic']??'';      addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
+  //     addON = newAddOn.isEmpty ? '' : newAddOn.toString();
+  //     double price =
+  //         (double.tryParse(item['price'].toString())! + addOnPrice) * 100 / 115;
+  //     totalAmount += price * double.tryParse(item['qty'].toString())!;
+  //     itemWidgets1.add(Container(
+  //       decoration: const BoxDecoration(
+  //         color: Colors.white,
+  //       ),
+  //       child:
+  //       // ListView(shrinkWrap: true, children: [
+  //         Container(
+  //           width: printWidth * 3,
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   Expanded(
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           '$arabic $addOnArabic',
+  //                           // textDirection: TextDirection.rtl,
+  //                           style: const TextStyle(
+  //                             fontFamily: 'GE Dinar One Medium',
+  //                             fontSize: 17,
+  //                             fontWeight: FontWeight.w600,
+  //                             color: Colors.black,
+  //                           ),
+  //                         ),
+  //                         Text(
+  //                           '$english $addON',
+  //                           // textDirection: TextDirection.rtl,
+  //                           style: TextStyle(
+  //                             fontFamily: 'GE Dinar One Medium',
+  //                             fontSize: fontSize,
+  //                             fontWeight: FontWeight.w600,
+  //                             color: Colors.black,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //
+  //                   // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}      ${total.toStringAsFixed(2)}",
+  //                   //   textDirection: TextDirection.ltr,
+  //                   //   textAlign:TextAlign.end,
+  //                   //   style:  TextStyle(
+  //                   //     fontSize: fontSize,
+  //                   //
+  //                   //     fontWeight: FontWeight.w600,
+  //                   //     color: Colors.black,
+  //                   //   ),
+  //                   // ),
+  //                   // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}     ${total.toStringAsFixed(2)}",
+  //                   //
+  //                   Container(
+  //                     width: 45,
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         // Text('${arabicNumber.convert(double.tryParse(item['qty'].toString()).toStringAsFixed(2))}',
+  //                         //   style:  TextStyle(
+  //                         //       fontFamily: 'GE Dinar One Medium',
+  //                         //       color: Colors.black,
+  //                         //       fontSize: fontSize+2,
+  //                         //       fontWeight: FontWeight.w600),
+  //                         // ),
+  //                         Text(
+  //                           '${double.tryParse(item['qty'].toString())}',
+  //                           style: TextStyle(
+  //                               fontFamily: 'GE Dinar One Medium',
+  //                               color: Colors.black,
+  //                               fontSize: fontSize,
+  //                               fontWeight: FontWeight.w600),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 45,
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         // Text('${arabicNumber.convert(price.toStringAsFixed(2))} ',
+  //                         //   style:  TextStyle(
+  //                         //       fontFamily: 'GE Dinar One Medium',
+  //                         //       color: Colors.black,
+  //                         //       fontSize: fontSize+2,
+  //                         //       fontWeight: FontWeight.w600),
+  //                         // ),
+  //                         Text(
+  //                           '${price.toStringAsFixed(2)} ',
+  //                           style: TextStyle(
+  //                               fontFamily: 'GE Dinar One Medium',
+  //                               color: Colors.black,
+  //                               fontSize: fontSize,
+  //                               fontWeight: FontWeight.w600),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 45,
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         // Text('${arabicNumber.convert(vat.toStringAsFixed(2))}',
+  //                         //   style:  TextStyle(
+  //                         //       fontFamily: 'GE Dinar One Medium',
+  //                         //       color: Colors.black,
+  //                         //       fontSize: fontSize+2,
+  //                         //       fontWeight: FontWeight.w600),
+  //                         // ),
+  //                         Text(
+  //                           '${vat.toStringAsFixed(2)}',
+  //                           style: TextStyle(
+  //                               fontFamily: 'GE Dinar One Medium',
+  //                               color: Colors.black,
+  //                               fontSize: fontSize,
+  //                               fontWeight: FontWeight.w600),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 50,
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         // Text('${arabicNumber.convert(total.toStringAsFixed(2))}',
+  //                         //   style:  TextStyle(
+  //                         //       fontFamily: 'GE Dinar One Medium',
+  //                         //       color: Colors.black,
+  //                         //       fontSize: fontSize+2,
+  //                         //       fontWeight: FontWeight.w600),
+  //                         // ),
+  //                         Text(
+  //                           '${total.toStringAsFixed(2)}',
+  //                           style: TextStyle(
+  //                               fontFamily: 'GE Dinar One Medium',
+  //                               color: Colors.black,
+  //                               fontSize: fontSize,
+  //                               fontWeight: FontWeight.w600),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 10,
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       // ]),
+  //     ));
+  //
+  //     print('mid ********************************');
+  //
+  //     itemTotal += (totalAmount * ((100 + gst) / 100) -
+  //             (double.tryParse(discount.toString()) ?? 0))
+  //         .toStringAsFixed(2);
+  //     itemGrossTotal += grossTotal.toStringAsFixed(2);
+  //     itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
+  //     if (itemWidgets1.length == itemCount) {
+  //       var capturedIm = await screenshotController.captureFromWidget(Container(
+  //         width: printWidth * 3,
+  //
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children:
+  //             List.generate(
+  //               itemWidgets1.length,
+  //                   (index) {
+  //                 return itemWidgets1[index];
+  //               },
+  //             )
+  //         ),
+  //         // ListView.builder(
+  //         //     shrinkWrap: true,
+  //         //     itemCount: itemWidgets1.length,
+  //         //     itemBuilder: (context, index) {
+  //         //       return itemWidgets1[index];
+  //         //     }),
+  //       ));
+  //
+  //       final im.Image? image2 = im.decodeImage(capturedIm);
+  //       bytes += generator.image(image2!);
+  //       itemWidgets1 = [];
+  //     }
+  //   }
+  //   if (itemWidgets1.isNotEmpty) {
+  //     print("NOT EMPTYYYYYYYYYYYYYYYY");
+  //
+  //     var capturedIm = await screenshotController.captureFromWidget(Container(
+  //       width: printWidth * 3,
+  //       child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children:
+  //           List.generate(
+  //             itemWidgets1.length,
+  //                 (index) {
+  //               return itemWidgets1[index];
+  //             },
+  //           )
+  //       ),
+  //       // ListView.builder(
+  //       //     shrinkWrap: true,
+  //       //     itemCount: itemWidgets1.length,
+  //       //     itemBuilder: (context, index) {
+  //       //       return itemWidgets1[index];
+  //       //     }),
+  //     ));
+  //
+  //     final im.Image? image25 = im.decodeImage(capturedIm);
+  //     imageList.add(image25!);
+  //     bytes += generator.image(image25);
+  //
+  //     itemWidgets1 = [];
+  //   }
+  //   List<Widget> itemWidgets2 = [];
+  //   itemWidgets.add(Column(
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //           padding: const EdgeInsets.all(1.0),
+  //           decoration: const BoxDecoration(
+  //             color: Colors.white,
+  //           ),
+  //           child: Center(
+  //               child: Text(
+  //             '=====================',
+  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+  //           ))),
+  //       Container(
+  //         padding: const EdgeInsets.all(1.0),
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               'Total - الإجمالي     :  ',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //             Text(
+  //               totalAmount.toStringAsFixed(2),
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //         padding: const EdgeInsets.all(1.0),
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               'VAT -  رقم ضريبة  :   ',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //             Text(
+  //               '${(totalAmount * gst / 100).toStringAsFixed(2)}',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //         padding: const EdgeInsets.all(1.0),
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               'Delivery Charge - رسوم التوصيل : ',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //             Text(
+  //               '${delivery.toStringAsFixed(2)}',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //         padding: const EdgeInsets.all(1.0),
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               'Discount -  خصم  : ',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //             Text(
+  //               (discount == null ? "0.00" : discount.toStringAsFixed(2)),
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 4,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //           padding: const EdgeInsets.all(1.0),
+  //           decoration: const BoxDecoration(
+  //             color: Colors.white,
+  //           ),
+  //           child: Center(
+  //               child: Text(
+  //             '-------------------------------------------',
+  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+  //           ))),
+  //       Container(
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               'NET - المجموع الإجمالي  : ',
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 7,
+  //                   fontWeight: FontWeight.w700),
+  //             ),
+  //             Text(
+  //               (grantTotal - discount + delivery).toStringAsFixed(2),
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontSize: fontSize + 7,
+  //                   fontWeight: FontWeight.w700),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //           decoration: const BoxDecoration(
+  //             color: Colors.white,
+  //           ),
+  //           child: Center(
+  //               child: Text(
+  //             '-------------------------------------------',
+  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+  //           ))),
+  //       Container(
+  //         padding: const EdgeInsets.all(1.0),
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //         ),
+  //         child: Center(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Text(
+  //                 'Cash      :  ${pc.toStringAsFixed(2)}',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize + 2,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //               Text(
+  //                 'Bank      :  ${pb.toStringAsFixed(2)}',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize + 2,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //               Text(
+  //                 'Change :  ${bal.toStringAsFixed(2)}',
+  //                 style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: fontSize + 2,
+  //                     fontWeight: FontWeight.w600),
+  //               ),
+  //               // Text(
+  //               //   'Waiter   :  $waiterName',
+  //               //   style: TextStyle(
+  //               //       color: Colors.black,
+  //               //       fontSize: fontSize + 2,
+  //               //       fontWeight: FontWeight.w600),
+  //               // ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       Container(
+  //           decoration: const BoxDecoration(
+  //             color: Colors.white,
+  //           ),
+  //           child: Center(
+  //               child: Text(
+  //             '-------------------------------------------',
+  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+  //           ))),
+  //       // ${(grantTotal-discount+delivery).toStringAsFixed(2)}
+  //     ],
+  //   ));
+  //
+  //   String qrVat = (totalAmount * gst / 100).toStringAsFixed(2);
+  //   String qrTotal = (grantTotal - discount + delivery).toStringAsFixed(2);
+  //   // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
+  //   itemWidgets.add(Container(
+  //     color: Colors.white,
+  //     // width: qrCode,
+  //     width: qrCode + 100,
+  //     height: qrCode + 100,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         QrImageView(
+  //           data: qr(qrVat, qrTotal, salesDate),
+  //           version: 6,
+  //           size: size / 1.5,
+  //         ),
+  //       ],
+  //     ),
+  //   ));
+  //
+  //   // await  bluetooth.printImageBytes(capturedImage5);
+  //
+  //   var capturedImage2 = await screenshotController.captureFromWidget(Container(
+  //     width: printWidth * 3,
+  //     color: Colors.black,
+  //     child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children:
+  //         List.generate(
+  //           itemWidgets.length,
+  //               (index) {
+  //             return itemWidgets[index];
+  //           },
+  //         )
+  //     ),
+  //     // ListView.builder(
+  //     //     shrinkWrap: true,
+  //     //     itemCount: itemWidgets.length,
+  //     //     itemBuilder: (context, index) {
+  //     //       return itemWidgets[index];
+  //     //     }),
+  //   ));
+  //   final im.Image? image2 = im.decodeImage(capturedImage2);
+  //   bytes += generator.image(image2!);
+  //   final im.Image? footer = im.decodeImage(footerImage);
+  //   bytes += generator.image(footer!);
+  //
+  //   // try {
+  //
+  //   bytes += generator.feed(2);
+  //
+  //   bytes += generator.cut();
+  //   // await flutterUsbPrinter.connect(1155, 22339);
+  //   flutterUsbPrinter.write(Uint8List.fromList(bytes));
+  //
+  //   print("end");
+  // }
+  async {
     print('start');
     final CapabilityProfile profile = await CapabilityProfile.load();
-
     final generator = Generator(PaperSize.mm80, profile);
     const PaperSize paper1 = PaperSize.mm80;
     var profile1 = await CapabilityProfile.load();
     var printer1 = NetworkPrinter(paper1, profile1);
     List<int> bytes = [];
 
+    print('11111111111111111');
+
     final Uint8List imgBytes = data!.buffer.asUint8List();
     final im.Image? image = im.decodeImage(imgBytes);
-    bytes += generator.image(image!);
+    bytes += generator.imageRaster(image!);
+
+
+    print(image);
+    print('2222222222222222222222222');
 
     final im.Image? image1 = im.decodeImage(capturedImage1);
-    bytes += generator.image(image1!);
-    // bytes += generator.row([
-    //   PosColumn(text:"Date :",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-    //   PosColumn(text:"${DateTime.now().toString().substring(0, 19)} ",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 8)
-    // ]);
-    // bytes += generator.row(
-    //     [
-    //       PosColumn(text: "Invoice No:",styles: const PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-    //       PosColumn(text: "$invNo ",styles: const PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4)
-    //     ]);
-    capturedImage10 = await screenshotController.captureFromWidget(Container(
-      color: Colors.white,
-      width: printWidth * 3,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-      // ListView(shrinkWrap: true,
-          // physics: NeverScrollableScrollPhysics(),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    bytes += generator.imageRaster(image1!);
+
+    // if ( data1!= null) {
+    //   final Uint8List imgBytes = Uint8List.fromList(data!.buffer.asUint8List());
+    //   final im.Image? image = im.decodeImage(imgBytes);
+    //   if (image != null) {
+    //     bytes1.addAll(generator1.encode(image));
+    //     print(image);
+    //     print('2222222222222222222222222');
+    //   } else {
+    //     print('Failed to decode image from data');
+    //   }
+    // } else {
+    //   print('Data is null');
+    // }
+    //
+    // if (capturedImage1 != null) {
+    //   final im.Image? image1 = im.decodeImage(capturedImage1);
+    //   if (image1 != null) {
+    //     bytes1.addAll(generator1.encode(image1));
+    //   } else {
+    //     print('Failed to decode image from capturedImage1');
+    //   }
+    // } else {
+    //   print('capturedImage1 is null');
+    // }
+
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    capturedImage10 = await screenshotController.captureFromWidget(
+        Container(
+           height: 50,
+          color: Colors.white,
+          width: printWidth * 3,
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              //shrinkWrap: true,
+              //physics: NeverScrollableScrollPhysics(),
               children: [
-                Text(
-                  'Date :',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: fontSize + 2,
-                      fontWeight: FontWeight.w600),
+                Row(
+                  //changed to center from spacearround
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //changed to center from spacearround
+                  children: [
+                    Text(
+                      'Date :',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: fontSize + 2,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      '${DateTime.now().toString().substring(0, 19)}',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
                 ),
-                Text(
-                  '${DateTime.now().toString().substring(0, 19)}',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w600),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Order Type',
+                //       style: TextStyle(
+                //           color: Colors.black,
+                //           fontSize: fontSize + 2,
+                //           fontWeight: FontWeight.w600),
+                //     ),
+                //     Text(
+                //       dropdownvalue!,
+                //       style: TextStyle(
+                //           color: Colors.black,
+                //           fontSize: fontSize,
+                //           fontWeight: FontWeight.w600),
+                //     ),
+                //   ],
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Invoice No:',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: fontSize + 2,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      '$invNo',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Invoice No:',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: fontSize + 5,
-                      fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  '$invNo',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: fontSize + 5,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ]),
-    ));
-    final im.Image? image10 = im.decodeImage(capturedImage10);
-    bytes += generator.image(image10!);
+              ]),
+        ));
+     final im.Image image10 = im.decodeImage(capturedImage10)!;
+     bytes += generator.imageRaster(image10);
 
     bytes += generator.text("-------------------------------------------",
         styles: PosStyles(
@@ -210,6 +1033,13 @@ class _history_View_WidgetState extends State<history_View_Widget> {
           height: PosTextSize.size2,
         ));
 
+
+    // bytes += generator.text("TOKEN NUMBER : $token",
+    //     styles: PosStyles(
+    //         bold: true,
+    //         align: PosAlign.center,
+    //         height: PosTextSize.size2,
+    //         width: PosTextSize.size2));
     bytes += generator.text("ORDER TYPE : $orderType",
         styles: PosStyles(
             bold: true,
@@ -217,6 +1047,9 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             height: PosTextSize.size2,
             width: PosTextSize.size2));
 
+
+
+
     bytes += generator.text("-------------------------------------------",
         styles: PosStyles(
           bold: true,
@@ -224,155 +1057,14 @@ class _history_View_WidgetState extends State<history_View_Widget> {
           height: PosTextSize.size2,
         ));
 
-    //HEAD IMAGE
-    // final Uint8List imgBytes1 = data1.buffer.asUint8List();
-    // final im.Image image11 = im.decodeImage(imgBytes1);
-    // bytes += generator.image(image11);
+    print("66666666666666666666666666666");
 
-    // var capturedhead= await    screenshotController
-    //     .captureFromWidget(Container(
-    //   color: Colors.white,
-    //   width: printWidth*3,
-    //   height: 85,
-    //
-    //   child: Column(
-    //     children: [
-    //       Row(
-    //         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children:   [
-    //           //pdt
-    //           Expanded(
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //
-    //                 Text('منتج',
-    //                   style:  TextStyle(
-    //                     fontFamily: 'GE Dinar One Medium',
-    //                     fontSize: fontSize,
-    //                     fontWeight: FontWeight.w600,
-    //                     color: Colors.black,
-    //                   ),
-    //                 ),
-    //                 Text('ITEM',
-    //                   style:  TextStyle(
-    //                       color: Colors.black,
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           Container(
-    //             width: 45,
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //
-    //                 Text('كمية',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //                 Text('QTY',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           Container(
-    //             width: 45,
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //
-    //                 Text('سعر',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //                 Text('RATE',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           Container(
-    //             width: 45,
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //
-    //                 Text('ضريبة',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //                 Text('VAT',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           Container(
-    //             width: 50,
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //
-    //                 Text('المجموع',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //                 Text('TOTAL',
-    //                   style:  TextStyle(
-    //                       fontFamily: 'GE Dinar One Medium',
-    //                       color: Colors.black,
-    //                       fontSize: fontSize,
-    //                       fontWeight: FontWeight.w600),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       Container(
-    //           decoration: const BoxDecoration(
-    //             color: Colors.white,
-    //           ),
-    //           child:  Center(child: Text('-------------------------------------------',
-    //             style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
-    //       ),
-    //     ],
-    //   ),
-    // ));
-    final im.Image? imagehead = im.decodeImage(capturedhead);
-    bytes += generator.image(
-      imagehead!,
-    );
-    print("$capturedhead--------------------");
+    final im.Image imagehead = im.decodeImage(capturedhead)!;
+    bytes += generator.imageRaster(imagehead);
+
+
+
+    print("77777777777777777777");
 
     String itemString = '';
     String itemStringArabic = '';
@@ -391,14 +1083,17 @@ class _history_View_WidgetState extends State<history_View_Widget> {
     Map<String, dynamic> config = Map();
     List<Widget> itemWidgets = [];
     List<Widget> itemWidgets1 = [];
+    print('888888888888888888888888');
+
+    //product set up
     for (Map<String, dynamic> item in items) {
-      var addOnPrice =  item['addOnPrice']??0-item['removePrice']??0-item['addLessPrice']??0+item['addMorePrice']??0;
+      var addOnPrice = item['addOnPrice'];
       double total = (double.tryParse(item['price'].toString())! + addOnPrice) *
           double.tryParse(item['qty'].toString())!;
       double grossTotal = total * 100 / 115;
       double vat =
           (double.tryParse(item['price'].toString())! + addOnPrice) * 15 / 115;
-      newAddOn = item['addOns']??''+item['addLess']??''+item['addMore']??''+item['remove']??'';
+      newAddOn = item['addOns'];
       arabic = item['arabicName'];
       english = item['pdtname'];
 
@@ -407,200 +1102,202 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       deliveryCharge = item['deliveryCharge'] == null
           ? 0
           : double.tryParse(item['deliveryCharge'].toString());
-      newAddOn = item['addOns']??''+item['addLess']??''+item['addMore']??''+item['remove']??'';
-      newAddOnArabic = item['addOnArabic']??''+item['addLessArabic']??''+item['addMoreArabic']??''+item['removeArabic']??'';      addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
+      newAddOn = item['addOns'];
+      newAddOnArabic = item['addOnArabic'];
+      addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
       addON = newAddOn.isEmpty ? '' : newAddOn.toString();
       double price =
           (double.tryParse(item['price'].toString())! + addOnPrice) * 100 / 115;
       totalAmount += price * double.tryParse(item['qty'].toString())!;
+
+      print('00000000000000');
+      //PRDT LIST SET UP
       itemWidgets1.add(Container(
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
-        child:
-        // ListView(shrinkWrap: true, children: [
-          Container(
-            width: printWidth * 3,
-            child: Column(
-              children: [
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '$arabic $addOnArabic',
-                            // textDirection: TextDirection.rtl,
-                            style: const TextStyle(
-                              fontFamily: 'GE Dinar One Medium',
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            '$english $addON',
-                            // textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              fontFamily: 'GE Dinar One Medium',
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+        child: Container(
+          width: printWidth * 3,
+          child: Column(
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                // mainAxisAlignment: MainAxisAlignment.sp,
 
-                    // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}      ${total.toStringAsFixed(2)}",
-                    //   textDirection: TextDirection.ltr,
-                    //   textAlign:TextAlign.end,
-                    //   style:  TextStyle(
-                    //     fontSize: fontSize,
-                    //
-                    //     fontWeight: FontWeight.w600,
-                    //     color: Colors.black,
-                    //   ),
-                    // ),
-                    // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}     ${total.toStringAsFixed(2)}",
-                    //
-                    Container(
-                      width: 45,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Text('${arabicNumber.convert(double.tryParse(item['qty'].toString()).toStringAsFixed(2))}',
-                          //   style:  TextStyle(
-                          //       fontFamily: 'GE Dinar One Medium',
-                          //       color: Colors.black,
-                          //       fontSize: fontSize+2,
-                          //       fontWeight: FontWeight.w600),
-                          // ),
-                          Text(
-                            '${double.tryParse(item['qty'].toString())}',
-                            style: TextStyle(
-                                fontFamily: 'GE Dinar One Medium',
-                                color: Colors.black,
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.w600),
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '$arabic $addOnArabic',
+                          // textDirection: TextDirection.rtl,
+                          style: const TextStyle(
+                            fontFamily: 'GE Dinar One Medium',
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 45,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Text('${arabicNumber.convert(price.toStringAsFixed(2))} ',
-                          //   style:  TextStyle(
-                          //       fontFamily: 'GE Dinar One Medium',
-                          //       color: Colors.black,
-                          //       fontSize: fontSize+2,
-                          //       fontWeight: FontWeight.w600),
-                          // ),
-                          Text(
-                            '${price.toStringAsFixed(2)} ',
-                            style: TextStyle(
-                                fontFamily: 'GE Dinar One Medium',
-                                color: Colors.black,
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          '$english $addON',
+                          // textDirection: TextDirection.rtl,
+                          style: TextStyle(
+                            fontFamily: 'GE Dinar One Medium',
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      width: 45,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Text('${arabicNumber.convert(vat.toStringAsFixed(2))}',
-                          //   style:  TextStyle(
-                          //       fontFamily: 'GE Dinar One Medium',
-                          //       color: Colors.black,
-                          //       fontSize: fontSize+2,
-                          //       fontWeight: FontWeight.w600),
-                          // ),
-                          Text(
-                            '${vat.toStringAsFixed(2)}',
-                            style: TextStyle(
-                                fontFamily: 'GE Dinar One Medium',
-                                color: Colors.black,
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
+                  ),
+
+                  // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}      ${total.toStringAsFixed(2)}",
+                  //   textDirection: TextDirection.ltr,
+                  //   textAlign:TextAlign.end,
+                  //   style:  TextStyle(
+                  //     fontSize: fontSize,
+                  //
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+                  // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}     ${total.toStringAsFixed(2)}",
+                  //
+                  Container(
+                    width: 45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text('${arabicNumber.convert(double.tryParse(item['qty'].toString()).toStringAsFixed(2))}',
+                        //   style:  TextStyle(
+                        //       fontFamily: 'GE Dinar One Medium',
+                        //       color: Colors.black,
+                        //       fontSize: fontSize+2,
+                        //       fontWeight: FontWeight.w600),
+                        // ),
+                        Text(
+                          '${double.tryParse(item['qty'].toString())}',
+                          style: TextStyle(
+                              fontFamily: 'GE Dinar One Medium',
+                              color: Colors.black,
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
-                    Container(
-                      width: 50,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Text('${arabicNumber.convert(total.toStringAsFixed(2))}',
-                          //   style:  TextStyle(
-                          //       fontFamily: 'GE Dinar One Medium',
-                          //       color: Colors.black,
-                          //       fontSize: fontSize+2,
-                          //       fontWeight: FontWeight.w600),
-                          // ),
-                          Text(
-                            '${total.toStringAsFixed(2)}',
-                            style: TextStyle(
-                                fontFamily: 'GE Dinar One Medium',
-                                color: Colors.black,
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
+                  ),
+                  Container(
+                    width: 45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text('${arabicNumber.convert(price.toStringAsFixed(2))} ',
+                        //   style:  TextStyle(
+                        //       fontFamily: 'GE Dinar One Medium',
+                        //       color: Colors.black,
+                        //       fontSize: fontSize+2,
+                        //       fontWeight: FontWeight.w600),
+                        // ),
+                        Text(
+                          '${price.toStringAsFixed(2)} ',
+                          style: TextStyle(
+                              fontFamily: 'GE Dinar One Medium',
+                              color: Colors.black,
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                )
-              ],
-            ),
+                  ),
+                  Container(
+                    width: 45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text('${arabicNumber.convert(vat.toStringAsFixed(2))}',
+                        //   style:  TextStyle(
+                        //       fontFamily: 'GE Dinar One Medium',
+                        //       color: Colors.black,
+                        //       fontSize: fontSize+2,
+                        //       fontWeight: FontWeight.w600),
+                        // ),
+                        Text(
+                          vat.toStringAsFixed(2),
+                          style: TextStyle(
+                              fontFamily: 'GE Dinar One Medium',
+                              color: Colors.black,
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text('${arabicNumber.convert(total.toStringAsFixed(2))}',
+                        //   style:  TextStyle(
+                        //       fontFamily: 'GE Dinar One Medium',
+                        //       color: Colors.black,
+                        //       fontSize: fontSize+2,
+                        //       fontWeight: FontWeight.w600),
+                        // ),
+                        Text(
+                          '${total.toStringAsFixed(2)}',
+                          style: TextStyle(
+                              fontFamily: 'GE Dinar One Medium',
+                              color: Colors.black,
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              )
+            ],
           ),
-        // ]),
+        ),
       ));
 
+      print('111111111111111111111');
       print('mid ********************************');
 
       itemTotal += (totalAmount * ((100 + gst) / 100) -
-              (double.tryParse(discount.toString()) ?? 0))
+          (double.tryParse(discount.toString()) ?? 0))
           .toStringAsFixed(2);
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
+
+      print('gggggggg');
+      print(itemWidgets1.length);
+      print(itemCount);
       if (itemWidgets1.length == itemCount) {
+        // var capturedIm = await screenshotController.captureFromWidget(Container(
+        //   width: printWidth * 3,
+        //   children: List.generate(itemWidgets.length, (index) {
+        //   return itemWidgets[index];
+        //       }),
+        // ));
         var capturedIm = await screenshotController.captureFromWidget(Container(
           width: printWidth * 3,
-
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children:
-              List.generate(
-                itemWidgets1.length,
-                    (index) {
-                  return itemWidgets1[index];
-                },
-              )
+            children: List.generate(itemWidgets1.length, (index) {
+              return itemWidgets1[index];
+            }),
           ),
-          // ListView.builder(
-          //     shrinkWrap: true,
-          //     itemCount: itemWidgets1.length,
-          //     itemBuilder: (context, index) {
-          //       return itemWidgets1[index];
-          //     }),
         ));
 
-        final im.Image? image2 = im.decodeImage(capturedIm);
-        bytes += generator.image(image2!);
+        final im.Image image2 = im.decodeImage(capturedIm)!;
+        bytes += generator.imageRaster(image2);
         itemWidgets1 = [];
       }
     }
@@ -610,29 +1307,32 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       var capturedIm = await screenshotController.captureFromWidget(Container(
         width: printWidth * 3,
         child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children:
-            List.generate(
-              itemWidgets1.length,
-                  (index) {
-                return itemWidgets1[index];
-              },
-            )
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(itemWidgets1.length, (index) {
+            print('itemWidgets1 $index');
+            return itemWidgets1[index];
+          }),
         ),
-        // ListView.builder(
+        // child: ListView.builder(
         //     shrinkWrap: true,
+        //     physics: NeverScrollableScrollPhysics(),
         //     itemCount: itemWidgets1.length,
         //     itemBuilder: (context, index) {
-        //       return itemWidgets1[index];
+        //
         //     }),
       ));
 
-      final im.Image? image25 = im.decodeImage(capturedIm);
-      imageList.add(image25!);
-      bytes += generator.image(image25);
+      print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+
+      final im.Image image25 = im.decodeImage(capturedIm)!;
+      imageList.add(image25);
+      bytes += generator.imageRaster(image25);
 
       itemWidgets1 = [];
     }
+
+    print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+
     List<Widget> itemWidgets2 = [];
     itemWidgets.add(Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -644,9 +1344,9 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ),
             child: Center(
                 child: Text(
-              '=====================',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '=====================',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         Container(
           padding: const EdgeInsets.all(1.0),
           decoration: const BoxDecoration(
@@ -697,56 +1397,30 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ],
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(1.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Delivery Charge - رسوم التوصيل : ',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: fontSize + 4,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text(
-                '${delivery.toStringAsFixed(2)}',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: fontSize + 4,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(1.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Discount -  خصم  : ',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: fontSize + 4,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text(
-                (discount == null ? "0.00" : discount.toStringAsFixed(2)),
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: fontSize + 4,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-        ),
+        // Container(    padding: const EdgeInsets.all(1.0),
+        //   decoration: const BoxDecoration(
+        //     color: Colors.white,
+        //   ),
+        //   child:     Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Text('Delivery Charge - رسوم التوصيل : ',style:  TextStyle(color: Colors.black,fontSize: fontSize+4,fontWeight: FontWeight.w600),),
+        //       Text('${delivery.toStringAsFixed(2)} ',style:  TextStyle(color: Colors.black,fontSize: fontSize+4,fontWeight: FontWeight.w600),),
+        //     ],
+        //   ),),
+        // Container(
+        //   padding: const EdgeInsets.all(1.0),
+        //   decoration: const BoxDecoration(
+        //     color: Colors.white,
+        //   ),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Text('Discount -  خصم  : ', style: TextStyle(color: Colors.black, fontSize: fontSize+4, fontWeight: FontWeight.w600),),
+        //       Text((discount == null ? "0.00" : discount.toStringAsFixed(2)), style: TextStyle(color: Colors.black, fontSize: fontSize+4, fontWeight: FontWeight.w600),),
+        //
+        //     ],
+        //   ),),
         Container(
             padding: const EdgeInsets.all(1.0),
             decoration: const BoxDecoration(
@@ -754,9 +1428,9 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ),
             child: Center(
                 child: Text(
-              '-------------------------------------------',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '-------------------------------------------',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         Container(
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -787,9 +1461,9 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ),
             child: Center(
                 child: Text(
-              '-------------------------------------------',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '-------------------------------------------',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         Container(
           padding: const EdgeInsets.all(1.0),
           decoration: const BoxDecoration(
@@ -800,33 +1474,26 @@ class _history_View_WidgetState extends State<history_View_Widget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Cash      :  ${pc.toStringAsFixed(2)}',
+                  'Cash      :  ${pc}',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: fontSize + 2,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  'Bank      :  ${pb.toStringAsFixed(2)}',
+                  'Bank      :  ${pb}',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: fontSize + 2,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  'Change :  ${bal.toStringAsFixed(2)}',
+                  'Change :  ${bal}',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: fontSize + 2,
                       fontWeight: FontWeight.w600),
                 ),
-                // Text(
-                //   'Waiter   :  $waiterName',
-                //   style: TextStyle(
-                //       color: Colors.black,
-                //       fontSize: fontSize + 2,
-                //       fontWeight: FontWeight.w600),
-                // ),
               ],
             ),
           ),
@@ -837,9 +1504,9 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ),
             child: Center(
                 child: Text(
-              '-------------------------------------------',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '-------------------------------------------',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         // ${(grantTotal-discount+delivery).toStringAsFixed(2)}
       ],
     ));
@@ -848,48 +1515,43 @@ class _history_View_WidgetState extends State<history_View_Widget> {
     String qrTotal = (grantTotal - discount + delivery).toStringAsFixed(2);
     // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
     itemWidgets.add(Container(
+      height: qrCode + 100,
+      width: printWidth * 3.1,
       color: Colors.white,
       // width: qrCode,
-      width: qrCode + 100,
-      height: qrCode + 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           QrImageView(
-            data: qr(qrVat, qrTotal, salesDate),
+            data: qr(qrVat, qrTotal,salesDate),
             version: 6,
-            size: size / 1.5,
+            size: size/1.5,
           ),
         ],
       ),
     ));
 
+
     // await  bluetooth.printImageBytes(capturedImage5);
 
     var capturedImage2 = await screenshotController.captureFromWidget(Container(
-      width: printWidth * 3,
-      color: Colors.black,
-      child: Column(
+        width: printWidth * 3,
+        child: Column(
           mainAxisSize: MainAxisSize.min,
-          children:
-          List.generate(
-            itemWidgets.length,
-                (index) {
-              return itemWidgets[index];
-            },
-          )
-      ),
-      // ListView.builder(
-      //     shrinkWrap: true,
-      //     itemCount: itemWidgets.length,
-      //     itemBuilder: (context, index) {
-      //       return itemWidgets[index];
-      //     }),
-    ));
-    final im.Image? image2 = im.decodeImage(capturedImage2);
-    bytes += generator.image(image2!);
-    final im.Image? footer = im.decodeImage(footerImage);
-    bytes += generator.image(footer!);
+          children: List.generate(itemWidgets.length, (index) {
+            return itemWidgets[index];
+          }),
+        )));
+
+    final im.Image image2 = im.decodeImage(capturedImage2)!;
+    bytes += generator.imageRaster(image2);
+
+
+
+    final im.Image footer = im.decodeImage(footerImage)!;
+    bytes += generator.imageRaster(footer);
+
+
 
     // try {
 
@@ -901,7 +1563,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
 
     print("end");
   }
-
 
   //   print('start');
   //   final CapabilityProfile profile = await CapabilityProfile.load();

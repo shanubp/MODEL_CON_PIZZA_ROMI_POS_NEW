@@ -115,12 +115,248 @@ var itemImage;
 List<im.Image> imageList=[];
 
 
+
+setPrinterImages() async {
+  while(printWidth==0){
+    await Future.delayed(Duration(seconds: 1));
+  }
+  capturedImage1= await    screenshotController
+      .captureFromWidget(Container(
+    color: Colors.white,
+    width: printWidth*3,
+     height: 200,
+    child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: Text(currentBranchAddressArabic!,style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),)),
+              Text(" : اسم الفرع",style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Branch Name: ",style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),),
+              Expanded(child: Text(currentBranchAddress!,textAlign: TextAlign.end,style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),)),
+            ],
+          ),
+          Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child:  Center(child: Text('-------------------------------------------',
+                style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
+          ),
+          Text("☎️ $billMobileNo", style: TextStyle(color: Colors.black, fontSize: fontSize + 14, fontWeight: FontWeight.w600),textAlign: TextAlign.center),
+          Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child:  Center(child: Text('-------------------------------------------',
+                style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children:  [
+              Text('Vat No:',style: TextStyle(color: Colors.black,fontSize: fontSize+2,fontWeight: FontWeight.w600),),
+              Text(vatNumber!,style: TextStyle(color: Colors.black,fontSize: fontSize,fontWeight: FontWeight.w600),),
+            ],),
+
+
+        ]
+    ),
+  )
+  );
+  capturedhead = await screenshotController
+      .captureFromWidget(Container(
+    color: Colors.white,
+    width: printWidth * 3,
+    height: 85,
+    padding: const EdgeInsets.only(top: 4),
+    child: Column(
+      children: [
+        Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            //pdt
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('منتج',
+                    style: TextStyle(
+                      fontFamily: 'GE Dinar One Medium',
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text('Product',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'GE Dinar One Medium',
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+
+                ],
+              ),
+            ),
+            Container(
+              width: 45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('كمية',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text('Qty',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+
+                ],
+              ),
+            ),
+            Container(
+              width: 45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('سعر',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text('Rate',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+
+                ],
+              ),
+            ),
+            Container(
+              width: 45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('ضريبة',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text('vat',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+
+                ],
+              ),
+            ),
+            Container(
+              width: 50,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('المجموع',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text('Total',
+                    style: TextStyle(
+                        fontFamily: 'GE Dinar One Medium',
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600),
+                  ),
+
+                ],
+              ),
+            ),
+
+          ],
+        ),
+        Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
+            child:  Center(child: Text('-------------------------------------------',
+              style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
+        ),
+      ],
+    ),
+  ));
+  while(PosUserIdToArabicName[currentUserId]==null){
+    await Future.delayed(Duration(seconds: 1));
+  }
+  print("finished");
+  footerImage=await screenshotController
+      .captureFromWidget(Container(
+    width: printWidth * 3,
+    height: printWidth*1.2 ,
+    color: Colors.white,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          children: [
+            SizedBox(height: 8,),
+            Text('${PosUserIdToArabicName[currentUserId]}: المحاسب  ',
+              style: TextStyle(color: Colors.black,
+                fontSize: fontSize + 2,
+                fontWeight: FontWeight.bold,),),
+            Text('Cashier : ${PosUserIdToName[currentUserId]}',
+              style: TextStyle(color: Colors.black,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold),),
+
+            SizedBox(height: 8,),
+            Text('شكرًا لزيارتك ونتشوق لرؤيتك مرة أخرى', style: TextStyle(
+                fontFamily: 'GE Dinar One Medium',
+                color: Colors.black,
+                fontSize: fontSize + 3,
+                fontWeight: FontWeight.w600),),
+            Text('THANK YOU VISIT AGAIN', style: TextStyle(
+                fontFamily: 'GE Dinar One Medium',
+                color: Colors.black,
+                fontSize: fontSize + 3,
+                fontWeight: FontWeight.w600),),
+          ],
+        ),
+      ],
+    ),
+  ));
+}
+
 // setPrinterImages() async {
 //   while (printWidth == 0) {
 //     await Future.delayed(const Duration(seconds: 1));
 //   }
 //   capturedImage1 = await screenshotController.captureFromWidget(Container(
-//     height: 100,
+//     height: 130,
 //     color: Colors.white,
 //     width: printWidth * 3,
 //     child: Column(
@@ -160,13 +396,15 @@ List<im.Image> imageList=[];
 //                     fontSize: fontSize + 2,
 //                     fontWeight: FontWeight.w600),
 //               ),
-//               Text(
-//                 currentBranchAddress!,
-//                 style: TextStyle(
-//                     fontFamily: 'GE Dinar One Medium',
-//                     color: Colors.black,
-//                     fontSize: fontSize + 2,
-//                     fontWeight: FontWeight.w600),
+//               Expanded(
+//                 child: Text(
+//                   currentBranchAddress!,
+//                   style: TextStyle(
+//                       fontFamily: 'GE Dinar One Medium',
+//                       color: Colors.black,
+//                       fontSize: fontSize + 2,
+//                       fontWeight: FontWeight.w600),
+//                 ),
 //               ),
 //             ],
 //           ),
@@ -417,240 +655,6 @@ List<im.Image> imageList=[];
 //   ));
 // }
 
-setPrinterImages() async {
-  while(printWidth==0){
-    await Future.delayed(Duration(seconds: 1));
-  }
-  capturedImage1= await    screenshotController
-      .captureFromWidget(Container(
-    color: Colors.white,
-    width: printWidth*3,
-    child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children:[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: Text(currentBranchAddressArabic!,style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),)),
-              Text(" : اسم الفرع",style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Branch Name: ",style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),),
-              Expanded(child: Text(currentBranchAddress!,textAlign: TextAlign.end,style:  TextStyle(fontFamily:'GE Dinar One Medium',color: Colors.black, fontSize: fontSize+2,fontWeight: FontWeight.w600),)),
-            ],
-          ),
-          Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child:  Center(child: Text('-------------------------------------------',
-                style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
-          ),
-          Text("☎️ $billMobileNo", style: TextStyle(color: Colors.black, fontSize: fontSize + 14, fontWeight: FontWeight.w600),textAlign: TextAlign.center),
-          Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child:  Center(child: Text('-------------------------------------------',
-                style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children:  [
-              Text('Vat No:',style: TextStyle(color: Colors.black,fontSize: fontSize+2,fontWeight: FontWeight.w600),),
-              Text(vatNumber!,style: TextStyle(color: Colors.black,fontSize: fontSize,fontWeight: FontWeight.w600),),
-            ],),
-
-
-        ]
-    ),
-  )
-  );
-  capturedhead = await screenshotController
-      .captureFromWidget(Container(
-    color: Colors.white,
-    width: printWidth * 3,
-    height: 85,
-    padding: const EdgeInsets.only(top: 4),
-    child: Column(
-      children: [
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //pdt
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('منتج',
-                    style: TextStyle(
-                      fontFamily: 'GE Dinar One Medium',
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text('Product',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'GE Dinar One Medium',
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                ],
-              ),
-            ),
-            Container(
-              width: 45,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('كمية',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text('Qty',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                ],
-              ),
-            ),
-            Container(
-              width: 45,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('سعر',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text('Rate',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                ],
-              ),
-            ),
-            Container(
-              width: 45,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ضريبة',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text('vat',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                ],
-              ),
-            ),
-            Container(
-              width: 50,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('المجموع',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text('Total',
-                    style: TextStyle(
-                        fontFamily: 'GE Dinar One Medium',
-                        color: Colors.black,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                ],
-              ),
-            ),
-
-          ],
-        ),
-        Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child:  Center(child: Text('-------------------------------------------',
-              style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
-        ),
-      ],
-    ),
-  ));
-  while(PosUserIdToArabicName[currentUserId]==null){
-    await Future.delayed(Duration(seconds: 1));
-  }
-  print("finished");
-  footerImage=await screenshotController
-      .captureFromWidget(Container(
-    width: printWidth * 3,
-    height: printWidth*1.2 ,
-    color: Colors.white,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Column(
-          children: [
-            SizedBox(height: 8,),
-            Text('${PosUserIdToArabicName[currentUserId]}: المحاسب  ',
-              style: TextStyle(color: Colors.black,
-                fontSize: fontSize + 2,
-                fontWeight: FontWeight.bold,),),
-            Text('Cashier : ${PosUserIdToName[currentUserId]}',
-              style: TextStyle(color: Colors.black,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold),),
-
-            SizedBox(height: 8,),
-            Text('شكرًا لزيارتك ونتشوق لرؤيتك مرة أخرى', style: TextStyle(
-                fontFamily: 'GE Dinar One Medium',
-                color: Colors.black,
-                fontSize: fontSize + 3,
-                fontWeight: FontWeight.w600),),
-            Text('THANK YOU VISIT AGAIN', style: TextStyle(
-                fontFamily: 'GE Dinar One Medium',
-                color: Colors.black,
-                fontSize: fontSize + 3,
-                fontWeight: FontWeight.w600),),
-          ],
-        ),
-      ],
-    ),
-  ));
-}
-
 ingredientsUpdate(List billItems){
   for(var a in billItems){
     for(var b in a['ingredients']??[]){
@@ -898,6 +902,7 @@ printerr() async {
   }
 
   getPrintImages() async {
+  print("print image");
     data = await rootBundle.load('assets/as.jpg');
     data1 = await rootBundle.load('assets/as.jpg');
   }
@@ -1561,59 +1566,54 @@ try {
   bytes = [];
   kotBytes = [];
 
-
   final Uint8List imgBytes = data!.buffer.asUint8List();
   final im.Image? image = im.decodeImage(imgBytes);
-  bytes += generator.image(image!);
+  bytes += generator.imageRaster(image!);
   bytes += generator.feed(1);
 
   print(DateTime.now());
 
   final im.Image? image1 = im.decodeImage(capturedImage1);
   print("here");
-  bytes += generator.image(image1!,);
+  bytes += generator.imageRaster(image1!,);
 
-  // capturedImage10= await    screenshotController
-  //     .captureFromWidget(Container(
-  //   color: Colors.white,
-  //   width: printWidth*3,
-  //   child: ListView(
-  //
-  //       shrinkWrap: true,
-  //       // physics: NeverScrollableScrollPhysics(),
-  //       children:[
-  //
-  //
-  //
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text('Date :', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
-  //             Text('${DateTime.now().toString().substring(0, 19)}', style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
-  //
-  //           ],
-  //         ),
-  //         // Row(
-  //         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         //   children: [
-  //         //     Text('Order Type', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
-  //         //     Text(approve ? "Credit User" :dropdownvalue, style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
-  //         //
-  //         //   ],
-  //         // ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children:  [
-  //             Text('Invoice No:',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
-  //             Text('$invNo',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
-  //           ],),
-  //       ]
-  //   ),
-  // ));
-  //
-  // final im.Image? image10 = im.decodeImage(capturedImage10);
-  // bytes += generator.image(image10!);
+  capturedImage10= await    screenshotController
+      .captureFromWidget(Container(
+    color: Colors.white,
+    width: printWidth*3,
+    child: Column(
+        mainAxisSize: MainAxisSize.min,
+        // shrinkWrap: true,
+        // physics: NeverScrollableScrollPhysics(),
+        children:[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Date :', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
+              Text('${DateTime.now().toString().substring(0, 19)}', style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
 
+            ],
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text('Order Type', style: TextStyle(color: Colors.black, fontSize: fontSize + 2, fontWeight: FontWeight.w600),),
+          //     Text(approve ? "Credit User" :dropdownvalue, style: TextStyle(color: Colors.black, fontSize: fontSize, fontWeight: FontWeight.w600),),
+          //
+          //   ],
+          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children:  [
+              Text('Invoice No:',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
+              Text('$invNo',style: TextStyle(color: Colors.black,fontSize: fontSize+5,fontWeight: FontWeight.w600),),
+            ],),
+        ]
+    ),
+  ));
+  //
+  final im.Image? image10 = im.decodeImage(capturedImage10);
+  bytes += generator.imageRaster(image10!);
 
   bytes +=generator.text("-------------------------------------------",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,));
   bytes +=generator.text("ORDER TYPE : $dropdownvalue",styles: PosStyles(bold: true,align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2));
@@ -1623,7 +1623,7 @@ try {
   print(DateTime.now());
 
   final im.Image? imagehead = im.decodeImage(capturedhead);
-  bytes += generator.image(imagehead!,);
+  bytes += generator.imageRaster(imagehead!,);
 
 
   String itemString = '';
@@ -1640,7 +1640,7 @@ try {
   String english = '';
   String addOnArabic = '';
   addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
-
+  //
   Map<String, dynamic> config = Map();
   List<Widget> itemWidgets = [];
   List<Widget> itemWidgets1 = [];
@@ -1671,7 +1671,7 @@ try {
 
 
   for(im.Image a in imageList){
-    bytes += generator.image(a);
+    bytes += generator.imageRaster(a);
   }
 
 
@@ -1793,23 +1793,41 @@ try {
   String qrTotal = (grantTotal - (double.tryParse(discount.toString()) ?? 0) +
       (deliveryAmount ?? 0)).toStringAsFixed(2);
 
-  itemWidgets.add(
-      Container(
-        color: Colors.white,
-        width: printWidth * 2.4,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            QrImageView(
-              data: qr(qrVat, qrTotal),
-              version: 6,
-              size: size/1.5,
-            )
+  // itemWidgets.add(
+  //     Container(
+  //       color: Colors.white,
+  //       width: printWidth * 2.4,
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           QrImageView(
+  //
+  //             data: qr(qrVat, qrTotal),
+  //             version: 6,
+  //             size: size/1.5,
+  //           )
+  //
+  //         ],
+  //       ),
+  //     )
+  // );
 
-          ],
+  itemWidgets.add(Container(
+    height: qrCode + 100,
+    width: printWidth * 3.1,
+    color: Colors.white,
+    // width: qrCode,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        QrImageView(
+          data: qr(qrVat, qrTotal),
+          version: 6,
+          size: size/1.5,
         ),
-      )
-  );
+      ],
+    ),
+  ));
 
 
 
@@ -1841,9 +1859,9 @@ try {
   print(DateTime.now());
 
   final im.Image? image2 = im.decodeImage(capturedImage2);
-  bytes += generator.image(image2!);
+  bytes += generator.imageRaster(image2!);
   final im.Image? footerImage1 = im.decodeImage(footerImage);
-  bytes += generator.image(footerImage1!);
+  bytes += generator.imageRaster(footerImage1!);
   bytes += generator.drawer(pin: PosDrawer.pin2);
   bytes += generator.feed(2);
   bytes += generator.cut();
@@ -4376,7 +4394,9 @@ set(){
                                   child: Center(
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 10.0,right: 10),
-                                      child: Text(arabicLanguage?"الرمز مسح: ${arabicNumber.convert(token)}":'Token Clear $token',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                                      child: Text(arabicLanguage?"الرمز مسح: ${
+                                          arabicNumber.convert(token)}":'Token Clear $token',
+                                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
                                       ),
                                     ),
                                   ),
@@ -7187,7 +7207,7 @@ set(){
 
                                                   disable = true;
                                                   String billDiscount = discount;
-                                                  try {
+                                                   try {
 
                                                     print(DateTime.now());
                                                     double  netTotal= dinnerCertificate? 0.00:totalAmount  - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0);
@@ -7281,7 +7301,7 @@ set(){
                                                         print(bankPaid);
                                                         abc(
                                                             invoiceNo,
-                                                            double.tryParse(discountController.text)!,
+                                                            double.tryParse(discountController.text)??0,
                                                             items,
                                                             token,
                                                             selectedTable,

@@ -113,11 +113,11 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     final Uint8List imgBytes = data!.buffer.asUint8List();
     final im.Image? image = im.decodeImage(imgBytes);
-    bytes += generator.image(image!);
+    bytes += generator.imageRaster(image!);
     bytes += generator.feed(2);
 
     final im.Image? image1 = im.decodeImage(capturedImage1);
-    bytes += generator.image(image1!);
+    bytes += generator.imageRaster(image1!);
 
     capturedImage10 = await screenshotController.captureFromWidget(Container(
       color: Colors.white,
@@ -177,7 +177,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ]),
     ));
     final im.Image? image10 = im.decodeImage(capturedImage10);
-    bytes += generator.image(image10!);
+    bytes += generator.imageRaster(image10!);
     bytes += generator.text("-------------------------------------------",
         styles: PosStyles(
           bold: true,
@@ -201,7 +201,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         ));
 
     final im.Image? imagehead = im.decodeImage(capturedhead);
-    bytes += generator.image(
+    bytes += generator.imageRaster(
       imagehead!,
     );
 
@@ -424,16 +424,24 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       if (itemWidgets1.length == itemCount) {
         var capturedIm = await screenshotController.captureFromWidget(Container(
           width: printWidth * 3,
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: itemWidgets1.length,
-              itemBuilder: (context, index) {
+          child:Column(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(itemWidgets1.length, (index){
                 return itemWidgets1[index];
-              }),
+                      }),
+
+          ),
+
+          // ListView.builder(
+          //     shrinkWrap: true,
+          //     itemCount: itemWidgets1.length,
+          //     itemBuilder: (context, index) {
+          //       return itemWidgets1[index];
+          //     }),
         ));
 
         final im.Image? image2 = im.decodeImage(capturedIm);
-        bytes += generator.image(image2!);
+        bytes += generator.imageRaster(image2!);
         itemWidgets1 = [];
       }
 
@@ -463,7 +471,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ));
 
       final im.Image? image20 = im.decodeImage(capturedIm);
-      bytes += generator.image(image20!);
+      bytes += generator.imageRaster(image20!);
       itemWidgets1 = [];
     }
 
@@ -629,8 +637,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
     itemWidgets.add(Container(
+      height: qrCode + 100,
+      width: printWidth * 3.1,
       color: Colors.white,
-      width: printWidth * 2.4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -866,7 +875,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       //     }),
     ));
     final im.Image? image2 = im.decodeImage(capturedImage2);
-    bytes += generator.image(image2!);
+    bytes += generator.imageRaster(image2!);
 
     var capturedImage20 =
         await screenshotController.captureFromWidget(Container(
@@ -885,7 +894,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       //     }),
     ));
     final im.Image? image20 = im.decodeImage(capturedImage20);
-    bytes += generator.image(image20!);
+    bytes += generator.imageRaster(image20!);
     itemWidgets1 = [];
 
     var capturedImage15 =
@@ -947,10 +956,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     ));
 
     final im.Image? image15 = im.decodeImage(capturedImage15);
-    bytes += generator.image(image15!);
+    bytes += generator.imageRaster(image15!);
 
     final im.Image? image50 = im.decodeImage(footerImage);
-    bytes += generator.image(image50!);
+    bytes += generator.imageRaster(image50!);
     bytes += generator.feed(2);
     try {
       // bytes += generator.feed(5);
