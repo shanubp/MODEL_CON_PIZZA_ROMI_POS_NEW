@@ -7,6 +7,7 @@ import 'package:awafi_pos/Branches/branches.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:awafi_pos/flutter_flow/upload_media.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -64,10 +65,10 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
 
     //date
     bytesBuilder.addByte(3);
-    List<int> date = utf8.encode(DateTime.now().toString().substring(0, 10));
+    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(DateTime.now());
+    List<int> date = utf8.encode(time);
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
-    print(date);
 
     //invoice total
 
@@ -2569,7 +2570,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                 color: const Color(0xFF04C130),
                                 textStyle: FlutterFlowTheme.subtitle2.override(
                                   fontFamily: 'Poppins',
-                                  color: Colors.white,
+                                  color: Colors.red,
                                   fontSize: 13,
                                 ),
                                 borderSide: const BorderSide(

@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:awafi_pos/flutter_flow/upload_media.dart';
 import 'package:awafi_pos/salesPrint/new_sales_print.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -54,10 +55,10 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
 
     //date
     bytesBuilder.addByte(3);
-    List<int> date = utf8.encode(DateTime.now().toString().substring(0, 10));
+    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(DateTime.now());
+    List<int> date = utf8.encode(time);
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
-    print(date);
 
     //invoice total
 
@@ -1110,7 +1111,7 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
                               color: Colors.blue,
                               textStyle: FlutterFlowTheme.subtitle2.override(
                                 fontFamily: 'Poppins',
-                                color: Colors.white,
+                                color: Colors.red,
                                 fontSize: 13,
                               ),
                               borderSide: const BorderSide(
@@ -1147,7 +1148,7 @@ class _AcceptedOrdersWidgetState extends State<AcceptedOrdersWidget> {
                               color: const Color(0xFF04C130),
                               textStyle: FlutterFlowTheme.subtitle2.override(
                                 fontFamily: 'Poppins',
-                                color: Colors.white,
+                                color: Colors.red,
                                 fontSize: 13,
                               ),
                               borderSide: const BorderSide(

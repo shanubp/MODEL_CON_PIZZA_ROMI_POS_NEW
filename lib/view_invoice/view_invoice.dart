@@ -9,6 +9,7 @@ import 'package:awafi_pos/view_invoice/return_Sales_Print.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../Branches/branches.dart';
@@ -69,7 +70,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     //date
     bytesBuilder.addByte(3);
-    List<int> date = utf8.encode(salesDate.toString());
+    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(salesDate);
+    List<int> date = utf8.encode(time);
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
 

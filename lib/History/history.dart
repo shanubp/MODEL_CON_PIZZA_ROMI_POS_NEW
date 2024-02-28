@@ -8,6 +8,7 @@ import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_usb_printer/flutter_usb_printer.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -66,10 +67,17 @@ class _history_View_WidgetState extends State<history_View_Widget> {
     bytesBuilder.add(vat_registrationBytes);
 
     //date
+
     bytesBuilder.addByte(3);
-    List<int> date = utf8.encode(saleDate.toString());
+    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(saleDate);
+    List<int> date = utf8.encode(time);
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
+
+    // bytesBuilder.addByte(3);
+    // List<int> date = utf8.encode(saleDate.toString());
+    // bytesBuilder.addByte(date.length);
+    // bytesBuilder.add(date);
 
     //invoice total
 
@@ -2581,7 +2589,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                                                               .override(
                                                         fontFamily:
                                                             'Lexend Deca',
-                                                        color: Colors.white,
+                                                        color: Colors.red,
                                                       ),
                                                       borderSide: BorderSide(
                                                         color:

@@ -23,6 +23,7 @@ import 'package:awafi_pos/purchase.dart';
 import 'package:awafi_pos/reports/expense_reports.dart';
 import 'package:awafi_pos/reports/purchase_reports.dart';
 import 'package:awafi_pos/salesPrint/new_sales_print.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'Branches/branches.dart';
@@ -1529,7 +1530,8 @@ List previousItems=[];
 
     //date
     bytesBuilder.addByte(3);
-    List<int> date = utf8.encode(DateTime.now().toString().substring(0,16));
+    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(DateTime.now());
+    List<int> date = utf8.encode(time);
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
 
@@ -4140,7 +4142,7 @@ set(){
                                   color: Colors.blue,
                                   textStyle: FlutterFlowTheme.subtitle2.override(
                                     fontFamily: 'Overpass',
-                                    color: Colors.white,
+                                    color: Colors.red,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -4150,7 +4152,7 @@ set(){
                                     width: 1,
                                   ),
                                   borderRadius: 12,
-                                ), icon: Icon(Icons.back_hand_sharp), iconData: Icons.back_hand_sharp,
+                                ), 
                               ),
                             ),
                             const SizedBox(width: 15,),

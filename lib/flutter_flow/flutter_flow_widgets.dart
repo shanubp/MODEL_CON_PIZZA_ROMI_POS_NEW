@@ -42,14 +42,14 @@ class FFButtonWidget extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onPressed,
-    required this.icon,
-    required this.iconData,
+     this.icon,
+     this.iconData,
     required this.options, bool? loading,
   }) : super(key: key);
 
   final String text;
-  final Widget icon;
-  final IconData iconData;
+  final Widget? icon;
+  final IconData? iconData;
   final VoidCallback onPressed;
   final FFButtonOptions options;
 

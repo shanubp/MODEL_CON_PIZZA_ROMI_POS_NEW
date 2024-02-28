@@ -731,7 +731,7 @@ if(mounted) {
 
 
                 },
-                child: const Icon(Icons.print)),
+                child: const Icon(Icons.print,color: Colors.white,)),
           ),
 
         ],
@@ -2220,7 +2220,8 @@ if(mounted) {
                                     //   showUploadMessage(context, 'No Sales');
                                     // }
                                   },
-                                  child: CircleAvatar(backgroundColor: Color(0xFF2b0e10),radius: 17,child: Icon(Icons.print,size: 18,),))),
+                                  child: CircleAvatar(backgroundColor: Color(0xFF2b0e10),
+                                    radius: 17,child: Icon(Icons.print,size: 18,color: Colors.white,),))),
                             ]);
                       }
                 ),
