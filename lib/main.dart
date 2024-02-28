@@ -5838,7 +5838,7 @@ set(){
                                       children: [
                                         Container(
 
-                                          height: MediaQuery.of(context).size.height * 0.13,
+                                          height: MediaQuery.of(context).size.height * 0.15,
                                           width: 150,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
@@ -5853,12 +5853,9 @@ set(){
                                               //BoxShadow
                                             ],
                                           ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                          child: Column(
+                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-
-
 
                                               //ADDON BUTTON
                                               // FFButtonWidget(
@@ -5897,14 +5894,420 @@ set(){
                                               // ),
 
 
-                                              FFButtonWidget(
-                                                onPressed: () async {
-                                                  // print('paidCash.text');
-                                                  // print(paidCash.text);
-                                                  // print(paidBank.text);
+                                              // FFButtonWidget(
+                                              //   onPressed: () async {
+                                              //     // print('paidCash.text');
+                                              //     // print(paidCash.text);
+                                              //     // print(paidBank.text);
+                                              //
+                                              //
+                                              //     // if(paidBank.text!=''  || paidCash.text!=''){
+                                              //       if(blue){
+                                              //
+                                              //
+                                              //
+                                              //         // print('paidCash.text');
+                                              //         // print(paidCash.text);
+                                              //
+                                              //         await showDialog(
+                                              //             barrierDismissible: false,
+                                              //             context: context,
+                                              //             builder: (BuildContext context) {
+                                              //
+                                              //               return mytest(items:printCopy,
+                                              //                 token: copyToken,
+                                              //                 salesDate: copyDate,
+                                              //                 delivery: copyDelivery,
+                                              //                 customer: 'Walking Customer',
+                                              //                 discountPrice: copyDiscount,
+                                              //                 invoiceNo: copyInvoice.toString(),
+                                              //                 cashPaid:double.tryParse(paidCash.text)??0,
+                                              //                 bankPaid:double.tryParse(paidBank.text)??0,
+                                              //                 balance:balance??0
+                                              //               );
+                                              //             });
+                                              //         setState(() {
+                                              //           paidCash.text='0';
+                                              //           paidCash.text='0';
+                                              //           enable=false;
+                                              //           approve=false;
+                                              //           mobileNo.text='';
+                                              //         });
+                                              //
+                                              //
+                                              //       }else{
+                                              //
+                                              //         flutterUsbPrinter.write(Uint8List.fromList(bytes));
+                                              //         bytes=[];
+                                              //         if(lastCut==true){
+                                              //            flutterUsbPrinter.write(Uint8List.fromList(kotBytes));
+                                              //         }
+                                              //
+                                              //
+                                              //       }
+                                              //
+                                              //
+                                              //   },
+                                              //   text: arabicLanguage?"ينسخ":'COPY',
+                                              //   options:  FFButtonOptions(
+                                              //     width: 90,
+                                              //     height: 40,
+                                              //     // color: Colors.green.shade700,
+                                              //     // textStyle: FlutterFlowTheme.subtitle2.override(
+                                              //     //   fontFamily: 'Overpass',
+                                              //     //   fontSize: 15,
+                                              //     //   color: Colors.white,
+                                              //     //   fontWeight: FontWeight.w800,
+                                              //     // ),
+                                              //     elevation: 10,
+                                              //     borderSide: BorderSide(
+                                              //       color: Colors.grey,
+                                              //       width: 1,
+                                              //     ),
+                                              //     borderRadius: 12,
+                                              //   ),
+                                              // ),
+                                              // FFButtonWidget(
+                                              //   // onPressed: () async {
+                                              //   //   if(paidCash.text!='' || paidBank.text!=''){
+                                              //   //     String billDiscount = discount;
+                                              //   //     if (!disable) {
+                                              //   //       disable = true;
+                                              //   //
+                                              //   //       DocumentSnapshot tableDoc =
+                                              //   //       await FirebaseFirestore
+                                              //   //           .instance
+                                              //   //           .collection('tables')
+                                              //   //           .doc(currentBranchId)
+                                              //   //           .collection('tables')
+                                              //   //           .doc(selectedTable)
+                                              //   //           .get();
+                                              //   //       List billItems =
+                                              //   //       tableDoc.get('items');
+                                              //   //       if (billItems.isNotEmpty) {
+                                              //   //         DocumentSnapshot invoiceNoDoc =
+                                              //   //         await FirebaseFirestore
+                                              //   //             .instance
+                                              //   //             .collection('invoiceNo')
+                                              //   //             .doc(currentBranchId)
+                                              //   //             .get();
+                                              //   //         FirebaseFirestore.instance
+                                              //   //             .collection('invoiceNo')
+                                              //   //             .doc(currentBranchId)
+                                              //   //             .update({
+                                              //   //           'sales':
+                                              //   //           FieldValue.increment(1),
+                                              //   //           'token':
+                                              //   //           FieldValue.increment(1)
+                                              //   //         });
+                                              //   //         int invoiceNo =
+                                              //   //         invoiceNoDoc.get('sales');
+                                              //   //         int token =
+                                              //   //         invoiceNoDoc.get('token');
+                                              //   //         invoiceNo++;
+                                              //   //         token++;
+                                              //   //         // if(!kIsWeb) {
+                                              //   //         //   // connected == true
+                                              //   //         //   //     ? _print()
+                                              //   //         //   //     : const ScaffoldMessenger(
+                                              //   //         //   //     child: Text(
+                                              //   //         //   //         "Printer not Connected"));
+                                              //   //         // }
+                                              //   //         // else{
+                                              //   //         //   printFunction(invoiceNo,double.tryParse(
+                                              //   //         //       discount) ?? 0);
+                                              //   //         // }
+                                              //   //         List<String> ingredientIds=[];
+                                              //   //         for(var a in billItems){
+                                              //   //           for(var b in a['ingredients']){
+                                              //   //             ingredientIds.add(b['ingredientId']);
+                                              //   //           }
+                                              //   //           for(var b in a['variants']){
+                                              //   //             for(var c in b['ingredients']){
+                                              //   //               ingredientIds.add(c['ingredientId']);
+                                              //   //             }
+                                              //   //
+                                              //   //           }
+                                              //   //         }
+                                              //   //         await FirebaseFirestore.instance
+                                              //   //             .collection('sales')
+                                              //   //             .doc(currentBranchId)
+                                              //   //             .collection('sales')
+                                              //   //             .doc(invoiceNo.toString())
+                                              //   //             .set({
+                                              //   //           'salesDate': DateTime.now(),
+                                              //   //           'invoiceNo': invoiceNo,
+                                              //   //           'cash': cash,
+                                              //   //           'token': token,
+                                              //   //           'currentUserId':currentUserId,
+                                              //   //           'currentBranchId':currentBranchId,
+                                              //   //           'currentBranchPhNo': currentBranchPhNo,
+                                              //   //           'currentBranchAddress': currentBranchAddress,
+                                              //   //           'currentBranchArabic': currentBranchArabic,
+                                              //   //           'deliveryCharge':double.tryParse(delivery) ?? 0,
+                                              //   //           'table': selectedTable,
+                                              //   //           'billItems': billItems,
+                                              //   //           'discount': double.tryParse(discount) ?? 0,
+                                              //   //           'totalAmount': totalAmount*100/(100+gst),
+                                              //   //           'tax': totalAmount * gst / (100+gst),
+                                              //   //           'grandTotal': totalAmount  - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0),
+                                              //   //
+                                              //   //
+                                              //   //           'paidCash':double.tryParse(paidCash.text)??0,
+                                              //   //           'paidBank':double.tryParse(paidBank.text)??0,
+                                              //   //           'cash': paidCash.text==''|| paidCash.text=='0.0'?false:true ,
+                                              //   //           'bank': paidBank.text==''||paidBank.text=='0.0'?false:true,
+                                              //   //           'balance':balance,
+                                              //   //           "ingredientIds":ingredientIds
+                                              //   //         });
+                                              //   //
+                                              //   //         paidCash.text='';
+                                              //   //         paidCash.text='';
+                                              //   //
+                                              //   //
+                                              //   //         await FirebaseFirestore.instance
+                                              //   //             .collection('tables')
+                                              //   //             .doc(currentBranchId)
+                                              //   //             .collection('tables')
+                                              //   //             .doc(selectedTable)
+                                              //   //             .update({'items': []});
+                                              //   //         setState(() {
+                                              //   //           discountController.text =
+                                              //   //           '0';
+                                              //   //           discount = '0.00';
+                                              //   //           deliveryCharge.text =
+                                              //   //           '0';
+                                              //   //           delivery = '0.00';
+                                              //   //           qty=0;
+                                              //   //           paidCash.text='';
+                                              //   //           paidBank.text='';
+                                              //   //           totalAmount=0;
+                                              //   //           balance=0;
+                                              //   //           cashPaid=0;
+                                              //   //           bankPaid=0;
+                                              //   //           disable = false;
+                                              //   //           enable=false;
+                                              //   //         });
+                                              //   //       }
+                                              //   //       showUploadMessage(context, 'Saved Successfully');
+                                              //   //
+                                              //   //
+                                              //   //
+                                              //   //     }
+                                              //   //   }else{
+                                              //   //     showUploadMessage(context, 'PLEASE SELECT PAYMET METHOD');
+                                              //   //   }
+                                              //   //
+                                              //   //
+                                              //   //
+                                              //   // },
+                                              //   onPressed: () async {
+                                              //     print("tapped");
+                                              //     print(approve);
+                                              //     if(paidCash.text!='' || amex.text!=''||visa.text!=''||master.text!=''||mada.text!=''){
+                                              //
+                                              //
+                                              //       print("tapped2");
+                                              //       print(approve);
+                                              //      // if(currentWaiter!=null){
+                                              //        if (!disable) {
+                                              //          double  netTotal= dinnerCertificate? 0.00:totalAmount  - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0);
+                                              //          bankPaid=(amexPaid+madaPaid+visaPaid+masterPaid??0);
+                                              //          print("bankPaid============================");
+                                              //          print(bankPaid);
+                                              //          // List itemsList=items;
+                                              //          for(var b in items){
+                                              //            if(b["variantName"]!=''){
+                                              //              b['pdtname']="${b["pdtname"]} ${b["variantName"]??''}";
+                                              //              b['arabicName']="${b["pdtname"]} ${b["variantNameArabic"]??''}";
+                                              //            }
+                                              //          }
+                                              //          String billDiscount = discount;
+                                              //          disable = true;
+                                              //          print("tapped3");
+                                              //          print(approve);
+                                              //          DocumentSnapshot tableDoc =
+                                              //          await FirebaseFirestore
+                                              //              .instance
+                                              //              .collection('tables')
+                                              //              .doc(currentBranchId)
+                                              //              .collection('tables')
+                                              //              .doc(selectedTable)
+                                              //              .get();
+                                              //          List billItems =
+                                              //          tableDoc.get('items');
+                                              //          if (billItems.isNotEmpty) {
+                                              //            DocumentSnapshot invoiceNoDoc =
+                                              //            await FirebaseFirestore
+                                              //                .instance
+                                              //                .collection('invoiceNo')
+                                              //                .doc(currentBranchId)
+                                              //                .get();
+                                              //            FirebaseFirestore.instance
+                                              //                .collection('invoiceNo')
+                                              //                .doc(currentBranchId)
+                                              //                .update({
+                                              //              'sales':
+                                              //              FieldValue.increment(1),
+                                              //              'token':
+                                              //              FieldValue.increment(1)
+                                              //            });
+                                              //            int invoiceNo =
+                                              //            invoiceNoDoc.get('sales');
+                                              //            int token =
+                                              //            invoiceNoDoc.get('token');
+                                              //            invoiceNo++;
+                                              //            token++;
+                                              //            print("tapped4");
+                                              //            print(approve);
+                                              //
+                                              //            List<String> ingredientIds = [];
+                                              //            for (var a in items) {
+                                              //              for (var b in a['ingredients'] ?? []) {
+                                              //                ingredientIds.add(b['ingredientId']);
+                                              //              }
+                                              //            }
+                                              //            print("tapped5");
+                                              //            print(approve);
+                                              //            await FirebaseFirestore.instance
+                                              //                .collection('sales')
+                                              //                .doc(currentBranchId)
+                                              //                .collection('sales')
+                                              //                .doc(invoiceNo.toString())
+                                              //                .set({
+                                              //              'currentUserId': currentUserId,
+                                              //              'salesDate': DateTime.now(),
+                                              //              'invoiceNo': invoiceNo,
+                                              //              'token': token,
+                                              //              'currentBranchId': currentBranchId,
+                                              //              'currentBranchPhNo': currentBranchPhNo,
+                                              //              'currentBranchAddress': currentBranchAddress,
+                                              //              'currentBranchArabic': currentBranchAddressArabic,
+                                              //              'deliveryCharge': double.tryParse(delivery) ?? 0,
+                                              //              'table': selectedTable,
+                                              //              'billItems': items,
+                                              //              'discount': double.tryParse(discount) ?? 0,
+                                              //              'totalAmount': totalAmount * 100 / (100 + gst),
+                                              //              'tax': totalAmount * gst / (100 + gst),
+                                              //              'grandTotal': totalAmount - (double.tryParse(discount) ?? 0) + (double.tryParse(delivery) ?? 0),
+                                              //              'paidCash': double.tryParse(paidCash.text) ?? 0,
+                                              //              'paidBank': approve?0:bankPaid ?? 0,
+                                              //              'cash': approve?false:paidCash.text==''|| paidCash.text=='0.0'||double.tryParse(paidCash.text)!<=0||paidCash.text==null?false:true ,
+                                              //              'bank': approve||bankPaid<=0?false:true,
+                                              //              'balance': balance,
+                                              //              "ingredientIds": ingredientIds,
+                                              //              'creditSale':approve?true:false,
+                                              //              "creditName":approve?userMap["name"]:""??'',
+                                              //              "creditNumber":approve?userMap["phone"]:""??'',
+                                              //              "AMEX":amex.text!="0"&&amex.text!="0.0"&&amex.text!=""&&amex.text!=null?true:false,
+                                              //              "VISA":visa.text!="0"&&visa.text!="0.0"&&visa.text!=""&&visa.text!=null?true:false,
+                                              //              "MASTER":master.text!="0"&&master.text!="0.0"&&master.text!=""&&master.text!=null?true:false,
+                                              //              "MADA":mada.text!="0"&&mada.text!="0.0"&&mada.text!=""&&mada.text!=null?true:false,
+                                              //              "dinnerCertificate":dinnerCertificate?true:false,
+                                              //              "amexAmount":double.tryParse(amex.text)??0,
+                                              //              "madaAmount":double.tryParse(mada.text)??0,
+                                              //              "visaAmount":double.tryParse(visa.text)??0,
+                                              //              "masterAmount":double.tryParse(master.text)??0,
+                                              //              "cancel":false,
+                                              //              "orderType":dropdownvalue,
+                                              //              // "waiterName":currentWaiter
+                                              //
+                                              //            });
+                                              //            print("tapped6");
+                                              //            print(approve);
+                                              //            paidCash.text='0';
+                                              //            paidCash.text='0';
+                                              //
+                                              //
+                                              //            await FirebaseFirestore.instance
+                                              //                .collection('tables')
+                                              //                .doc(currentBranchId)
+                                              //                .collection('tables')
+                                              //                .doc(selectedTable)
+                                              //                .update({'items': []});
+                                              //            setState(() {
+                                              //              creditMap={};
+                                              //              userMap={};
+                                              //              discountController.text =
+                                              //              '0';
+                                              //              discount = '0.00';
+                                              //              deliveryCharge.text =
+                                              //              '0';
+                                              //              delivery = '0.00';
+                                              //              qty=0;
+                                              //              paidCash.text='0';
+                                              //              paidBank.text='0';
+                                              //              totalAmount=0;
+                                              //              balance=0;
+                                              //              cashPaid=0;
+                                              //              bankPaid=0;
+                                              //              disable = false;
+                                              //              enable=false;
+                                              //              approve=false;
+                                              //              mobileNo.text='';
+                                              //              mada.text="0.0";
+                                              //              master.text="0.0";
+                                              //              visa.text="0.0";
+                                              //              amex.text="0.0";
+                                              //              madaPaid=0;
+                                              //              visaPaid=0;
+                                              //              masterPaid=0;
+                                              //              amexPaid=0;
+                                              //              print("tapped7");
+                                              //              print(approve);
+                                              //              dropdownvalue="Take Away";
+                                              //            });
+                                              //            print("tapped8");
+                                              //            print(approve);
+                                              //          }
+                                              //          showUploadMessage(context, 'Saved Successfully');
+                                              //
+                                              //
+                                              //
+                                              //        }
+                                              //      // }
+                                              //      // else{
+                                              //      //   showUploadMessage(context, 'PLEASE CHOOSE WAITER NAME');
+                                              //      // }
+                                              //
+                                              //
+                                              //     }else{
+                                              //       showUploadMessage(context, 'PLEASE SELECT PAYMET METHOD');
+                                              //       print("tapped9");
+                                              //       print(approve);
+                                              //     }
+                                              //
+                                              //
+                                              //
+                                              //   },
+                                              //   text:arabicLanguage? 'يحفظ':'SAVE',
+                                              //   options:  FFButtonOptions(
+                                              //     width: 90,
+                                              //     height: 40,
+                                              //     // color: Colors.green.shade700,
+                                              //     // textStyle: FlutterFlowTheme.subtitle2.override(
+                                              //     //   fontFamily: 'Overpass',
+                                              //     //   fontSize: 15,
+                                              //     //   color: Colors.white,
+                                              //     //   fontWeight: FontWeight.w800,
+                                              //     // ),
+                                              //     elevation: 10,
+                                              //     borderSide: BorderSide(
+                                              //       color: Colors.grey,
+                                              //       width: 1,
+                                              //     ),
+                                              //     borderRadius: 12,
+                                              //   ),
+                                              // ),
+                                              ElevatedButton(
+                                                  style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Colors.blue)),
+                                                  onPressed: () async {
+                                                    // print('paidCash.text');
+                                                    // print(paidCash.text);
+                                                    // print(paidBank.text);
 
 
-                                                  // if(paidBank.text!=''  || paidCash.text!=''){
+                                                    // if(paidBank.text!=''  || paidCash.text!=''){
                                                     if(blue){
 
 
@@ -5918,15 +6321,15 @@ set(){
                                                           builder: (BuildContext context) {
 
                                                             return mytest(items:printCopy,
-                                                              token: copyToken,
-                                                              salesDate: copyDate,
-                                                              delivery: copyDelivery,
-                                                              customer: 'Walking Customer',
-                                                              discountPrice: copyDiscount,
-                                                              invoiceNo: copyInvoice.toString(),
-                                                              cashPaid:double.tryParse(paidCash.text)??0,
-                                                              bankPaid:double.tryParse(paidBank.text)??0,
-                                                              balance:balance??0
+                                                                token: copyToken,
+                                                                salesDate: copyDate,
+                                                                delivery: copyDelivery,
+                                                                customer: 'Walking Customer',
+                                                                discountPrice: copyDiscount,
+                                                                invoiceNo: copyInvoice.toString(),
+                                                                cashPaid:double.tryParse(paidCash.text)??0,
+                                                                bankPaid:double.tryParse(paidBank.text)??0,
+                                                                balance:balance??0
                                                             );
                                                           });
                                                       setState(() {
@@ -5943,366 +6346,195 @@ set(){
                                                       flutterUsbPrinter.write(Uint8List.fromList(bytes));
                                                       bytes=[];
                                                       if(lastCut==true){
-                                                         flutterUsbPrinter.write(Uint8List.fromList(kotBytes));
+                                                        flutterUsbPrinter.write(Uint8List.fromList(kotBytes));
                                                       }
 
 
                                                     }
 
 
-                                                },
-                                                text: arabicLanguage?"ينسخ":'COPY',
-                                                options:  FFButtonOptions(
-                                                  width: 70,
-                                                  height: 60,
-                                                  // color: Colors.green.shade700,
-                                                  // textStyle: FlutterFlowTheme.subtitle2.override(
-                                                  //   fontFamily: 'Overpass',
-                                                  //   fontSize: 15,
-                                                  //   color: Colors.white,
-                                                  //   fontWeight: FontWeight.w800,
-                                                  // ),
-                                                  elevation: 10,
-                                                  borderSide: BorderSide(
-                                                    color: Colors.grey,
-                                                    width: 1,
-                                                  ),
-                                                  borderRadius: 12,
-                                                ), icon: Icon(Icons.copy), iconData: Icons.copy,
-                                              ),
-                                              FFButtonWidget(
-                                                // onPressed: () async {
-                                                //   if(paidCash.text!='' || paidBank.text!=''){
-                                                //     String billDiscount = discount;
-                                                //     if (!disable) {
-                                                //       disable = true;
-                                                //
-                                                //       DocumentSnapshot tableDoc =
-                                                //       await FirebaseFirestore
-                                                //           .instance
-                                                //           .collection('tables')
-                                                //           .doc(currentBranchId)
-                                                //           .collection('tables')
-                                                //           .doc(selectedTable)
-                                                //           .get();
-                                                //       List billItems =
-                                                //       tableDoc.get('items');
-                                                //       if (billItems.isNotEmpty) {
-                                                //         DocumentSnapshot invoiceNoDoc =
-                                                //         await FirebaseFirestore
-                                                //             .instance
-                                                //             .collection('invoiceNo')
-                                                //             .doc(currentBranchId)
-                                                //             .get();
-                                                //         FirebaseFirestore.instance
-                                                //             .collection('invoiceNo')
-                                                //             .doc(currentBranchId)
-                                                //             .update({
-                                                //           'sales':
-                                                //           FieldValue.increment(1),
-                                                //           'token':
-                                                //           FieldValue.increment(1)
-                                                //         });
-                                                //         int invoiceNo =
-                                                //         invoiceNoDoc.get('sales');
-                                                //         int token =
-                                                //         invoiceNoDoc.get('token');
-                                                //         invoiceNo++;
-                                                //         token++;
-                                                //         // if(!kIsWeb) {
-                                                //         //   // connected == true
-                                                //         //   //     ? _print()
-                                                //         //   //     : const ScaffoldMessenger(
-                                                //         //   //     child: Text(
-                                                //         //   //         "Printer not Connected"));
-                                                //         // }
-                                                //         // else{
-                                                //         //   printFunction(invoiceNo,double.tryParse(
-                                                //         //       discount) ?? 0);
-                                                //         // }
-                                                //         List<String> ingredientIds=[];
-                                                //         for(var a in billItems){
-                                                //           for(var b in a['ingredients']){
-                                                //             ingredientIds.add(b['ingredientId']);
-                                                //           }
-                                                //           for(var b in a['variants']){
-                                                //             for(var c in b['ingredients']){
-                                                //               ingredientIds.add(c['ingredientId']);
-                                                //             }
-                                                //
-                                                //           }
-                                                //         }
-                                                //         await FirebaseFirestore.instance
-                                                //             .collection('sales')
-                                                //             .doc(currentBranchId)
-                                                //             .collection('sales')
-                                                //             .doc(invoiceNo.toString())
-                                                //             .set({
-                                                //           'salesDate': DateTime.now(),
-                                                //           'invoiceNo': invoiceNo,
-                                                //           'cash': cash,
-                                                //           'token': token,
-                                                //           'currentUserId':currentUserId,
-                                                //           'currentBranchId':currentBranchId,
-                                                //           'currentBranchPhNo': currentBranchPhNo,
-                                                //           'currentBranchAddress': currentBranchAddress,
-                                                //           'currentBranchArabic': currentBranchArabic,
-                                                //           'deliveryCharge':double.tryParse(delivery) ?? 0,
-                                                //           'table': selectedTable,
-                                                //           'billItems': billItems,
-                                                //           'discount': double.tryParse(discount) ?? 0,
-                                                //           'totalAmount': totalAmount*100/(100+gst),
-                                                //           'tax': totalAmount * gst / (100+gst),
-                                                //           'grandTotal': totalAmount  - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0),
-                                                //
-                                                //
-                                                //           'paidCash':double.tryParse(paidCash.text)??0,
-                                                //           'paidBank':double.tryParse(paidBank.text)??0,
-                                                //           'cash': paidCash.text==''|| paidCash.text=='0.0'?false:true ,
-                                                //           'bank': paidBank.text==''||paidBank.text=='0.0'?false:true,
-                                                //           'balance':balance,
-                                                //           "ingredientIds":ingredientIds
-                                                //         });
-                                                //
-                                                //         paidCash.text='';
-                                                //         paidCash.text='';
-                                                //
-                                                //
-                                                //         await FirebaseFirestore.instance
-                                                //             .collection('tables')
-                                                //             .doc(currentBranchId)
-                                                //             .collection('tables')
-                                                //             .doc(selectedTable)
-                                                //             .update({'items': []});
-                                                //         setState(() {
-                                                //           discountController.text =
-                                                //           '0';
-                                                //           discount = '0.00';
-                                                //           deliveryCharge.text =
-                                                //           '0';
-                                                //           delivery = '0.00';
-                                                //           qty=0;
-                                                //           paidCash.text='';
-                                                //           paidBank.text='';
-                                                //           totalAmount=0;
-                                                //           balance=0;
-                                                //           cashPaid=0;
-                                                //           bankPaid=0;
-                                                //           disable = false;
-                                                //           enable=false;
-                                                //         });
-                                                //       }
-                                                //       showUploadMessage(context, 'Saved Successfully');
-                                                //
-                                                //
-                                                //
-                                                //     }
-                                                //   }else{
-                                                //     showUploadMessage(context, 'PLEASE SELECT PAYMET METHOD');
-                                                //   }
-                                                //
-                                                //
-                                                //
-                                                // },
+                                                  }, child: Text(arabicLanguage?"ينسخ":'COPY',style: TextStyle(color: Colors.white),)),
+                                              ElevatedButton(
+                                                style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Colors.blue,)),
                                                 onPressed: () async {
-                                                  print("tapped");
+                                                print("tapped");
+                                                print(approve);
+                                                if(paidCash.text!='' || amex.text!=''||visa.text!=''||master.text!=''||mada.text!=''){
+
+
+                                                  print("tapped2");
                                                   print(approve);
-                                                  if(paidCash.text!='' || amex.text!=''||visa.text!=''||master.text!=''||mada.text!=''){
-
-
-                                                    print("tapped2");
+                                                  // if(currentWaiter!=null){
+                                                  if (!disable) {
+                                                    double  netTotal= dinnerCertificate? 0.00:totalAmount  - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0);
+                                                    bankPaid=(amexPaid+madaPaid+visaPaid+masterPaid??0);
+                                                    print("bankPaid============================");
+                                                    print(bankPaid);
+                                                    // List itemsList=items;
+                                                    for(var b in items){
+                                                      if(b["variantName"]!=''){
+                                                        b['pdtname']="${b["pdtname"]} ${b["variantName"]??''}";
+                                                        b['arabicName']="${b["pdtname"]} ${b["variantNameArabic"]??''}";
+                                                      }
+                                                    }
+                                                    String billDiscount = discount;
+                                                    disable = true;
+                                                    print("tapped3");
                                                     print(approve);
-                                                   // if(currentWaiter!=null){
-                                                     if (!disable) {
-                                                       double  netTotal= dinnerCertificate? 0.00:totalAmount  - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0);
-                                                       bankPaid=(amexPaid+madaPaid+visaPaid+masterPaid??0);
-                                                       print("bankPaid============================");
-                                                       print(bankPaid);
-                                                       // List itemsList=items;
-                                                       for(var b in items){
-                                                         if(b["variantName"]!=''){
-                                                           b['pdtname']="${b["pdtname"]} ${b["variantName"]??''}";
-                                                           b['arabicName']="${b["pdtname"]} ${b["variantNameArabic"]??''}";
-                                                         }
-                                                       }
-                                                       String billDiscount = discount;
-                                                       disable = true;
-                                                       print("tapped3");
-                                                       print(approve);
-                                                       DocumentSnapshot tableDoc =
-                                                       await FirebaseFirestore
-                                                           .instance
-                                                           .collection('tables')
-                                                           .doc(currentBranchId)
-                                                           .collection('tables')
-                                                           .doc(selectedTable)
-                                                           .get();
-                                                       List billItems =
-                                                       tableDoc.get('items');
-                                                       if (billItems.isNotEmpty) {
-                                                         DocumentSnapshot invoiceNoDoc =
-                                                         await FirebaseFirestore
-                                                             .instance
-                                                             .collection('invoiceNo')
-                                                             .doc(currentBranchId)
-                                                             .get();
-                                                         FirebaseFirestore.instance
-                                                             .collection('invoiceNo')
-                                                             .doc(currentBranchId)
-                                                             .update({
-                                                           'sales':
-                                                           FieldValue.increment(1),
-                                                           'token':
-                                                           FieldValue.increment(1)
-                                                         });
-                                                         int invoiceNo =
-                                                         invoiceNoDoc.get('sales');
-                                                         int token =
-                                                         invoiceNoDoc.get('token');
-                                                         invoiceNo++;
-                                                         token++;
-                                                         print("tapped4");
-                                                         print(approve);
+                                                    DocumentSnapshot tableDoc =
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('tables')
+                                                        .doc(currentBranchId)
+                                                        .collection('tables')
+                                                        .doc(selectedTable)
+                                                        .get();
+                                                    List billItems =
+                                                    tableDoc.get('items');
+                                                    if (billItems.isNotEmpty) {
+                                                      DocumentSnapshot invoiceNoDoc =
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection('invoiceNo')
+                                                          .doc(currentBranchId)
+                                                          .get();
+                                                      FirebaseFirestore.instance
+                                                          .collection('invoiceNo')
+                                                          .doc(currentBranchId)
+                                                          .update({
+                                                        'sales':
+                                                        FieldValue.increment(1),
+                                                        'token':
+                                                        FieldValue.increment(1)
+                                                      });
+                                                      int invoiceNo =
+                                                      invoiceNoDoc.get('sales');
+                                                      int token =
+                                                      invoiceNoDoc.get('token');
+                                                      invoiceNo++;
+                                                      token++;
+                                                      print("tapped4");
+                                                      print(approve);
 
-                                                         List<String> ingredientIds = [];
-                                                         for (var a in items) {
-                                                           for (var b in a['ingredients'] ?? []) {
-                                                             ingredientIds.add(b['ingredientId']);
-                                                           }
-                                                         }
-                                                         print("tapped5");
-                                                         print(approve);
-                                                         await FirebaseFirestore.instance
-                                                             .collection('sales')
-                                                             .doc(currentBranchId)
-                                                             .collection('sales')
-                                                             .doc(invoiceNo.toString())
-                                                             .set({
-                                                           'currentUserId': currentUserId,
-                                                           'salesDate': DateTime.now(),
-                                                           'invoiceNo': invoiceNo,
-                                                           'token': token,
-                                                           'currentBranchId': currentBranchId,
-                                                           'currentBranchPhNo': currentBranchPhNo,
-                                                           'currentBranchAddress': currentBranchAddress,
-                                                           'currentBranchArabic': currentBranchAddressArabic,
-                                                           'deliveryCharge': double.tryParse(delivery) ?? 0,
-                                                           'table': selectedTable,
-                                                           'billItems': items,
-                                                           'discount': double.tryParse(discount) ?? 0,
-                                                           'totalAmount': totalAmount * 100 / (100 + gst),
-                                                           'tax': totalAmount * gst / (100 + gst),
-                                                           'grandTotal': totalAmount - (double.tryParse(discount) ?? 0) + (double.tryParse(delivery) ?? 0),
-                                                           'paidCash': double.tryParse(paidCash.text) ?? 0,
-                                                           'paidBank': approve?0:bankPaid ?? 0,
-                                                           'cash': approve?false:paidCash.text==''|| paidCash.text=='0.0'||double.tryParse(paidCash.text)!<=0||paidCash.text==null?false:true ,
-                                                           'bank': approve||bankPaid<=0?false:true,
-                                                           'balance': balance,
-                                                           "ingredientIds": ingredientIds,
-                                                           'creditSale':approve?true:false,
-                                                           "creditName":approve?userMap["name"]:""??'',
-                                                           "creditNumber":approve?userMap["phone"]:""??'',
-                                                           "AMEX":amex.text!="0"&&amex.text!="0.0"&&amex.text!=""&&amex.text!=null?true:false,
-                                                           "VISA":visa.text!="0"&&visa.text!="0.0"&&visa.text!=""&&visa.text!=null?true:false,
-                                                           "MASTER":master.text!="0"&&master.text!="0.0"&&master.text!=""&&master.text!=null?true:false,
-                                                           "MADA":mada.text!="0"&&mada.text!="0.0"&&mada.text!=""&&mada.text!=null?true:false,
-                                                           "dinnerCertificate":dinnerCertificate?true:false,
-                                                           "amexAmount":double.tryParse(amex.text)??0,
-                                                           "madaAmount":double.tryParse(mada.text)??0,
-                                                           "visaAmount":double.tryParse(visa.text)??0,
-                                                           "masterAmount":double.tryParse(master.text)??0,
-                                                           "cancel":false,
-                                                           "orderType":dropdownvalue,
-                                                           // "waiterName":currentWaiter
+                                                      List<String> ingredientIds = [];
+                                                      for (var a in items) {
+                                                        for (var b in a['ingredients'] ?? []) {
+                                                          ingredientIds.add(b['ingredientId']);
+                                                        }
+                                                      }
+                                                      print("tapped5");
+                                                      print(approve);
+                                                      await FirebaseFirestore.instance
+                                                          .collection('sales')
+                                                          .doc(currentBranchId)
+                                                          .collection('sales')
+                                                          .doc(invoiceNo.toString())
+                                                          .set({
+                                                        'currentUserId': currentUserId,
+                                                        'salesDate': DateTime.now(),
+                                                        'invoiceNo': invoiceNo,
+                                                        'token': token,
+                                                        'currentBranchId': currentBranchId,
+                                                        'currentBranchPhNo': currentBranchPhNo,
+                                                        'currentBranchAddress': currentBranchAddress,
+                                                        'currentBranchArabic': currentBranchAddressArabic,
+                                                        'deliveryCharge': double.tryParse(delivery) ?? 0,
+                                                        'table': selectedTable,
+                                                        'billItems': items,
+                                                        'discount': double.tryParse(discount) ?? 0,
+                                                        'totalAmount': totalAmount * 100 / (100 + gst),
+                                                        'tax': totalAmount * gst / (100 + gst),
+                                                        'grandTotal': totalAmount - (double.tryParse(discount) ?? 0) + (double.tryParse(delivery) ?? 0),
+                                                        'paidCash': double.tryParse(paidCash.text) ?? 0,
+                                                        'paidBank': approve?0:bankPaid ?? 0,
+                                                        'cash': approve?false:paidCash.text==''|| paidCash.text=='0.0'||double.tryParse(paidCash.text)!<=0||paidCash.text==null?false:true ,
+                                                        'bank': approve||bankPaid<=0?false:true,
+                                                        'balance': balance,
+                                                        "ingredientIds": ingredientIds,
+                                                        'creditSale':approve?true:false,
+                                                        "creditName":approve?userMap["name"]:""??'',
+                                                        "creditNumber":approve?userMap["phone"]:""??'',
+                                                        "AMEX":amex.text!="0"&&amex.text!="0.0"&&amex.text!=""&&amex.text!=null?true:false,
+                                                        "VISA":visa.text!="0"&&visa.text!="0.0"&&visa.text!=""&&visa.text!=null?true:false,
+                                                        "MASTER":master.text!="0"&&master.text!="0.0"&&master.text!=""&&master.text!=null?true:false,
+                                                        "MADA":mada.text!="0"&&mada.text!="0.0"&&mada.text!=""&&mada.text!=null?true:false,
+                                                        "dinnerCertificate":dinnerCertificate?true:false,
+                                                        "amexAmount":double.tryParse(amex.text)??0,
+                                                        "madaAmount":double.tryParse(mada.text)??0,
+                                                        "visaAmount":double.tryParse(visa.text)??0,
+                                                        "masterAmount":double.tryParse(master.text)??0,
+                                                        "cancel":false,
+                                                        "orderType":dropdownvalue,
+                                                        // "waiterName":currentWaiter
 
-                                                         });
-                                                         print("tapped6");
-                                                         print(approve);
-                                                         paidCash.text='0';
-                                                         paidCash.text='0';
+                                                      });
+                                                      print("tapped6");
+                                                      print(approve);
+                                                      paidCash.text='0';
+                                                      paidCash.text='0';
 
 
-                                                         await FirebaseFirestore.instance
-                                                             .collection('tables')
-                                                             .doc(currentBranchId)
-                                                             .collection('tables')
-                                                             .doc(selectedTable)
-                                                             .update({'items': []});
-                                                         setState(() {
-                                                           creditMap={};
-                                                           userMap={};
-                                                           discountController.text =
-                                                           '0';
-                                                           discount = '0.00';
-                                                           deliveryCharge.text =
-                                                           '0';
-                                                           delivery = '0.00';
-                                                           qty=0;
-                                                           paidCash.text='0';
-                                                           paidBank.text='0';
-                                                           totalAmount=0;
-                                                           balance=0;
-                                                           cashPaid=0;
-                                                           bankPaid=0;
-                                                           disable = false;
-                                                           enable=false;
-                                                           approve=false;
-                                                           mobileNo.text='';
-                                                           mada.text="0.0";
-                                                           master.text="0.0";
-                                                           visa.text="0.0";
-                                                           amex.text="0.0";
-                                                           madaPaid=0;
-                                                           visaPaid=0;
-                                                           masterPaid=0;
-                                                           amexPaid=0;
-                                                           print("tapped7");
-                                                           print(approve);
-                                                           dropdownvalue="Take Away";
-                                                         });
-                                                         print("tapped8");
-                                                         print(approve);
-                                                       }
-                                                       showUploadMessage(context, 'Saved Successfully');
+                                                      await FirebaseFirestore.instance
+                                                          .collection('tables')
+                                                          .doc(currentBranchId)
+                                                          .collection('tables')
+                                                          .doc(selectedTable)
+                                                          .update({'items': []});
+                                                      setState(() {
+                                                        creditMap={};
+                                                        userMap={};
+                                                        discountController.text =
+                                                        '0';
+                                                        discount = '0.00';
+                                                        deliveryCharge.text =
+                                                        '0';
+                                                        delivery = '0.00';
+                                                        qty=0;
+                                                        paidCash.text='0';
+                                                        paidBank.text='0';
+                                                        totalAmount=0;
+                                                        balance=0;
+                                                        cashPaid=0;
+                                                        bankPaid=0;
+                                                        disable = false;
+                                                        enable=false;
+                                                        approve=false;
+                                                        mobileNo.text='';
+                                                        mada.text="0.0";
+                                                        master.text="0.0";
+                                                        visa.text="0.0";
+                                                        amex.text="0.0";
+                                                        madaPaid=0;
+                                                        visaPaid=0;
+                                                        masterPaid=0;
+                                                        amexPaid=0;
+                                                        print("tapped7");
+                                                        print(approve);
+                                                        dropdownvalue="Take Away";
+                                                      });
+                                                      print("tapped8");
+                                                      print(approve);
+                                                    }
+                                                    showUploadMessage(context, 'Saved Successfully');
 
 
 
-                                                     }
-                                                   // }
-                                                   // else{
-                                                   //   showUploadMessage(context, 'PLEASE CHOOSE WAITER NAME');
-                                                   // }
-
-
-                                                  }else{
-                                                    showUploadMessage(context, 'PLEASE SELECT PAYMET METHOD');
-                                                    print("tapped9");
-                                                    print(approve);
                                                   }
+                                                  // }
+                                                  // else{
+                                                  //   showUploadMessage(context, 'PLEASE CHOOSE WAITER NAME');
+                                                  // }
+
+
+                                                }else{
+                                                  showUploadMessage(context, 'PLEASE SELECT PAYMET METHOD');
+                                                  print("tapped9");
+                                                  print(approve);
+                                                }
 
 
 
-                                                },
-                                                text:arabicLanguage? 'يحفظ':'SAVE',
-                                                options:  FFButtonOptions(
-                                                  width: 70,
-                                                  height: 60,
-                                                  // color: Colors.green.shade700,
-                                                  // textStyle: FlutterFlowTheme.subtitle2.override(
-                                                  //   fontFamily: 'Overpass',
-                                                  //   fontSize: 15,
-                                                  //   color: Colors.white,
-                                                  //   fontWeight: FontWeight.w800,
-                                                  // ),
-                                                  elevation: 10,
-                                                  borderSide: BorderSide(
-                                                    color: Colors.grey,
-                                                    width: 1,
-                                                  ),
-                                                  borderRadius: 12,
-                                                ), icon: Icon(Icons.save), iconData: Icons.save,
-                                              ),
-
+                                              }, child: Text(arabicLanguage? 'يحفظ':"SAVE",style: TextStyle(color: Colors.white)))
                                             ],
                                           ),
                                         ),
