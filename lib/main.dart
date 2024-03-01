@@ -3389,378 +3389,380 @@ set(){
           // Add a ListView to the drawer. This ensures the user can scroll
           // through the options in the drawer if there isn't enough vertical
           // space to fit everything.
-            child: Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height*0.35,
-                  color: default_color,
-                  padding: const EdgeInsets.all(10),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height:20),
-
-                        const SizedBox(height: 10,),
-                        Text(
-                          arabicLanguage? "${PosUserIdToArabicName[currentUserId]}":"${PosUserIdToName[currentUserId]}",
-
-                          style: TextStyle(color: Colors.white),
-                        ),
-
-
-                        //image close
-                        Container(
-                          child: SwitchListTile.adaptive(
-                            value: display_image ??= true,
-                            onChanged: (newValue) async {
-                              setState(()  {
-                                display_image = newValue;
-                                // print(display_image.toString()+" bbbdndb");
-
-                                FirebaseFirestore.instance
-                                    .collection('settings')
-                                    .doc('settings')
-                                    .update({
-                                  "display_image":display_image,
-                                });
-
-                              }
-
-                              );
-
-                            },
-                            title: Text(
-                              'Image/صورة',
-                              style: FlutterFlowTheme.title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            tileColor:Colors.grey,
-                            inactiveTrackColor: Colors.grey.shade100,
-                            activeColor: Colors.green,
-                            activeTrackColor: Colors.yellow,
-                            dense: true,
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.35,
+                    color: default_color,
+                    padding: const EdgeInsets.all(10),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height:20),
+              
+                          const SizedBox(height: 10,),
+                          Text(
+                            arabicLanguage? "${PosUserIdToArabicName[currentUserId]}":"${PosUserIdToName[currentUserId]}",
+              
+                            style: TextStyle(color: Colors.white),
                           ),
-                        ),
-                        Container(
-                          child: SwitchListTile.adaptive(
-                            value: arabicLanguage ??= false,
-                            onChanged: (newValue) async {
-                              setState(()  {
-                                arabicLanguage = newValue;
-
-                                FirebaseFirestore.instance
-                                    .collection('settings')
-                                    .doc('settings')
-                                    .update({
-                                  "arabicLanguage":arabicLanguage,
-                                });
-
-                              }
-
-                              );
-
-                            },
-                            title: Text(
-                              'Arabic/عربي',
-                              style: FlutterFlowTheme.title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
+              
+              
+                          //image close
+                          Container(
+                            child: SwitchListTile.adaptive(
+                              value: display_image ??= true,
+                              onChanged: (newValue) async {
+                                setState(()  {
+                                  display_image = newValue;
+                                  // print(display_image.toString()+" bbbdndb");
+              
+                                  FirebaseFirestore.instance
+                                      .collection('settings')
+                                      .doc('settings')
+                                      .update({
+                                    "display_image":display_image,
+                                  });
+              
+                                }
+              
+                                );
+              
+                              },
+                              title: Text(
+                                'Image/صورة',
+                                style: FlutterFlowTheme.title3.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
+                              tileColor:Colors.grey,
+                              inactiveTrackColor: Colors.grey.shade100,
+                              activeColor: Colors.green,
+                              activeTrackColor: Colors.yellow,
+                              dense: true,
+                              controlAffinity: ListTileControlAffinity.leading,
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                             ),
-                            tileColor:Colors.grey,
-                            inactiveTrackColor: Colors.grey.shade100,
-                            activeColor: Colors.green,
-                            activeTrackColor: Colors.yellow,
-                            dense: true,
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                           ),
-                        ),
-
-                      ],
+                          Container(
+                            child: SwitchListTile.adaptive(
+                              value: arabicLanguage ??= false,
+                              onChanged: (newValue) async {
+                                setState(()  {
+                                  arabicLanguage = newValue;
+              
+                                  FirebaseFirestore.instance
+                                      .collection('settings')
+                                      .doc('settings')
+                                      .update({
+                                    "arabicLanguage":arabicLanguage,
+                                  });
+              
+                                }
+              
+                                );
+              
+                              },
+                              title: Text(
+                                'Arabic/عربي',
+                                style: FlutterFlowTheme.title3.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              tileColor:Colors.grey,
+                              inactiveTrackColor: Colors.grey.shade100,
+                              activeColor: Colors.green,
+                              activeTrackColor: Colors.yellow,
+                              dense: true,
+                              controlAffinity: ListTileControlAffinity.leading,
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                            ),
+                          ),
+              
+                        ],
+                      ),
                     ),
                   ),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>  const history_View_Widget()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                      ),
-                      child:  Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage?"تاريخ":'HISTORY',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
+              
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  const history_View_Widget()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
                         ),
-                      )),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Expenses()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                      ),
-                      child:  Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage? 'إضافة حساب':'ADD EXPENSE',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Purchases()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                      ),
-                      child:  Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage? 'ضافة شراء':'ADD PURCHASE',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SalesReport()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child:  Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage? ' تقرير المبيعات':'SALES REPORT',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SalesReturnReport()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage?'تقرير الإرجاع':'RETURN REPORT',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ExpenseReport()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                      ),
-                      child:  Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage?'تقرير المصاريف':'EXPENSE REPORT',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PurchaseReport()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage?'تقارير الشراء':'PURCHASE REPORTS',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DailyReportsWidget()),
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                      ),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Text(
-                          arabicLanguage? 'التقارير اليومية':'DAILY REPORTS',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: default_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                ),
-
-
-                InkWell(
-                  onTap: () async {
-                    await signOut();
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Login(),
-                      ),
-                          (r) => false,
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(top: 50),
-                      height: 45,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children:[
-                            Icon(
-                              Icons.logout,
-                              color: Colors.black,
+                        child:  Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage?"تاريخ":'HISTORY',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
-                            SizedBox(
-                              width: 5,
+                          ),
+                        )),
+                  ),
+              
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Expenses()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                        ),
+                        child:  Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage? 'إضافة حساب':'ADD EXPENSE',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
-                            Text(
-                              arabicLanguage?'تسجيل خروج':'Log out',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: default_color,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                          ),
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Purchases()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                        ),
+                        child:  Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage? 'ضافة شراء':'ADD PURCHASE',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )),
+                  ),
+              
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SalesReport()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child:  Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage? ' تقرير المبيعات':'SALES REPORT',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SalesReturnReport()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage?'تقرير الإرجاع':'RETURN REPORT',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )),
+                  ),
+              
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ExpenseReport()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                        ),
+                        child:  Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage?'تقرير المصاريف':'EXPENSE REPORT',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PurchaseReport()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage?'تقارير الشراء':'PURCHASE REPORTS',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DailyReportsWidget()),
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                        ),
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Text(
+                            arabicLanguage? 'التقارير اليومية':'DAILY REPORTS',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: default_color,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )),
+                  ),
+              
+              
+                  InkWell(
+                    onTap: () async {
+                      await signOut();
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Login(),
+                        ),
+                            (r) => false,
+                      );
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(top: 50),
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children:[
+                              Icon(
+                                Icons.logout,
+                                color: Colors.black,
                               ),
-                            )
-                          ],
-                        ),
-                      )),
-                ),
-              ],
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                arabicLanguage?'تسجيل خروج':'Log out',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: default_color,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
+                  ),
+                ],
+              ),
             )),
         body:
         // !connected?AlertDialog(
@@ -6559,775 +6561,779 @@ set(){
                                                         SizedBox(width: 10,),
                                                         Expanded(
                                                           child: SizedBox(
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                 Text(
-                                                                  arabicLanguage?' نقدأ:':"CASH :",
-                                                                  textAlign: TextAlign.start,
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.bold),
-                                                                ),
-                                                                Container(
-                                                                  height: 45,
-                                                                  child: TextFormField(
-
-                                                                    onTap: () {
-                                                                      setItemWidgets(items);
-                                                                      double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                      // print(grandTotal);
-
-
-                                                                        cashPaid=grandTotal-masterPaid-amexPaid-visaPaid-madaPaid;
-                                                                        if(cashPaid<0){
-                                                                          cashPaid=0;
-                                                                          balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                            child: SingleChildScrollView(
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                   Text(
+                                                                    arabicLanguage?' نقدأ:':"CASH :",
+                                                                    textAlign: TextAlign.start,
+                                                                    style: TextStyle(
+                                                                        fontWeight: FontWeight.bold),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 45,
+                                                                    child: TextFormField(
+                                                              
+                                                                      onTap: () {
+                                                                        setItemWidgets(items);
+                                                                        double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                        // print(grandTotal);
+                                                              
+                                                              
+                                                                          cashPaid=grandTotal-masterPaid-amexPaid-visaPaid-madaPaid;
+                                                                          if(cashPaid<0){
+                                                                            cashPaid=0;
+                                                                            balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                          }
+                                                              
+                                                                          paidCash.text=cashPaid.toStringAsFixed(1);
+                                                              
+                                                              
+                                                                        setState(() {
+                                                                          // keyboard = true;
+                                                                        });
+                                                                      },
+                                                                      onChanged: (value){
+                                                                        double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                              
+                                                                        cashPaid=double.tryParse(value)??0;
+                                                                        bankPaid=grandTotal-cashPaid??0;
+                                                                        if(bankPaid<0){
+                                                                          bankPaid=0;
                                                                         }
-
-                                                                        paidCash.text=cashPaid.toStringAsFixed(1);
-
-
-                                                                      setState(() {
-                                                                        // keyboard = true;
-                                                                      });
-                                                                    },
-                                                                    onChanged: (value){
-                                                                      double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-
-                                                                      cashPaid=double.tryParse(value)??0;
-                                                                      bankPaid=grandTotal-cashPaid??0;
-                                                                      if(bankPaid<0){
-                                                                        bankPaid=0;
-                                                                      }
-                                                                      // master.text =(grandTotal-cashPaid-amexPaid-visaPaid-madaPaid).toStringAsFixed(2);
-                                                                      // amex.text=(grandTotal-masterPaid-cashPaid-visaPaid-madaPaid).toStringAsFixed(2);
-                                                                      // visa.text =(grandTotal-masterPaid-amexPaid-cashPaid-madaPaid).toStringAsFixed(2);
-                                                                      // mada.text=(grandTotal-masterPaid-amexPaid-visaPaid-cashPaid).toStringAsFixed(2);
-
-                                                                      paidBank.text=bankPaid.toStringAsFixed(1);
-                                                                      balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                      setState(() {
-                                                                        // keyboard = true;
-                                                                      });
-                                                                    },
-                                                                    controller: paidCash,
-                                                                    keyboardType:
-                                                                    TextInputType.number,
-                                                                    decoration: InputDecoration(
-                                                                      // labelText: 'DISCOUNT',
-                                                                        hoverColor: default_color,
-                                                                        hintText:arabicLanguage?'نقدأ':"Cash ",
-                                                                        border:
-                                                                        OutlineInputBorder(
-                                                                          borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(5.0),
-                                                                        ),
-                                                                        focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                          borderSide: BorderSide(
-                                                                              color: Colors
-                                                                                  .pink.shade900,
-                                                                              width: 1.0),
-                                                                        ),
-                                                                        prefixIcon: const Padding(
-                                                                          padding: EdgeInsets.all(0.0),
-                                                                          child: Icon(
-                                                                            Icons.money_outlined,
-                                                                            color: Colors.grey,
-                                                                          ), // icon is 48px widget.
-                                                                        ),
-                                                                        contentPadding: EdgeInsets.all(5)
+                                                                        // master.text =(grandTotal-cashPaid-amexPaid-visaPaid-madaPaid).toStringAsFixed(2);
+                                                                        // amex.text=(grandTotal-masterPaid-cashPaid-visaPaid-madaPaid).toStringAsFixed(2);
+                                                                        // visa.text =(grandTotal-masterPaid-amexPaid-cashPaid-madaPaid).toStringAsFixed(2);
+                                                                        // mada.text=(grandTotal-masterPaid-amexPaid-visaPaid-cashPaid).toStringAsFixed(2);
+                                                              
+                                                                        paidBank.text=bankPaid.toStringAsFixed(1);
+                                                                        balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                        setState(() {
+                                                                          // keyboard = true;
+                                                                        });
+                                                                      },
+                                                                      controller: paidCash,
+                                                                      keyboardType:
+                                                                      TextInputType.number,
+                                                                      decoration: InputDecoration(
+                                                                        // labelText: 'DISCOUNT',
+                                                                          hoverColor: default_color,
+                                                                          hintText:arabicLanguage?'نقدأ':"Cash ",
+                                                                          border:
+                                                                          OutlineInputBorder(
+                                                                            borderRadius:
+                                                                            BorderRadius
+                                                                                .circular(5.0),
+                                                                          ),
+                                                                          focusedBorder:
+                                                                          OutlineInputBorder(
+                                                                            borderSide: BorderSide(
+                                                                                color: Colors
+                                                                                    .pink.shade900,
+                                                                                width: 1.0),
+                                                                          ),
+                                                                          prefixIcon: const Padding(
+                                                                            padding: EdgeInsets.all(0.0),
+                                                                            child: Icon(
+                                                                              Icons.money_outlined,
+                                                                              color: Colors.grey,
+                                                                            ), // icon is 48px widget.
+                                                                          ),
+                                                                          contentPadding: EdgeInsets.all(5)
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
                                                         const SizedBox(width: 10,),
                                                         Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                               Text(
-                                                                arabicLanguage?'مصرف: ':"BANK :",
-                                                                textAlign: TextAlign.start,
-                                                                style: const TextStyle(
-                                                                    fontWeight: FontWeight.bold),
-                                                              ),
-                                                              InkWell(
-                                                                onTap:(){
-                                                                  showDialog<void>(
-                                                                    context: context,
-                                                                    builder: (BuildContext context) {
-                                                                      return AlertDialog(
-                                                                        title: Center(child: Text('Select option')),
-                                                                        content: StatefulBuilder(
-                                                                          builder: (BuildContext context, StateSetter setState) {
-                                                                            return Container(
-                                                                              height: MediaQuery.of(context).size.height*0.5,
-                                                                              width: MediaQuery.of(context).size.width*0.4,
-                                                                              color: Colors.white,
-                                                                              child: ListView(
-                                                                                shrinkWrap: true,
-                                                                                children: [
-                                                                              Padding(
-                                                                              padding: const EdgeInsets.all(8.0),
-                                                                              child: Container(
-                                                                                child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                    children:[
-                                                                                      Container(
-                                                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                                                          width:MediaQuery.of(context).size.width*0.07,
-                                                                                          child: Center(
-                                                                                              child: Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  // Text('AMEX'),
-                                                                                                  Container(
-                                                                                                    // height: 180,
-                                                                                                    height:MediaQuery.of(context).size.height*0.180,
-                                                                                                    width:MediaQuery.of(context).size.width*0.070,
-                                                                                                    // width: 80,
-                                                                                                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/american express.png"),fit: BoxFit.cover),),
-                                                                                                  )
-                                                                                                ],
-                                                                                              )
-                                                                                          )
-                                                                                      ),
-                                                                                      Container(
-                                                                                        // height: 50,
-                                                                                        // width:200,
-                                                                                        height:MediaQuery.of(context).size.height*0.070,
-                                                                                        width:MediaQuery.of(context).size.width*0.160,
-                                                                                        child: Center(
-                                                                                          child: TextFormField(
-
-                                                                                            onTap: () {
-                                                                                              setItemWidgets(items);
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-
-
-
-                                                                                              amexPaid=   grandTotal-cashPaid-madaPaid-visaPaid-masterPaid??0;
-                                                                                              if(amexPaid<0){
-                                                                                                amexPaid=0;
-                                                                                              }
-                                                                                              amex.text=amexPaid.toStringAsFixed(1);
-
-
-                                                                                              balance=grandTotal-cashPaid-amexPaid-masterPaid-visaPaid-madaPaid;
-                                                                                              setState(() {
-
-                                                                                              }
-                                                                                              );
-                                                                                            },
-                                                                                            onChanged: (value){
-                                                                                              // print(value);
-                                                                                              amexPaid=double.tryParse(value)??0;
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              bankPaid=grandTotal-cashPaid??0;
-
-                                                                                              cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              if(cashPaid<0){
-                                                                                                cashPaid=0;
-                                                                                              }
-                                                                                              paidCash.text=cashPaid.toStringAsFixed(1);
-                                                                                              // print(bankPaid);
-                                                                                              balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              setState(() {
-                                                                                                // keyboard = true;
-                                                                                              });
-                                                                                            },
-                                                                                            controller: amex,
-                                                                                            keyboardType:
-                                                                                            TextInputType.number,
-                                                                                            decoration: InputDecoration(
-                                                                                              // labelText: 'DISCOUNT',
-                                                                                                hoverColor: default_color,
-                                                                                                hintText:"Amount",
-                                                                                                border:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderRadius:
-                                                                                                  BorderRadius
-                                                                                                      .circular(5.0),
-                                                                                                ),
-                                                                                                focusedBorder:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderSide: BorderSide(
-                                                                                                      color: Colors
-                                                                                                          .pink.shade900,
-                                                                                                      width: 1.0),
-                                                                                                ),
-                                                                                                prefixIcon: const Padding(
-                                                                                                  padding: EdgeInsets.all(0.0),
-                                                                                                  child: Icon(
-                                                                                                    Icons.money_outlined,
-                                                                                                    color: Colors.grey,
-                                                                                                  ), // icon is 48px widget.
-                                                                                                ),
-                                                                                                contentPadding: EdgeInsets.all(5)
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-
-
-                                                                                    ]
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                              Padding(
-                                                                              padding: const EdgeInsets.all(8.0),
-                                                                              child: Container(
-                                                                                child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                    children:[
-                                                                                      Container(
-                                                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                                                          width:MediaQuery.of(context).size.width*0.07,
-                                                                                          child: Center(
-                                                                                              child: Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  // Text('MADA'),
-                                                                                                  Container(
-                                                                                                    height:MediaQuery.of(context).size.height*0.180,
-                                                                                                    width:MediaQuery.of(context).size.width*0.070,
-                                                                                                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/mada.png"),fit: BoxFit.contain),),
-                                                                                                  )
-                                                                                                ],
-                                                                                              )
-                                                                                          )
-                                                                                      ),
-                                                                                      Container(
-                                                                                        height:MediaQuery.of(context).size.height*0.070,
-                                                                                        width:MediaQuery.of(context).size.width*0.160,
-                                                                                        child: Center(
-                                                                                          child: TextFormField(
-
-                                                                                            onTap: () {
-                                                                                              setItemWidgets(items);
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              // print(grandTotal);
-
-
-                                                                                              madaPaid=   grandTotal-cashPaid-amexPaid-visaPaid-masterPaid??0;
-                                                                                              if(madaPaid<0){
-                                                                                                madaPaid=0;
-
-                                                                                              }
-                                                                                              mada.text=madaPaid.toStringAsFixed(1);
-
-
-                                                                                              balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              setState(() {
-                                                                                                // keyboard = true;
-                                                                                              }
-                                                                                              );
-                                                                                            },
-                                                                                            onChanged: (value){
-                                                                                              // print(value);
-                                                                                              madaPaid=double.tryParse(value)??0;
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              bankPaid=grandTotal-cashPaid??0;
-
-                                                                                              cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              if(cashPaid<0){
-                                                                                                cashPaid=0;
-                                                                                              }
-                                                                                              paidCash.text=cashPaid.toStringAsFixed(1);
-                                                                                              // print(bankPaid);
-                                                                                              balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              setState(() {
-
-                                                                                              });
-                                                                                            },
-                                                                                            controller: mada,
-                                                                                            keyboardType:
-                                                                                            TextInputType.number,
-                                                                                            decoration: InputDecoration(
-                                                                                              // labelText: 'DISCOUNT',
-                                                                                                hoverColor: default_color,
-                                                                                                hintText:"Amount",
-                                                                                                border:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderRadius:
-                                                                                                  BorderRadius
-                                                                                                      .circular(5.0),
-                                                                                                ),
-                                                                                                focusedBorder:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderSide: BorderSide(
-                                                                                                      color: Colors
-                                                                                                          .pink.shade900,
-                                                                                                      width: 1.0),
-                                                                                                ),
-                                                                                                prefixIcon: const Padding(
-                                                                                                  padding: EdgeInsets.all(0.0),
-                                                                                                  child: Icon(
-                                                                                                    Icons.money_outlined,
-                                                                                                    color: Colors.grey,
-                                                                                                  ), // icon is 48px widget.
-                                                                                                ),
-                                                                                                contentPadding: EdgeInsets.all(5)
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-
-
-                                                                                    ]
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                              Padding(
-                                                                              padding: const EdgeInsets.all(8.0),
-                                                                              child: Container(
-                                                                                child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                    children:[
-                                                                                      Container(
-                                                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                                                          width:MediaQuery.of(context).size.width*0.07,
-                                                                                          child: Center(
-                                                                                              child: Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  // Text('MASTER'),
-                                                                                                  Container(
-                                                                                                    height:MediaQuery.of(context).size.height*0.180,
-                                                                                                    width:MediaQuery.of(context).size.width*0.070,
-                                                                                                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/MasterCard.png"),fit: BoxFit.contain),),
-                                                                                                  )
-                                                                                                ],
-                                                                                              )
-                                                                                          )
-                                                                                      ),
-                                                                                      Container(
-                                                                                        height:MediaQuery.of(context).size.height*0.070,
-                                                                                        width:MediaQuery.of(context).size.width*0.160,
-                                                                                        child: Center(
-                                                                                          child: TextFormField(
-
-                                                                                            onTap: () {
-                                                                                              setItemWidgets(items);
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              // print(grandTotal);
-
-
-                                                                                              masterPaid=   grandTotal-cashPaid-amexPaid-visaPaid-madaPaid??0;
-                                                                                              if(masterPaid<0){
-                                                                                                masterPaid=0;
-
-                                                                                              }
-                                                                                              master.text=masterPaid.toStringAsFixed(1);
-
-
-                                                                                              balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              setState(() {
-                                                                                                // keyboard = true;
-                                                                                              }
-                                                                                              );
-                                                                                            },
-                                                                                            onChanged: (value){
-                                                                                              // print(value);
-                                                                                              masterPaid=double.tryParse(value)??0;
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              bankPaid=grandTotal-cashPaid??0;
-
-                                                                                              cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              if(cashPaid<0){
-                                                                                                cashPaid=0;
-                                                                                              }
-                                                                                              paidCash.text=cashPaid.toStringAsFixed(1);
-                                                                                              // print(bankPaid);
-                                                                                              balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              setState(() {
-
-                                                                                              });
-                                                                                            },
-                                                                                            controller: master,
-                                                                                            keyboardType:
-                                                                                            TextInputType.number,
-                                                                                            decoration: InputDecoration(
-                                                                                              // labelText: 'DISCOUNT',
-                                                                                                hoverColor: default_color,
-                                                                                                hintText:'Amount',
-                                                                                                border:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderRadius:
-                                                                                                  BorderRadius
-                                                                                                      .circular(5.0),
-                                                                                                ),
-                                                                                                focusedBorder:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderSide: BorderSide(
-                                                                                                      color: Colors
-                                                                                                          .pink.shade900,
-                                                                                                      width: 1.0),
-                                                                                                ),
-                                                                                                prefixIcon: const Padding(
-                                                                                                  padding: EdgeInsets.all(0.0),
-                                                                                                  child: Icon(
-                                                                                                    Icons.money_outlined,
-                                                                                                    color: Colors.grey,
-                                                                                                  ), // icon is 48px widget.
-                                                                                                ),
-                                                                                                contentPadding: EdgeInsets.all(5)
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-
-
-                                                                                    ]
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                              Padding(
-                                                                              padding: const EdgeInsets.all(8.0),
-                                                                              child: Container(
-                                                                                child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                    children:[
-                                                                                      Container(
-                                                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                                                          width:MediaQuery.of(context).size.width*0.07,
-                                                                                          child: Center(
-                                                                                              child: Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                children:  [
-                                                                                                  // Text('VISA'),
-                                                                                                  Container(
-                                                                                                    height:MediaQuery.of(context).size.height*0.180,
-                                                                                                    width:MediaQuery.of(context).size.width*0.070,
-                                                                                                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/visa.png"),fit: BoxFit.contain),),
-                                                                                                  )
-                                                                                                ],
-                                                                                              )
-                                                                                          )
-                                                                                      ),
-                                                                                      Container(
-                                                                                        height:MediaQuery.of(context).size.height*0.070,
-                                                                                        width:MediaQuery.of(context).size.width*0.160,
-                                                                                        child: Center(
-                                                                                          child: TextFormField(
-
-                                                                                            onTap: () {
-                                                                                              setItemWidgets(items);
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              // print(grandTotal);
-
-
-                                                                                              visaPaid=   grandTotal-cashPaid-amexPaid-masterPaid-madaPaid??0;
-                                                                                              if(visaPaid<0){
-                                                                                                visaPaid=0;
-
-                                                                                              }
-                                                                                              visa.text=visaPaid.toStringAsFixed(1);
-
-
-                                                                                              balance=grandTotal-cashPaid-madaPaid-visaPaid-masterPaid-amexPaid;
-                                                                                              setState(() {
-                                                                                                // keyboard = true;
-                                                                                              }
-                                                                                              );
-                                                                                            },
-                                                                                            onChanged: (value){
-                                                                                              // print(value);
-                                                                                              visaPaid=double.tryParse(value)??0;
-                                                                                              double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                                                              bankPaid=grandTotal-cashPaid??0;
-
-                                                                                              cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              if(visaPaid<0){
-                                                                                                visaPaid=0;
-                                                                                              }
-                                                                                              paidCash.text=cashPaid.toStringAsFixed(1);
-                                                                                              // print(bankPaid);
-                                                                                              balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
-                                                                                              setState(() {
-
-                                                                                              });
-                                                                                            },
-                                                                                            controller: visa,
-                                                                                            keyboardType:
-                                                                                            TextInputType.number,
-                                                                                            decoration: InputDecoration(
-                                                                                              // labelText: 'DISCOUNT',
-                                                                                                hoverColor: default_color,
-                                                                                                hintText:'Amount ',
-                                                                                                border:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderRadius:
-                                                                                                  BorderRadius
-                                                                                                      .circular(5.0),
-                                                                                                ),
-                                                                                                focusedBorder:
-                                                                                                OutlineInputBorder(
-                                                                                                  borderSide: BorderSide(
-                                                                                                      color: Colors
-                                                                                                          .pink.shade900,
-                                                                                                      width: 1.0),
-                                                                                                ),
-                                                                                                prefixIcon: const Padding(
-                                                                                                  padding: EdgeInsets.all(0.0),
-                                                                                                  child: Icon(
-                                                                                                    Icons.money_outlined,
-                                                                                                    color: Colors.grey,
-                                                                                                  ), // icon is 48px widget.
-                                                                                                ),
-                                                                                                contentPadding: EdgeInsets.all(5)
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-
-
-                                                                                    ]
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                                  SizedBox(height: 20,),
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                    children: [
-                                                                                      ElevatedButton(onPressed: (){
-                                                                                        Navigator.pop(context);
-                                                                                        mada.text="0.0";
-                                                                                        master.text="0.0";
-                                                                                        visa.text="0.0";
-                                                                                        amex.text="0.0";
-                                                                                        madaPaid=0;
-                                                                                        visaPaid=0;
-                                                                                        masterPaid=0;
-                                                                                        amexPaid=0;
-                                                                                        balance=0;
-                                                                            }, child: Text("CANCEL")),
-                                                                                      ElevatedButton(onPressed: (){
-                                                                                        Navigator.pop(context);
-                                                                                      }, child: Text("OK")),
-
-                                                                                    ],
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                child: Container(
-                                                                  height: 45,
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(6),
-                                                                      color: Colors.blue,
-
-                                                                    ),
-                                                                    child: const Center(child: Text("OPTIONS",style: TextStyle(
-                                                                        color: Colors.white
-                                                                    ),)),
+                                                          child: SingleChildScrollView(
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                 Text(
+                                                                  arabicLanguage?'مصرف: ':"BANK :",
+                                                                  textAlign: TextAlign.start,
+                                                                  style: const TextStyle(
+                                                                      fontWeight: FontWeight.bold),
                                                                 ),
-                                                              ),
-                                                              // Container(
-                                                              //   height: 45,
-                                                              //   // color: Colors.blue,
-                                                              //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(6),
-                                                              //     color: Colors.blue,
-                                                              //     ),
-                                                              //   child:  DropdownButton(
-                                                              //     borderRadius: BorderRadius.circular(10),
-                                                              //     alignment: AlignmentDirectional.center,
-                                                              //     underline: Column(),
-                                                              //     dropdownColor: Colors.green,
-                                                              //     iconEnabledColor: Colors.blue,
-                                                              //     style:  const TextStyle(
-                                                              //         color: Colors.white,
-                                                              //         fontSize: 18,
-                                                              //         fontWeight: FontWeight.w500
-                                                              //     ),
-                                                              //     value: bankValue,
-                                                              //     icon: const Padding(
-                                                              //       padding: EdgeInsets.only(right: 5),
-                                                              //       child: Icon(
-                                                              //         Icons.account_balance,
-                                                              //           color: Colors.white,
-                                                              //
-                                                              //       ),
-                                                              //     ),
-                                                              //     items: bankOptions.map((String items) {
-                                                              //       return DropdownMenuItem(
-                                                              //         value: items,
-                                                              //         // child: Text(
-                                                              //         //   items,
-                                                              //         // ),
-                                                              //         child: Row(
-                                                              //           children: [
-                                                              //             Text(items,),
-                                                              //             // Container(
-                                                              //             //   height: 45,
-                                                              //             //   child: TextFormField(
-                                                              //             //
-                                                              //             //     onTap: () {
-                                                              //             //
-                                                              //             //     },
-                                                              //             //     onChanged: (value){
-                                                              //             //       double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                              //             //
-                                                              //             //       cashPaid=double.tryParse(value)??0;
-                                                              //             //       bankPaid=grandTotal-cashPaid??0;
-                                                              //             //       if(bankPaid<0){
-                                                              //             //         bankPaid=0;
-                                                              //             //       }
-                                                              //             //       paidBank.text=bankPaid.toStringAsFixed(1);
-                                                              //             //       balance=grandTotal-cashPaid-bankPaid;
-                                                              //             //       setState(() {
-                                                              //             //         // keyboard = true;
-                                                              //             //       });
-                                                              //             //     },
-                                                              //             //     controller: paidCash,
-                                                              //             //     keyboardType:
-                                                              //             //     TextInputType.number,
-                                                              //             //     decoration: InputDecoration(
-                                                              //             //       // labelText: 'DISCOUNT',
-                                                              //             //         hoverColor: default_color,
-                                                              //             //         hintText:arabicLanguage?'نقدأ':"Cash ",
-                                                              //             //         border:
-                                                              //             //         OutlineInputBorder(
-                                                              //             //           borderRadius:
-                                                              //             //           BorderRadius
-                                                              //             //               .circular(5.0),
-                                                              //             //         ),
-                                                              //             //         focusedBorder:
-                                                              //             //         OutlineInputBorder(
-                                                              //             //           borderSide: BorderSide(
-                                                              //             //               color: Colors
-                                                              //             //                   .pink.shade900,
-                                                              //             //               width: 1.0),
-                                                              //             //         ),
-                                                              //             //         prefixIcon: const Padding(
-                                                              //             //           padding: EdgeInsets.all(0.0),
-                                                              //             //           child: Icon(
-                                                              //             //             Icons.money_outlined,
-                                                              //             //             color: Colors.grey,
-                                                              //             //           ), // icon is 48px widget.
-                                                              //             //         ),
-                                                              //             //         contentPadding: EdgeInsets.all(5)
-                                                              //             //     ),
-                                                              //             //   ),
-                                                              //             // ),
-                                                              //
-                                                              //           ],
-                                                              //         ),
-                                                              //       );
-                                                              //     }).toList(),
-                                                              //     onChanged: (String newValue) {
-                                                              //       setItemWidgets(items);
-                                                              //
-                                                              //
-                                                              //       double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                              //       bankPaid=(grandTotal-cashPaid)??0;
-                                                              //       cashPaid=grandTotal-bankPaid;
-                                                              //       if(cashPaid<0){
-                                                              //         cashPaid=0;
-                                                              //       }
-                                                              //       paidCash.text=cashPaid.toStringAsFixed(1);
-                                                              //       // print(bankPaid);
-                                                              //       balance=grandTotal-cashPaid-bankPaid;
-                                                              //       setState(() {
-                                                              //         // keyboard = true;
-                                                              //       });
-                                                              //
-                                                              //
-                                                              //
-                                                              //
-                                                              //
-                                                              //
-                                                              //       bankValue = newValue;
-                                                              //       // print(dropdownvalue);
-                                                              //       // dropdownvalue=="Drive-Thru" && (deliveryCharge.text.isEmpty || deliveryCharge.text=="0")? delivery=DelCharge.toStringAsFixed(2): delivery=deliveryCharge.text;
-                                                              //       if(mounted){
-                                                              //         setState(() {
-                                                              //           // if(dropdownvalue=="Drive-Thru"){
-                                                              //           //   deliveryCharge.text=DelCharge.toString();
-                                                              //           // }
-                                                              //         });
-                                                              //       }
-                                                              //     },
-                                                              //   )
-                                                              //   // TextFormField(
-                                                              //   //   onTap: () {
-                                                              //   //
-                                                              //   //     setItemWidgets(items);
-                                                              //   //     double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                              //   //     // print(grandTotal);
-                                                              //   //
-                                                              //   //
-                                                              //   //     bankPaid=grandTotal-cashPaid;
-                                                              //   //     if(bankPaid<0){
-                                                              //   //       bankPaid=0;
-                                                              //   //
-                                                              //   //     }
-                                                              //   //     paidBank.text=bankPaid.toStringAsFixed(1);
-                                                              //   //
-                                                              //   //
-                                                              //   //     balance=grandTotal-cashPaid-bankPaid;
-                                                              //   //     setState(() {
-                                                              //   //       // keyboard = true;
-                                                              //   //     });
-                                                              //   //   },
-                                                              //   //   onChanged: (value){
-                                                              //   //     // print(value);
-                                                              //   //     bankPaid=double.tryParse(value)??0;
-                                                              //   //     double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
-                                                              //   //     cashPaid=grandTotal-bankPaid;
-                                                              //   //     if(cashPaid<0){
-                                                              //   //       cashPaid=0;
-                                                              //   //     }
-                                                              //   //     paidCash.text=cashPaid.toStringAsFixed(1);
-                                                              //   //     // print(bankPaid);
-                                                              //   //     balance=grandTotal-cashPaid-bankPaid;
-                                                              //   //     setState(() {
-                                                              //   //       // keyboard = true;
-                                                              //   //     });
-                                                              //   //   },
-                                                              //   //   controller: paidBank,
-                                                              //   //   keyboardType:
-                                                              //   //   TextInputType.number,
-                                                              //   //   decoration: InputDecoration(
-                                                              //   //     // labelText: 'DISCOUNT',
-                                                              //   //       prefixIcon: const Padding(
-                                                              //   //         padding: EdgeInsets.all(0.0),
-                                                              //   //         child: Icon(
-                                                              //   //           Icons.home_repair_service_rounded,
-                                                              //   //           color: Colors.grey,
-                                                              //   //         ), // icon is 48px widget.
-                                                              //   //       ),
-                                                              //   //       hoverColor: default_color,
-                                                              //   //       hintText:arabicLanguage?'مصرف: ':"Bank :",
-                                                              //   //       border:
-                                                              //   //       OutlineInputBorder(
-                                                              //   //         borderRadius:
-                                                              //   //         BorderRadius
-                                                              //   //             .circular(5.0),
-                                                              //   //       ),
-                                                              //   //       focusedBorder:
-                                                              //   //       OutlineInputBorder(
-                                                              //   //         borderSide: BorderSide(
-                                                              //   //             color: Colors
-                                                              //   //                 .pink.shade900,
-                                                              //   //             width: 1.0),
-                                                              //   //       ),
-                                                              //   //       contentPadding: EdgeInsets.all(5)
-                                                              //   //   ),
-                                                              //   // ),
-                                                              // ),
-                                                            ],
+                                                                InkWell(
+                                                                  onTap:(){
+                                                                    showDialog<void>(
+                                                                      context: context,
+                                                                      builder: (BuildContext context) {
+                                                                        return AlertDialog(
+                                                                          title: Center(child: Text('Select option')),
+                                                                          content: StatefulBuilder(
+                                                                            builder: (BuildContext context, StateSetter setState) {
+                                                                              return Container(
+                                                                                height: MediaQuery.of(context).size.height*0.5,
+                                                                                width: MediaQuery.of(context).size.width*0.4,
+                                                                                color: Colors.white,
+                                                                                child: ListView(
+                                                                                  shrinkWrap: true,
+                                                                                  children: [
+                                                                                Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Container(
+                                                                                  child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                      children:[
+                                                                                        Container(
+                                                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                                                            width:MediaQuery.of(context).size.width*0.07,
+                                                                                            child: Center(
+                                                                                                child: Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    // Text('AMEX'),
+                                                                                                    Container(
+                                                                                                      // height: 180,
+                                                                                                      height:MediaQuery.of(context).size.height*0.180,
+                                                                                                      width:MediaQuery.of(context).size.width*0.070,
+                                                                                                      // width: 80,
+                                                                                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/american express.png"),fit: BoxFit.cover),),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                )
+                                                                                            )
+                                                                                        ),
+                                                                                        Container(
+                                                                                          // height: 50,
+                                                                                          // width:200,
+                                                                                          height:MediaQuery.of(context).size.height*0.070,
+                                                                                          width:MediaQuery.of(context).size.width*0.160,
+                                                                                          child: Center(
+                                                                                            child: TextFormField(
+                                                            
+                                                                                              onTap: () {
+                                                                                                setItemWidgets(items);
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                            
+                                                            
+                                                            
+                                                                                                amexPaid=   grandTotal-cashPaid-madaPaid-visaPaid-masterPaid??0;
+                                                                                                if(amexPaid<0){
+                                                                                                  amexPaid=0;
+                                                                                                }
+                                                                                                amex.text=amexPaid.toStringAsFixed(1);
+                                                            
+                                                            
+                                                                                                balance=grandTotal-cashPaid-amexPaid-masterPaid-visaPaid-madaPaid;
+                                                                                                setState(() {
+                                                            
+                                                                                                }
+                                                                                                );
+                                                                                              },
+                                                                                              onChanged: (value){
+                                                                                                // print(value);
+                                                                                                amexPaid=double.tryParse(value)??0;
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                bankPaid=grandTotal-cashPaid??0;
+                                                            
+                                                                                                cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                if(cashPaid<0){
+                                                                                                  cashPaid=0;
+                                                                                                }
+                                                                                                paidCash.text=cashPaid.toStringAsFixed(1);
+                                                                                                // print(bankPaid);
+                                                                                                balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                setState(() {
+                                                                                                  // keyboard = true;
+                                                                                                });
+                                                                                              },
+                                                                                              controller: amex,
+                                                                                              keyboardType:
+                                                                                              TextInputType.number,
+                                                                                              decoration: InputDecoration(
+                                                                                                // labelText: 'DISCOUNT',
+                                                                                                  hoverColor: default_color,
+                                                                                                  hintText:"Amount",
+                                                                                                  border:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderRadius:
+                                                                                                    BorderRadius
+                                                                                                        .circular(5.0),
+                                                                                                  ),
+                                                                                                  focusedBorder:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderSide: BorderSide(
+                                                                                                        color: Colors
+                                                                                                            .pink.shade900,
+                                                                                                        width: 1.0),
+                                                                                                  ),
+                                                                                                  prefixIcon: const Padding(
+                                                                                                    padding: EdgeInsets.all(0.0),
+                                                                                                    child: Icon(
+                                                                                                      Icons.money_outlined,
+                                                                                                      color: Colors.grey,
+                                                                                                    ), // icon is 48px widget.
+                                                                                                  ),
+                                                                                                  contentPadding: EdgeInsets.all(5)
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                            
+                                                            
+                                                                                      ]
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                                Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Container(
+                                                                                  child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                      children:[
+                                                                                        Container(
+                                                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                                                            width:MediaQuery.of(context).size.width*0.07,
+                                                                                            child: Center(
+                                                                                                child: Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    // Text('MADA'),
+                                                                                                    Container(
+                                                                                                      height:MediaQuery.of(context).size.height*0.180,
+                                                                                                      width:MediaQuery.of(context).size.width*0.070,
+                                                                                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/mada.png"),fit: BoxFit.contain),),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                )
+                                                                                            )
+                                                                                        ),
+                                                                                        Container(
+                                                                                          height:MediaQuery.of(context).size.height*0.070,
+                                                                                          width:MediaQuery.of(context).size.width*0.160,
+                                                                                          child: Center(
+                                                                                            child: TextFormField(
+                                                            
+                                                                                              onTap: () {
+                                                                                                setItemWidgets(items);
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                // print(grandTotal);
+                                                            
+                                                            
+                                                                                                madaPaid=   grandTotal-cashPaid-amexPaid-visaPaid-masterPaid??0;
+                                                                                                if(madaPaid<0){
+                                                                                                  madaPaid=0;
+                                                            
+                                                                                                }
+                                                                                                mada.text=madaPaid.toStringAsFixed(1);
+                                                            
+                                                            
+                                                                                                balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                setState(() {
+                                                                                                  // keyboard = true;
+                                                                                                }
+                                                                                                );
+                                                                                              },
+                                                                                              onChanged: (value){
+                                                                                                // print(value);
+                                                                                                madaPaid=double.tryParse(value)??0;
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                bankPaid=grandTotal-cashPaid??0;
+                                                            
+                                                                                                cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                if(cashPaid<0){
+                                                                                                  cashPaid=0;
+                                                                                                }
+                                                                                                paidCash.text=cashPaid.toStringAsFixed(1);
+                                                                                                // print(bankPaid);
+                                                                                                balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                setState(() {
+                                                            
+                                                                                                });
+                                                                                              },
+                                                                                              controller: mada,
+                                                                                              keyboardType:
+                                                                                              TextInputType.number,
+                                                                                              decoration: InputDecoration(
+                                                                                                // labelText: 'DISCOUNT',
+                                                                                                  hoverColor: default_color,
+                                                                                                  hintText:"Amount",
+                                                                                                  border:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderRadius:
+                                                                                                    BorderRadius
+                                                                                                        .circular(5.0),
+                                                                                                  ),
+                                                                                                  focusedBorder:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderSide: BorderSide(
+                                                                                                        color: Colors
+                                                                                                            .pink.shade900,
+                                                                                                        width: 1.0),
+                                                                                                  ),
+                                                                                                  prefixIcon: const Padding(
+                                                                                                    padding: EdgeInsets.all(0.0),
+                                                                                                    child: Icon(
+                                                                                                      Icons.money_outlined,
+                                                                                                      color: Colors.grey,
+                                                                                                    ), // icon is 48px widget.
+                                                                                                  ),
+                                                                                                  contentPadding: EdgeInsets.all(5)
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                            
+                                                            
+                                                                                      ]
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                                Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Container(
+                                                                                  child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                      children:[
+                                                                                        Container(
+                                                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                                                            width:MediaQuery.of(context).size.width*0.07,
+                                                                                            child: Center(
+                                                                                                child: Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    // Text('MASTER'),
+                                                                                                    Container(
+                                                                                                      height:MediaQuery.of(context).size.height*0.180,
+                                                                                                      width:MediaQuery.of(context).size.width*0.070,
+                                                                                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/MasterCard.png"),fit: BoxFit.contain),),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                )
+                                                                                            )
+                                                                                        ),
+                                                                                        Container(
+                                                                                          height:MediaQuery.of(context).size.height*0.070,
+                                                                                          width:MediaQuery.of(context).size.width*0.160,
+                                                                                          child: Center(
+                                                                                            child: TextFormField(
+                                                            
+                                                                                              onTap: () {
+                                                                                                setItemWidgets(items);
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                // print(grandTotal);
+                                                            
+                                                            
+                                                                                                masterPaid=   grandTotal-cashPaid-amexPaid-visaPaid-madaPaid??0;
+                                                                                                if(masterPaid<0){
+                                                                                                  masterPaid=0;
+                                                            
+                                                                                                }
+                                                                                                master.text=masterPaid.toStringAsFixed(1);
+                                                            
+                                                            
+                                                                                                balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                setState(() {
+                                                                                                  // keyboard = true;
+                                                                                                }
+                                                                                                );
+                                                                                              },
+                                                                                              onChanged: (value){
+                                                                                                // print(value);
+                                                                                                masterPaid=double.tryParse(value)??0;
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                bankPaid=grandTotal-cashPaid??0;
+                                                            
+                                                                                                cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                if(cashPaid<0){
+                                                                                                  cashPaid=0;
+                                                                                                }
+                                                                                                paidCash.text=cashPaid.toStringAsFixed(1);
+                                                                                                // print(bankPaid);
+                                                                                                balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                setState(() {
+                                                            
+                                                                                                });
+                                                                                              },
+                                                                                              controller: master,
+                                                                                              keyboardType:
+                                                                                              TextInputType.number,
+                                                                                              decoration: InputDecoration(
+                                                                                                // labelText: 'DISCOUNT',
+                                                                                                  hoverColor: default_color,
+                                                                                                  hintText:'Amount',
+                                                                                                  border:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderRadius:
+                                                                                                    BorderRadius
+                                                                                                        .circular(5.0),
+                                                                                                  ),
+                                                                                                  focusedBorder:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderSide: BorderSide(
+                                                                                                        color: Colors
+                                                                                                            .pink.shade900,
+                                                                                                        width: 1.0),
+                                                                                                  ),
+                                                                                                  prefixIcon: const Padding(
+                                                                                                    padding: EdgeInsets.all(0.0),
+                                                                                                    child: Icon(
+                                                                                                      Icons.money_outlined,
+                                                                                                      color: Colors.grey,
+                                                                                                    ), // icon is 48px widget.
+                                                                                                  ),
+                                                                                                  contentPadding: EdgeInsets.all(5)
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                            
+                                                            
+                                                                                      ]
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                                Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Container(
+                                                                                  child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                      children:[
+                                                                                        Container(
+                                                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                                                            width:MediaQuery.of(context).size.width*0.07,
+                                                                                            child: Center(
+                                                                                                child: Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                  children:  [
+                                                                                                    // Text('VISA'),
+                                                                                                    Container(
+                                                                                                      height:MediaQuery.of(context).size.height*0.180,
+                                                                                                      width:MediaQuery.of(context).size.width*0.070,
+                                                                                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/visa.png"),fit: BoxFit.contain),),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                )
+                                                                                            )
+                                                                                        ),
+                                                                                        Container(
+                                                                                          height:MediaQuery.of(context).size.height*0.070,
+                                                                                          width:MediaQuery.of(context).size.width*0.160,
+                                                                                          child: Center(
+                                                                                            child: TextFormField(
+                                                            
+                                                                                              onTap: () {
+                                                                                                setItemWidgets(items);
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                // print(grandTotal);
+                                                            
+                                                            
+                                                                                                visaPaid=   grandTotal-cashPaid-amexPaid-masterPaid-madaPaid??0;
+                                                                                                if(visaPaid<0){
+                                                                                                  visaPaid=0;
+                                                            
+                                                                                                }
+                                                                                                visa.text=visaPaid.toStringAsFixed(1);
+                                                            
+                                                            
+                                                                                                balance=grandTotal-cashPaid-madaPaid-visaPaid-masterPaid-amexPaid;
+                                                                                                setState(() {
+                                                                                                  // keyboard = true;
+                                                                                                }
+                                                                                                );
+                                                                                              },
+                                                                                              onChanged: (value){
+                                                                                                // print(value);
+                                                                                                visaPaid=double.tryParse(value)??0;
+                                                                                                double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                                                bankPaid=grandTotal-cashPaid??0;
+                                                            
+                                                                                                cashPaid=grandTotal-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                if(visaPaid<0){
+                                                                                                  visaPaid=0;
+                                                                                                }
+                                                                                                paidCash.text=cashPaid.toStringAsFixed(1);
+                                                                                                // print(bankPaid);
+                                                                                                balance=grandTotal-cashPaid-madaPaid-masterPaid-visaPaid-amexPaid;
+                                                                                                setState(() {
+                                                            
+                                                                                                });
+                                                                                              },
+                                                                                              controller: visa,
+                                                                                              keyboardType:
+                                                                                              TextInputType.number,
+                                                                                              decoration: InputDecoration(
+                                                                                                // labelText: 'DISCOUNT',
+                                                                                                  hoverColor: default_color,
+                                                                                                  hintText:'Amount ',
+                                                                                                  border:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderRadius:
+                                                                                                    BorderRadius
+                                                                                                        .circular(5.0),
+                                                                                                  ),
+                                                                                                  focusedBorder:
+                                                                                                  OutlineInputBorder(
+                                                                                                    borderSide: BorderSide(
+                                                                                                        color: Colors
+                                                                                                            .pink.shade900,
+                                                                                                        width: 1.0),
+                                                                                                  ),
+                                                                                                  prefixIcon: const Padding(
+                                                                                                    padding: EdgeInsets.all(0.0),
+                                                                                                    child: Icon(
+                                                                                                      Icons.money_outlined,
+                                                                                                      color: Colors.grey,
+                                                                                                    ), // icon is 48px widget.
+                                                                                                  ),
+                                                                                                  contentPadding: EdgeInsets.all(5)
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                            
+                                                            
+                                                                                      ]
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                                    SizedBox(height: 20,),
+                                                                                    Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                      children: [
+                                                                                        ElevatedButton(onPressed: (){
+                                                                                          Navigator.pop(context);
+                                                                                          mada.text="0.0";
+                                                                                          master.text="0.0";
+                                                                                          visa.text="0.0";
+                                                                                          amex.text="0.0";
+                                                                                          madaPaid=0;
+                                                                                          visaPaid=0;
+                                                                                          masterPaid=0;
+                                                                                          amexPaid=0;
+                                                                                          balance=0;
+                                                                              }, child: Text("CANCEL")),
+                                                                                        ElevatedButton(onPressed: (){
+                                                                                          Navigator.pop(context);
+                                                                                        }, child: Text("OK")),
+                                                            
+                                                                                      ],
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  child: Container(
+                                                                    height: 45,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(6),
+                                                                        color: Colors.blue,
+                                                            
+                                                                      ),
+                                                                      child: const Center(child: Text("OPTIONS",style: TextStyle(
+                                                                          color: Colors.white
+                                                                      ),)),
+                                                                  ),
+                                                                ),
+                                                                // Container(
+                                                                //   height: 45,
+                                                                //   // color: Colors.blue,
+                                                                //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(6),
+                                                                //     color: Colors.blue,
+                                                                //     ),
+                                                                //   child:  DropdownButton(
+                                                                //     borderRadius: BorderRadius.circular(10),
+                                                                //     alignment: AlignmentDirectional.center,
+                                                                //     underline: Column(),
+                                                                //     dropdownColor: Colors.green,
+                                                                //     iconEnabledColor: Colors.blue,
+                                                                //     style:  const TextStyle(
+                                                                //         color: Colors.white,
+                                                                //         fontSize: 18,
+                                                                //         fontWeight: FontWeight.w500
+                                                                //     ),
+                                                                //     value: bankValue,
+                                                                //     icon: const Padding(
+                                                                //       padding: EdgeInsets.only(right: 5),
+                                                                //       child: Icon(
+                                                                //         Icons.account_balance,
+                                                                //           color: Colors.white,
+                                                                //
+                                                                //       ),
+                                                                //     ),
+                                                                //     items: bankOptions.map((String items) {
+                                                                //       return DropdownMenuItem(
+                                                                //         value: items,
+                                                                //         // child: Text(
+                                                                //         //   items,
+                                                                //         // ),
+                                                                //         child: Row(
+                                                                //           children: [
+                                                                //             Text(items,),
+                                                                //             // Container(
+                                                                //             //   height: 45,
+                                                                //             //   child: TextFormField(
+                                                                //             //
+                                                                //             //     onTap: () {
+                                                                //             //
+                                                                //             //     },
+                                                                //             //     onChanged: (value){
+                                                                //             //       double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                //             //
+                                                                //             //       cashPaid=double.tryParse(value)??0;
+                                                                //             //       bankPaid=grandTotal-cashPaid??0;
+                                                                //             //       if(bankPaid<0){
+                                                                //             //         bankPaid=0;
+                                                                //             //       }
+                                                                //             //       paidBank.text=bankPaid.toStringAsFixed(1);
+                                                                //             //       balance=grandTotal-cashPaid-bankPaid;
+                                                                //             //       setState(() {
+                                                                //             //         // keyboard = true;
+                                                                //             //       });
+                                                                //             //     },
+                                                                //             //     controller: paidCash,
+                                                                //             //     keyboardType:
+                                                                //             //     TextInputType.number,
+                                                                //             //     decoration: InputDecoration(
+                                                                //             //       // labelText: 'DISCOUNT',
+                                                                //             //         hoverColor: default_color,
+                                                                //             //         hintText:arabicLanguage?'نقدأ':"Cash ",
+                                                                //             //         border:
+                                                                //             //         OutlineInputBorder(
+                                                                //             //           borderRadius:
+                                                                //             //           BorderRadius
+                                                                //             //               .circular(5.0),
+                                                                //             //         ),
+                                                                //             //         focusedBorder:
+                                                                //             //         OutlineInputBorder(
+                                                                //             //           borderSide: BorderSide(
+                                                                //             //               color: Colors
+                                                                //             //                   .pink.shade900,
+                                                                //             //               width: 1.0),
+                                                                //             //         ),
+                                                                //             //         prefixIcon: const Padding(
+                                                                //             //           padding: EdgeInsets.all(0.0),
+                                                                //             //           child: Icon(
+                                                                //             //             Icons.money_outlined,
+                                                                //             //             color: Colors.grey,
+                                                                //             //           ), // icon is 48px widget.
+                                                                //             //         ),
+                                                                //             //         contentPadding: EdgeInsets.all(5)
+                                                                //             //     ),
+                                                                //             //   ),
+                                                                //             // ),
+                                                                //
+                                                                //           ],
+                                                                //         ),
+                                                                //       );
+                                                                //     }).toList(),
+                                                                //     onChanged: (String newValue) {
+                                                                //       setItemWidgets(items);
+                                                                //
+                                                                //
+                                                                //       double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                //       bankPaid=(grandTotal-cashPaid)??0;
+                                                                //       cashPaid=grandTotal-bankPaid;
+                                                                //       if(cashPaid<0){
+                                                                //         cashPaid=0;
+                                                                //       }
+                                                                //       paidCash.text=cashPaid.toStringAsFixed(1);
+                                                                //       // print(bankPaid);
+                                                                //       balance=grandTotal-cashPaid-bankPaid;
+                                                                //       setState(() {
+                                                                //         // keyboard = true;
+                                                                //       });
+                                                                //
+                                                                //
+                                                                //
+                                                                //
+                                                                //
+                                                                //
+                                                                //       bankValue = newValue;
+                                                                //       // print(dropdownvalue);
+                                                                //       // dropdownvalue=="Drive-Thru" && (deliveryCharge.text.isEmpty || deliveryCharge.text=="0")? delivery=DelCharge.toStringAsFixed(2): delivery=deliveryCharge.text;
+                                                                //       if(mounted){
+                                                                //         setState(() {
+                                                                //           // if(dropdownvalue=="Drive-Thru"){
+                                                                //           //   deliveryCharge.text=DelCharge.toString();
+                                                                //           // }
+                                                                //         });
+                                                                //       }
+                                                                //     },
+                                                                //   )
+                                                                //   // TextFormField(
+                                                                //   //   onTap: () {
+                                                                //   //
+                                                                //   //     setItemWidgets(items);
+                                                                //   //     double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                //   //     // print(grandTotal);
+                                                                //   //
+                                                                //   //
+                                                                //   //     bankPaid=grandTotal-cashPaid;
+                                                                //   //     if(bankPaid<0){
+                                                                //   //       bankPaid=0;
+                                                                //   //
+                                                                //   //     }
+                                                                //   //     paidBank.text=bankPaid.toStringAsFixed(1);
+                                                                //   //
+                                                                //   //
+                                                                //   //     balance=grandTotal-cashPaid-bankPaid;
+                                                                //   //     setState(() {
+                                                                //   //       // keyboard = true;
+                                                                //   //     });
+                                                                //   //   },
+                                                                //   //   onChanged: (value){
+                                                                //   //     // print(value);
+                                                                //   //     bankPaid=double.tryParse(value)??0;
+                                                                //   //     double grandTotal=(totalAmount - (double.tryParse(discount) ?? 0)+(double.tryParse(delivery) ??0));
+                                                                //   //     cashPaid=grandTotal-bankPaid;
+                                                                //   //     if(cashPaid<0){
+                                                                //   //       cashPaid=0;
+                                                                //   //     }
+                                                                //   //     paidCash.text=cashPaid.toStringAsFixed(1);
+                                                                //   //     // print(bankPaid);
+                                                                //   //     balance=grandTotal-cashPaid-bankPaid;
+                                                                //   //     setState(() {
+                                                                //   //       // keyboard = true;
+                                                                //   //     });
+                                                                //   //   },
+                                                                //   //   controller: paidBank,
+                                                                //   //   keyboardType:
+                                                                //   //   TextInputType.number,
+                                                                //   //   decoration: InputDecoration(
+                                                                //   //     // labelText: 'DISCOUNT',
+                                                                //   //       prefixIcon: const Padding(
+                                                                //   //         padding: EdgeInsets.all(0.0),
+                                                                //   //         child: Icon(
+                                                                //   //           Icons.home_repair_service_rounded,
+                                                                //   //           color: Colors.grey,
+                                                                //   //         ), // icon is 48px widget.
+                                                                //   //       ),
+                                                                //   //       hoverColor: default_color,
+                                                                //   //       hintText:arabicLanguage?'مصرف: ':"Bank :",
+                                                                //   //       border:
+                                                                //   //       OutlineInputBorder(
+                                                                //   //         borderRadius:
+                                                                //   //         BorderRadius
+                                                                //   //             .circular(5.0),
+                                                                //   //       ),
+                                                                //   //       focusedBorder:
+                                                                //   //       OutlineInputBorder(
+                                                                //   //         borderSide: BorderSide(
+                                                                //   //             color: Colors
+                                                                //   //                 .pink.shade900,
+                                                                //   //             width: 1.0),
+                                                                //   //       ),
+                                                                //   //       contentPadding: EdgeInsets.all(5)
+                                                                //   //   ),
+                                                                //   // ),
+                                                                // ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                         const SizedBox(width: 10,),
