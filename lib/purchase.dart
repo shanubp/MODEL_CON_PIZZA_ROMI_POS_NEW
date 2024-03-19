@@ -1,10 +1,14 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:awafi_pos/Branches/branches.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'backend/firebase_storage/storage.dart';
 import 'flutter_flow/upload_media.dart';
@@ -17,6 +21,49 @@ class Purchases extends StatefulWidget {
 }
 
 class _PurchasesState extends State<Purchases> {
+
+
+  final ImagePicker _picker = ImagePicker();
+  String imgurl="";
+  XFile? pickedFile;
+  // String? uploadedFileUrl1;
+
+  Future<String?> imgPicking() async {
+    try {
+      print('1');
+      pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      var fileName = DateTime.now();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        duration: Duration(seconds: 1),
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width:  20,
+            ),
+            Text('Uploding..........'),
+          ],
+        ),
+      ));
+      var ref1 = FirebaseStorage.instance.ref().child('ProductImages/$fileName');
+      print('12');
+
+      await ref1.putFile(File(pickedFile!.path));
+
+      imgurl = (await ref1.getDownloadURL()).toString();
+
+      print(imgurl);
+      // showSnackbar(context, "Uploded", false);
+
+      return imgurl;
+
+      // });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
   String? uploadedFileUrl1;
   String? invoiceNo;
   String? supplier;
@@ -80,32 +127,73 @@ class _PurchasesState extends State<Purchases> {
                       ),
                       child: IconButton(
                         onPressed: () async {
-                          final selectedMedia = await selectMedia(
-                            maxWidth: 1080.00,
-                            maxHeight: 1320.00,
-                          );
-                          if (selectedMedia != null &&
-                              validateFileFormat(
+
+                          // final selectedMedia = await selectMedia(
+                          //   maxWidth: 1080.00,
+                          //   maxHeight: 1320.00,
+                          // );
+                          // if (selectedMedia != null &&
+                          //     validateFileFormat(
+                          //         selectedMedia.storagePath,
+                          //         context)) {
+                          //   showUploadMessage(
+                          //       context, 'Uploading file...',
+                          //       showLoading: true);
+                          //   final downloadUrl = await uploadData(
+                          //       selectedMedia.storagePath,
+                          //       selectedMedia.bytes);
+                          //   ScaffoldMessenger.of(context)
+                          //       .hideCurrentSnackBar();
+                          //   if (downloadUrl != null) {
+                          //     setState(() =>
+                          //     uploadedFileUrl1 = downloadUrl);
+                          //     showUploadMessage(context,
+                          //         'Media upload Success!');
+                          //   } else {
+                          //     showUploadMessage(context,
+                          //         'Failed to upload media');
+                          //   }
+                          // }
+
+
+                          if(Platform.isAndroid){
+                            final selectedMedia = await selectMedia(
+                              maxWidth: 1080.00,
+                              maxHeight: 1320.00,
+                            );
+                            if (selectedMedia != null &&
+                                validateFileFormat(
+                                    selectedMedia.storagePath,
+                                    context)) {
+                              showUploadMessage(
+                                  context, 'Uploading file...',
+                                  showLoading: true);
+                              final downloadUrl = await uploadData(
                                   selectedMedia.storagePath,
-                                  context)) {
-                            showUploadMessage(
-                                context, 'Uploading file...',
-                                showLoading: true);
-                            final downloadUrl = await uploadData(
-                                selectedMedia.storagePath,
-                                selectedMedia.bytes);
-                            ScaffoldMessenger.of(context)
-                                .hideCurrentSnackBar();
-                            if (downloadUrl != null) {
-                              setState(() =>
-                              uploadedFileUrl1 = downloadUrl);
-                              showUploadMessage(context,
-                                  'Media upload Success!');
-                            } else {
-                              showUploadMessage(context,
-                                  'Failed to upload media');
+                                  selectedMedia.bytes);
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              if (downloadUrl != null) {
+                                setState(() =>
+                                uploadedFileUrl1 = downloadUrl);
+                                showUploadMessage(context,
+                                    'Media upload Success!');
+                              } else {
+                                showUploadMessage(context,
+                                    'Failed to upload media');
+                              }
+                            }
+                          }else if(Platform.isWindows){
+                            final data=await imgPicking();
+                            if(data!=null){
+                              uploadedFileUrl1=data;
+                              setState(() {
+
+                              });
                             }
                           }
+
+
                         },
                         icon: const Icon(
                           Icons.image_rounded,
@@ -131,32 +219,74 @@ class _PurchasesState extends State<Purchases> {
                       SizedBox(width: 20,),
                       InkWell(
                         onTap: () async {
-                          final selectedMedia = await selectMedia(
-                            maxWidth: 1080.00,
-                            maxHeight: 1320.00,
-                          );
-                          if (selectedMedia != null &&
-                              validateFileFormat(
+
+
+                          if(Platform.isAndroid){
+                            final selectedMedia = await selectMedia(
+                              maxWidth: 1080.00,
+                              maxHeight: 1320.00,
+                            );
+                            if (selectedMedia != null &&
+                                validateFileFormat(
+                                    selectedMedia.storagePath,
+                                    context)) {
+                              showUploadMessage(
+                                  context, 'Uploading file...',
+                                  showLoading: true);
+                              final downloadUrl = await uploadData(
                                   selectedMedia.storagePath,
-                                  context)) {
-                            showUploadMessage(
-                                context, 'Uploading file...',
-                                showLoading: true);
-                            final downloadUrl = await uploadData(
-                                selectedMedia.storagePath,
-                                selectedMedia.bytes);
-                            ScaffoldMessenger.of(context)
-                                .hideCurrentSnackBar();
-                            if (downloadUrl != null) {
-                              setState(() =>
-                              uploadedFileUrl1 = downloadUrl);
-                              showUploadMessage(context,
-                                  'Media upload Success!');
-                            } else {
-                              showUploadMessage(context,
-                                  'Failed to upload media');
+                                  selectedMedia.bytes);
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              if (downloadUrl != null) {
+                                setState(() =>
+                                uploadedFileUrl1 = downloadUrl);
+                                showUploadMessage(context,
+                                    'Media upload Success!');
+                              } else {
+                                showUploadMessage(context,
+                                    'Failed to upload media');
+                              }
+                            }
+                          }else if(Platform.isWindows){
+                            final data=await imgPicking();
+                            if(data!=null){
+                              uploadedFileUrl1=data;
+                              setState(() {
+
+                              });
                             }
                           }
+
+
+                          // final selectedMedia = await selectMedia(
+                          //   maxWidth: 1080.00,
+                          //   maxHeight: 1320.00,
+                          // );
+                          // if (selectedMedia != null &&
+                          //     validateFileFormat(
+                          //         selectedMedia.storagePath,
+                          //         context)) {
+                          //   showUploadMessage(
+                          //       context, 'Uploading file...',
+                          //       showLoading: true);
+                          //   final downloadUrl = await uploadData(
+                          //       selectedMedia.storagePath,
+                          //       selectedMedia.bytes);
+                          //   ScaffoldMessenger.of(context)
+                          //       .hideCurrentSnackBar();
+                          //   if (downloadUrl != null) {
+                          //     setState(() =>
+                          //     uploadedFileUrl1 = downloadUrl);
+                          //     showUploadMessage(context,
+                          //         'Media upload Success!');
+                          //   } else {
+                          //     showUploadMessage(context,
+                          //         'Failed to upload media');
+                          //   }
+                          // }
+
+
                         },
                         child: Container(
                           height: 40,

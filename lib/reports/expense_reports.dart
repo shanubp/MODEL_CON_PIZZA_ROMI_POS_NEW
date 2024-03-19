@@ -1,4 +1,10 @@
 
+// import 'dart:html';
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
 import 'package:awafi_pos/Branches/branches.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
@@ -7,6 +13,8 @@ import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 
 import 'package:awafi_pos/order_details/order_details_widget.dart';
 import 'package:awafi_pos/view_invoice/view_invoice.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 import '../DailyReport/genaratePDF/expensePdf.dart';
@@ -24,6 +32,67 @@ import '../main.dart';
 
 
 // import 'package:wifi/wifi.dart';
+
+
+Future<void> downloadImage(String imageUrl,BuildContext context) async {
+   if (Platform.isAndroid) {
+    try {
+      // Send an HTTP GET request to the image URL
+      final http.Response response = await http.get(Uri.parse(imageUrl));
+      // Check if the request was successful (status code 200)
+      if (response.statusCode == 200) {
+        final String timestamp = DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString();
+        final String filename = 'image_$timestamp.jpg'; // Example filename: image_1631890768000.jpg
+        // Get the directory where the image will be saved
+        final Directory appDocDir = await getApplicationDocumentsDirectory();
+        // final String filePath = '${appDocDir.path}/$filename';
+         final String filePath = '/storage/emulated/0/Download/$filename';
+        // Write the image data to a file
+        final File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        // Print the path where the image is saved
+        showUploadMessage(context, 'Image downloaded to: $filePath');
+      } else {
+        // If the request was not successful, print an error message
+        print('Failed to download image. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle any errors that occur during the download process
+      // print('Error downloading image: $e');
+    }
+  } else if (Platform.isWindows) {
+    try {
+      // Send an HTTP GET request to the image URL
+      final http.Response response = await http.get(Uri.parse(imageUrl));
+      // Check if the request was successful (status code 200)
+      if (response.statusCode == 200) {
+        final String timestamp = DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString();
+        final String filename = 'image_$timestamp.jpg'; // Example filename: image_1631890768000.jpg
+        // Get the directory where the image will be saved
+        final Directory? downloadsDir = await getDownloadsDirectory();
+        final String filePath = '${downloadsDir!.path}/$filename';
+        // Write the image data to a file
+        final File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        // Print the path where the image is saved
+        showUploadMessage(context, 'Image downloaded to: $filePath');
+      } else {
+        // If the request was not successful, print an error message
+        print('Failed to download image. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle any errors that occur during the download process
+      print('Error downloading image: $e');
+    }
+  }
+}
+
 
 class ExpenseReport extends StatefulWidget {
   const ExpenseReport({Key? key}) : super(key: key);
@@ -132,6 +201,7 @@ class _ExpenseReportState extends State<ExpenseReport> {
       appBar: AppBar(
         backgroundColor: default_color,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Expense Reports',
           style: FlutterFlowTheme.title1.override(
@@ -202,30 +272,33 @@ class _ExpenseReportState extends State<ExpenseReport> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  Container(
-                    width: 200,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: Colors.white),
-                    child: Center(
-                      child: TextFormField(
-                        controller: invoiceController,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          labelText: 'Bill No',
-                          hoverColor: Colors.red,
-                          hintText: 'search bill no',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.pink.shade900, width: 1.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.16,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: Colors.white),
+                      child: Center(
+                        child: TextFormField(
+                          controller: invoiceController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Bill No',
+                            hoverColor: Colors.red,
+                            hintText: 'search bill no',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.pink.shade900, width: 1.0),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 20,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   TextButton(
                     onPressed: (){
                       FocusScope.of(context).unfocus();
@@ -287,10 +360,10 @@ class _ExpenseReportState extends State<ExpenseReport> {
                   //   ),
                   // ),
                   // const SizedBox(width: 20,),
-                  const SizedBox(width: 50,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Container(
-                    height: 50,
-                    width: 220,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.18,
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Colors.white,
@@ -340,17 +413,17 @@ class _ExpenseReportState extends State<ExpenseReport> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 50,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Text(
                     'To',
                     style: FlutterFlowTheme.bodyText1.override(
                         fontFamily: 'Poppins',fontWeight: FontWeight.bold
                     ),
                   ),
-                  const SizedBox(width: 50,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Container(
-                    height: 50,
-                    width: 220,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.18,
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Colors.white,
@@ -400,12 +473,15 @@ class _ExpenseReportState extends State<ExpenseReport> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 50,),
-                  TextButton(
-                    onPressed: (){
-                      getInvoiceByDate();
-                    },
-                    child: Icon(Icons.search,color: Colors.black,size:35 ),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    child: TextButton(
+                      onPressed: (){
+                        getInvoiceByDate();
+                      },
+                      child: Icon(Icons.search,color: Colors.black,size:35 ),
+                    ),
                   ),
                   // InkWell
                   //   (
@@ -453,159 +529,330 @@ class _ExpenseReportState extends State<ExpenseReport> {
                   mainAxisSpacing:10,
                   childAspectRatio: .7,
                 ),
-
                 itemCount:
                 invoices==null?0:invoices!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot invoice =
                   invoices!.docs[index];
-                  return  Card(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                              builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Container(
-                                        height: MediaQuery.of(context).size.height*0.7,
-                                        width: MediaQuery.of(context).size.width*0.5,
-                                        decoration: BoxDecoration(image: DecorationImage( image: NetworkImage(invoice.get('image')))),
-                                        // child: FloatingActionButton(onPressed: (){Navigator.pop(context);},child: Text("BACK")),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('OK'),
+                  return invoices!.docs==null?Center(child: CircularProgressIndicator()):
+                  invoices!.docs.length==0?Center(child: Text('No Data')):InkWell(
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                final currentContext = context; // Store a reference to the context
+                                if (invoice.get('image') != '' && invoice.get('image') != null) {
+                                  showDialog(
+                                    context: currentContext, // Use the stored context
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Container(
+                                          height: MediaQuery.of(context).size.height * 0.7,
+                                          width: MediaQuery.of(context).size.width * 0.5,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(invoice.get('image')),
+                                            ),
+                                          ),
                                         ),
-                                      ],
-                                    );
-                              });
-
-                            },
-                            child: Container(
-                              color: Colors.grey.shade300,
-                                height: 130,
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              downloadImage(invoice.get('image'), currentContext); // Pass the stored context
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Download'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showUploadMessage(context, 'Image Not Exist!');
+                                }
+                              },
+                              child: Container(
+                                color: Colors.grey.shade300,
+                                height: 200,
                                 child:invoice.get('image')!='' && invoice.get('image')!=null
                                     ? CachedNetworkImage(
-                                    imageUrl: invoice.get('image')
+                                  imageUrl: invoice.get('image')
                                   ,fit: BoxFit.cover,
                                 )
-                                :InkWell(
-                                  onTap:(){showUploadMessage(context,"Image Not Found");} ,
-                                  child: Container(
-                                      height:220
-                                  ),
+                                    :Container(
+                                    height:220
                                 ),
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10,right: 10),
-                          child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Voucher No"),
-                                Text(":"),
-                                Text(invoice
-                                    .get('voucherNo')
-                                    .toString())
-                              ]),
-                        ),
-                        Divider(),
-                        Padding(
+                          Padding(
                             padding: const EdgeInsets.only(left: 10,right: 10),
                             child: Row(
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Invoice No"),
+                                  Text("Voucher No"),
                                   Text(":"),
                                   Text(invoice
-                                      .get('invoiceNo')
-                                      .toString()),
-                                ])),
-                        Divider(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10,right: 10),
-                          child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(" Amount"),
-                                Text(":"),
-                                Text(
-                                    invoice.get('amount').toString()),
-                              ]),
-                        ),
-                        Divider(),
-                        // Padding(
-                        //     padding: const EdgeInsets.only(left: 10,right: 10),
-                        //     child: Row(
-                        //         mainAxisAlignment:
-                        //         MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           Text("Vat Amount"),
-                        //           Text(":"),
-                        //           Text(invoice.get('gst').toString()),
-                        //         ])
-                        // ),
-                        // Divider(),
-                        Padding(
+                                      .get('voucherNo')
+                                      .toString())
+                                ]),
+                          ),
+                          Divider(),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 10,right: 10),
+                              child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Invoice No"),
+                                    Text(":"),
+                                    Text(invoice
+                                        .get('invoiceNo')
+                                        .toString()),
+                                  ])),
+                          Divider(),
+                          Padding(
                             padding: const EdgeInsets.only(left: 10,right: 10),
                             child: Row(
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Description"),
+                                  Text("Taxable Amount"),
                                   Text(":"),
-                                  Text(invoice
-                                      .get('description')
-                                      .toString()),
-                                ]
-                            )
-                        ),
-                        Divider(),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 10,right: 10),
-                            child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Staff"),
-                                  Text(":"),
-                                  Text(PosUserIdToName[invoice
-                                      .get('currentUserId')
-                                      .toString()]),
-                                ]
-                            )
-                        ),
-                        IconButton(onPressed: () async {
-
-                          bool proceed = await alert(context, 'You want to Delete?');
-                          if(proceed){
-                            invoice.reference.delete();
-                            setState(() {
-
-                            });
-                            Navigator.pop(context);
-                          }
-
-
-
-                        }, icon: Icon(Icons.delete,color: Colors.red,))
-
-                      ],
+                                  Text(
+                                      invoice.get('amount').toString()),
+                                ]),
+                          ),
+                          Divider(),
+                          // Padding(
+                          //     padding: const EdgeInsets.only(left: 10,right: 10),
+                          //     child: Row(
+                          //         mainAxisAlignment:
+                          //         MainAxisAlignment.spaceBetween,
+                          //         children: [
+                          //           Text("Vat Amount"),
+                          //           Text(":"),
+                          //           Text(invoice.get('gst').toString()),
+                          //         ])),
+                          // Divider(),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 10,right: 10),
+                              child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Description"),
+                                    Text(":"),
+                                    Text(invoice
+                                        .get('description')
+                                        .toString()),
+                                  ])),
+                          Divider(),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 10,right: 10),
+                              child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Staff"),
+                                    Text(":"),
+                                    Text(PosUserIdToName[invoice
+                                        .get('currentUserId')
+                                        .toString()]),
+                                  ]
+                              )
+                          ),
+                          IconButton(onPressed: () async {
+                            bool proceed = await alert(context, 'You want to Delete?');
+                            if(proceed){
+                              invoice.reference.delete();
+                              setState(() {
+                              });
+                              Navigator.pop(context);
+                            }
+                          }, icon: Icon(Icons.delete,color: Colors.red,))
+                        ],
+                      ),
                     ),
                   ) ;
                 },
               ),
             )
+
+            // Expanded(
+            //   child: GridView.builder(
+            //     shrinkWrap: true,
+            //     primary: false,
+            //     padding: const EdgeInsets.all(10),
+            //     gridDelegate:
+            //     const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 5,
+            //       crossAxisSpacing: 10,
+            //       mainAxisSpacing:10,
+            //       childAspectRatio: .7,
+            //     ),
+            //
+            //     itemCount:
+            //     invoices==null?0:invoices!.docs.length,
+            //     itemBuilder: (context, index) {
+            //       DocumentSnapshot invoice =
+            //       invoices!.docs[index];
+            //       return  Card(
+            //         child: Column(
+            //           children: [
+            //             Expanded(
+            //               child: InkWell(
+            //                 onTap: (){
+            //                   showDialog(
+            //                       context: context,
+            //                   builder: (BuildContext context) {
+            //                         return AlertDialog(
+            //                           title: Container(
+            //                             height: MediaQuery.of(context).size.height*0.7,
+            //                             width: MediaQuery.of(context).size.width*0.5,
+            //                             decoration: BoxDecoration(image: DecorationImage( image: NetworkImage(invoice.get('image')))),
+            //                             // child: FloatingActionButton(onPressed: (){Navigator.pop(context);},child: Text("BACK")),
+            //                           ),
+            //                           actions: <Widget>[
+            //                             TextButton(
+            //                               onPressed: () {
+            //                                 Navigator.pop(context);
+            //                               },
+            //                               child: const Text('OK'),
+            //                             ),
+            //                           ],
+            //                         );
+            //                   });
+            //
+            //                 },
+            //                 child: Container(
+            //                   color: Colors.grey.shade300,
+            //                     height: 130,
+            //                     child:invoice.get('image')!='' && invoice.get('image')!=null
+            //                         ? CachedNetworkImage(
+            //                         imageUrl: invoice.get('image')
+            //                       ,fit: BoxFit.cover,
+            //                     )
+            //                     :InkWell(
+            //                       onTap:(){showUploadMessage(context,"Image Not Found");} ,
+            //                       child: Container(
+            //                           height:220
+            //                       ),
+            //                     ),
+            //                 ),
+            //               ),
+            //             ),
+            //             Padding(
+            //               padding: const EdgeInsets.only(left: 10,right: 10),
+            //               child: Row(
+            //                   mainAxisAlignment:
+            //                   MainAxisAlignment.spaceBetween,
+            //                   children: [
+            //                     Text("Voucher No"),
+            //                     Text(":"),
+            //                     Text(invoice
+            //                         .get('voucherNo')
+            //                         .toString())
+            //                   ]),
+            //             ),
+            //             Divider(),
+            //             Padding(
+            //                 padding: const EdgeInsets.only(left: 10,right: 10),
+            //                 child: Row(
+            //                     mainAxisAlignment:
+            //                     MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text("Invoice No"),
+            //                       Text(":"),
+            //                       Text(invoice
+            //                           .get('invoiceNo')
+            //                           .toString()),
+            //                     ])),
+            //             Divider(),
+            //             Padding(
+            //               padding: const EdgeInsets.only(left: 10,right: 10),
+            //               child: Row(
+            //                   mainAxisAlignment:
+            //                   MainAxisAlignment.spaceBetween,
+            //                   children: [
+            //                     Text(" Amount"),
+            //                     Text(":"),
+            //                     Text(
+            //                         invoice.get('amount').toString()),
+            //                   ]),
+            //             ),
+            //             Divider(),
+            //             // Padding(
+            //             //     padding: const EdgeInsets.only(left: 10,right: 10),
+            //             //     child: Row(
+            //             //         mainAxisAlignment:
+            //             //         MainAxisAlignment.spaceBetween,
+            //             //         children: [
+            //             //           Text("Vat Amount"),
+            //             //           Text(":"),
+            //             //           Text(invoice.get('gst').toString()),
+            //             //         ])
+            //             // ),
+            //             // Divider(),
+            //             Padding(
+            //                 padding: const EdgeInsets.only(left: 10,right: 10),
+            //                 child: Row(
+            //                     mainAxisAlignment:
+            //                     MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text("Description"),
+            //                       Text(":"),
+            //                       Text(invoice
+            //                           .get('description')
+            //                           .toString()),
+            //                     ]
+            //                 )
+            //             ),
+            //             Divider(),
+            //             Padding(
+            //                 padding: const EdgeInsets.only(left: 10,right: 10),
+            //                 child: Row(
+            //                     mainAxisAlignment:
+            //                     MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text("Staff"),
+            //                       Text(":"),
+            //                       Text(PosUserIdToName[invoice
+            //                           .get('currentUserId')
+            //                           .toString()]??''),
+            //                     ]
+            //                 )
+            //             ),
+            //             IconButton(onPressed: () async {
+            //
+            //               bool proceed = await alert(context, 'You want to Delete?');
+            //               if(proceed){
+            //                 invoice.reference.delete();
+            //                 setState(() {
+            //
+            //                 });
+            //                 Navigator.pop(context);
+            //               }
+            //
+            //
+            //
+            //             }, icon: Icon(Icons.delete,color: Colors.red,))
+            //
+            //           ],
+            //         ),
+            //       ) ;
+            //     },
+            //   ),
+            // )
           ],
         ),
       ),
@@ -617,5 +864,19 @@ class _ExpenseReportState extends State<ExpenseReport> {
 
 
 
-
+class GlobalFunctions {
+  static Future<File> writeCounter(List<int> bytes, String name) async {
+    const path =  "/storage/emulated/0/Download";
+    String savePath = '$path/${name.split('.').first}.${name.split('.').last}';
+    File file = File(savePath);
+    int count = 0;
+    while (await file.exists()) {
+      count++;
+      savePath =
+      '$path/${name.split('.').first} ($count).${name.split('.').last}';
+      file = File(savePath);
+    }
+    return file.writeAsBytes(bytes);
+  }
+}
 

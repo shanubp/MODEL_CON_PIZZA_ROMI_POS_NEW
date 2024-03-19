@@ -1,11 +1,13 @@
 
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
+
 import 'package:universal_html/html.dart' as html;
 import '../../Branches/branches.dart';
 import '../../main.dart';
@@ -24,6 +26,7 @@ class CategoryPdfPage {
     print(invoice.To);
     print(invoice.From);
     final pdf = Document();
+
     image = await imageFromAssetBundle(logoPath);
 
     pdf.addPage(MultiPage(

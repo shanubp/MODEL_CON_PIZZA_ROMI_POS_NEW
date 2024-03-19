@@ -74,23 +74,23 @@ class _BillWidgetState extends State<BillWidget> {
                 double.tryParse(items[index]['addMorePrice'].toString())!??0-
                 double.tryParse(items[index]['addLessPrice'].toString())!??0-
                 double.tryParse(items[index]['removePrice'].toString())!??0;
-            List  remove = items[index]['remove'];
-            List  removeArabic = items[index]['removeArabic'];
-            double  removePrice=double.tryParse(items[index]['removePrice'].toString())!;
-            List  addMore = items[index]['addMore'];
-            List  addMoreArabic = items[index]['addMoreArabic'];
-            double  addMorePrice=double.tryParse(items[index]['addMorePrice'].toString())!;
-            List  addLess = items[index]['addLess'];
-            List  addLessArabic = items[index]['addLessArabic'];
-            double  addLessPrice=double.tryParse(items[index]['addLessPrice'].toString())!;
+            List  remove = items[index]['remove'] ?? [];
+            List  removeArabic = items[index]['removeArabic'] ?? [];
+            double  removePrice=double.tryParse(items[index]['removePrice'].toString())??0;
+            List  addMore = items[index]['addMore'] ?? [];
+            List  addMoreArabic = items[index]['addMoreArabic']?? [];
+            double  addMorePrice=double.tryParse(items[index]['addMorePrice'].toString())??0;
+            List  addLess = items[index]['addLess'] ?? [];
+            List  addLessArabic = items[index]['addLessArabic'] ?? [];
+            double  addLessPrice=double.tryParse(items[index]['addLessPrice'].toString())??0;
 
-            double price=double.tryParse(items[index]['price']!.toStringAsFixed(2))!;
+            double price=double.tryParse(items[index]['price']!.toStringAsFixed(2))??0;
             String catogery=items[index]['category'];
             int progrss = items[index]['qty'];
-            List ing=items[index]["ingredients"];
+            List ing=items[index]["ingredients"] ?? [];
             List variants=items[index]["variants"];
-            String variantName=items[index]["variantName"];
-            String variantNameArabic=items[index]["variantNameArabic"];
+            String variantName=items[index]["variantName"]??"";
+            String variantNameArabic=items[index]["variantNameArabic"] ??"";
 
             return  AnimatedContainer(
               curve: Curves.bounceIn,

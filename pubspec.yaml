@@ -86,6 +86,8 @@ dependencies:
   http: ^1.2.0
   esc_pos_printer_plus:
   esc_pos_utils_plus: ^2.0.3
+  file_picker: ^6.2.0
+#  flutter_thermal_printer: ^0.0.5
 
 
 

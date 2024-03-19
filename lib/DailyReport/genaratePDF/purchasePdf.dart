@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:awafi_pos/Branches/branches.dart';
 import 'package:awafi_pos/DailyReport/genaratePDF/productReport_model.dart';
 import 'package:awafi_pos/DailyReport/genaratePDF/purchasereportModel.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -20,8 +21,7 @@ class PurchasePdfPage {
 
   static Future<File> generate(PurchaseReportData invoice) async {
     double gdtotal=0;
-    print(invoice.To);
-    print(invoice.InvoiceList[0]);
+
     final pdf = Document();
     image = await imageFromAssetBundle(logoPath);
 
@@ -116,7 +116,7 @@ class PurchasePdfPage {
                   final item =invoice.InvoiceList[index];
                   double? total=double.tryParse(item["amount"].toString());
                   double? totalPurchaseVat=double.tryParse(item["vat"].toString());
-                  gdtotal+=total!;
+                  gdtotal+=total??0;
                   print(item.toString()+'                    $index');
                   return [
                     item['voucherNo'],

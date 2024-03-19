@@ -1,9 +1,11 @@
 
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
+
 import 'package:universal_html/html.dart' as html;
 import '../../Branches/branches.dart';
 import '../../modals/Print/pdf_api.dart';
@@ -18,7 +20,7 @@ class CreditPdfPage {
   static Future<File> generate(CreditReportData invoice) async {
     double gdtotal=0;
     final pdf = Document();
-    image = await imageFromAssetBundle(logoPath);
+   image = await imageFromAssetBundle(logoPath);
 
     pdf.addPage(MultiPage(
         build: (context) => [

@@ -1,14 +1,16 @@
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:awafi_pos/Branches/branches.dart';
+// import 'package:awafi_pos/billModel.dart';
+// import 'package:awafi_pos/historyBillPdf.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_usb_printer/flutter_usb_printer.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -16,6 +18,8 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as im;
 import '../main.dart';
+import '../model/billModel.dart';
+import '../pdf/historyBillPdf.dart';
 import '../product_card.dart';
 import 'history_print.dart';
 
@@ -31,8 +35,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Timestamp? datePicked1;
   Timestamp? datePicked2;
-
-  get imgBytes => null;
   @override
   void initState() {
     super.initState();
@@ -67,17 +69,10 @@ class _history_View_WidgetState extends State<history_View_Widget> {
     bytesBuilder.add(vat_registrationBytes);
 
     //date
-
     bytesBuilder.addByte(3);
-    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(saleDate);
-    List<int> date = utf8.encode(time);
+    List<int> date = utf8.encode(saleDate.toString());
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
-
-    // bytesBuilder.addByte(3);
-    // List<int> date = utf8.encode(saleDate.toString());
-    // bytesBuilder.addByte(date.length);
-    // bytesBuilder.add(date);
 
     //invoice total
 
@@ -137,781 +132,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       DateTime salesDate,
       double pc,
       double pb,
-      double bal, String orderType,)
-  // async {
-  //   print('start');
-  //   final CapabilityProfile profile = await CapabilityProfile.load();
-  //
-  //   final generator = Generator(PaperSize.mm80, profile);
-  //   const PaperSize paper1 = PaperSize.mm80;
-  //   var profile1 = await CapabilityProfile.load();
-  //   var printer1 = NetworkPrinter(paper1, profile1);
-  //   List<int> bytes = [];
-  //
-  //   final Uint8List imgBytes = data!.buffer.asUint8List();
-  //   final im.Image? image = im.decodeImage(imgBytes);
-  //   bytes += generator.image(image!);
-  //
-  //   final im.Image? image1 = im.decodeImage(capturedImage1);
-  //   bytes += generator.image(image1!);
-  //   // bytes += generator.row([
-  //   //   PosColumn(text:"Date :",styles: PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-  //   //   PosColumn(text:"${DateTime.now().toString().substring(0, 19)} ",styles: PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 8)
-  //   // ]);
-  //   // bytes += generator.row(
-  //   //     [
-  //   //       PosColumn(text: "Invoice No:",styles: const PosStyles(bold: true,align: PosAlign.left,height: PosTextSize.size1,width: PosTextSize.size1),width: 4),
-  //   //       PosColumn(text: "$invNo ",styles: const PosStyles(bold: true,align: PosAlign.right,height: PosTextSize.size1,width: PosTextSize.size1),width: 4)
-  //   //     ]);
-  //   capturedImage10 = await screenshotController.captureFromWidget(Container(
-  //     color: Colors.white,
-  //     width: printWidth * 3,
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.start,
-  //     // ListView(shrinkWrap: true,
-  //         // physics: NeverScrollableScrollPhysics(),
-  //         children: [
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Text(
-  //                 'Date :',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               Text(
-  //                 '${DateTime.now().toString().substring(0, 19)}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //             ],
-  //           ),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Text(
-  //                 'Invoice No:',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 5,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               Text(
-  //                 '$invNo',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 5,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //             ],
-  //           ),
-  //         ]),
-  //   ));
-  //   final im.Image? image10 = im.decodeImage(capturedImage10);
-  //   bytes += generator.image(image10!);
-  //
-  //   bytes += generator.text("-------------------------------------------",
-  //       styles: PosStyles(
-  //         bold: true,
-  //         align: PosAlign.center,
-  //         height: PosTextSize.size2,
-  //       ));
-  //
-  //   bytes += generator.text("ORDER TYPE : $orderType",
-  //       styles: PosStyles(
-  //           bold: true,
-  //           align: PosAlign.center,
-  //           height: PosTextSize.size2,
-  //           width: PosTextSize.size2));
-  //
-  //   bytes += generator.text("-------------------------------------------",
-  //       styles: PosStyles(
-  //         bold: true,
-  //         align: PosAlign.center,
-  //         height: PosTextSize.size2,
-  //       ));
-  //
-  //   //HEAD IMAGE
-  //   // final Uint8List imgBytes1 = data1.buffer.asUint8List();
-  //   // final im.Image image11 = im.decodeImage(imgBytes1);
-  //   // bytes += generator.image(image11);
-  //
-  //   // var capturedhead= await    screenshotController
-  //   //     .captureFromWidget(Container(
-  //   //   color: Colors.white,
-  //   //   width: printWidth*3,
-  //   //   height: 85,
-  //   //
-  //   //   child: Column(
-  //   //     children: [
-  //   //       Row(
-  //   //         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //   //         children:   [
-  //   //           //pdt
-  //   //           Expanded(
-  //   //             child: Column(
-  //   //               crossAxisAlignment: CrossAxisAlignment.start,
-  //   //               children: [
-  //   //
-  //   //                 Text('منتج',
-  //   //                   style:  TextStyle(
-  //   //                     fontFamily: 'GE Dinar One Medium',
-  //   //                     fontSize: fontSize,
-  //   //                     fontWeight: FontWeight.w600,
-  //   //                     color: Colors.black,
-  //   //                   ),
-  //   //                 ),
-  //   //                 Text('ITEM',
-  //   //                   style:  TextStyle(
-  //   //                       color: Colors.black,
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //               ],
-  //   //             ),
-  //   //           ),
-  //   //           Container(
-  //   //             width: 45,
-  //   //             child: Column(
-  //   //               crossAxisAlignment: CrossAxisAlignment.start,
-  //   //               children: [
-  //   //
-  //   //                 Text('كمية',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //                 Text('QTY',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //               ],
-  //   //             ),
-  //   //           ),
-  //   //           Container(
-  //   //             width: 45,
-  //   //             child: Column(
-  //   //               crossAxisAlignment: CrossAxisAlignment.start,
-  //   //               children: [
-  //   //
-  //   //                 Text('سعر',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //                 Text('RATE',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //               ],
-  //   //             ),
-  //   //           ),
-  //   //           Container(
-  //   //             width: 45,
-  //   //             child: Column(
-  //   //               crossAxisAlignment: CrossAxisAlignment.start,
-  //   //               children: [
-  //   //
-  //   //                 Text('ضريبة',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //                 Text('VAT',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //               ],
-  //   //             ),
-  //   //           ),
-  //   //           Container(
-  //   //             width: 50,
-  //   //             child: Column(
-  //   //               crossAxisAlignment: CrossAxisAlignment.start,
-  //   //               children: [
-  //   //
-  //   //                 Text('المجموع',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //                 Text('TOTAL',
-  //   //                   style:  TextStyle(
-  //   //                       fontFamily: 'GE Dinar One Medium',
-  //   //                       color: Colors.black,
-  //   //                       fontSize: fontSize,
-  //   //                       fontWeight: FontWeight.w600),
-  //   //                 ),
-  //   //               ],
-  //   //             ),
-  //   //           ),
-  //   //         ],
-  //   //       ),
-  //   //       Container(
-  //   //           decoration: const BoxDecoration(
-  //   //             color: Colors.white,
-  //   //           ),
-  //   //           child:  Center(child: Text('-------------------------------------------',
-  //   //             style: TextStyle(color: Colors.black,fontSize: printWidth*.25),))
-  //   //       ),
-  //   //     ],
-  //   //   ),
-  //   // ));
-  //   final im.Image? imagehead = im.decodeImage(capturedhead);
-  //   bytes += generator.image(
-  //     imagehead!,
-  //   );
-  //   print("$capturedhead--------------------");
-  //
-  //   String itemString = '';
-  //   String itemStringArabic = '';
-  //   String itemTotal = '';
-  //   String itemGrossTotal = '';
-  //   String itemTax = '';
-  //   String addON = '';
-  //
-  //   double? deliveryCharge = 0;
-  //   double grantTotal = 0;
-  //   double totalAmount = 0;
-  //   String arabic = '';
-  //   String english = '';
-  //   String addOnArabic = '';
-  //   addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
-  //   Map<String, dynamic> config = Map();
-  //   List<Widget> itemWidgets = [];
-  //   List<Widget> itemWidgets1 = [];
-  //   for (Map<String, dynamic> item in items) {
-  //     var addOnPrice =  item['addOnPrice']??0-item['removePrice']??0-item['addLessPrice']??0+item['addMorePrice']??0;
-  //     double total = (double.tryParse(item['price'].toString())! + addOnPrice) *
-  //         double.tryParse(item['qty'].toString())!;
-  //     double grossTotal = total * 100 / 115;
-  //     double vat =
-  //         (double.tryParse(item['price'].toString())! + addOnPrice) * 15 / 115;
-  //     newAddOn = item['addOns']??''+item['addLess']??''+item['addMore']??''+item['remove']??'';
-  //     arabic = item['arabicName'];
-  //     english = item['pdtname'];
-  //
-  //     grantTotal += total;
-  //
-  //     deliveryCharge = item['deliveryCharge'] == null
-  //         ? 0
-  //         : double.tryParse(item['deliveryCharge'].toString());
-  //     newAddOn = item['addOns']??''+item['addLess']??''+item['addMore']??''+item['remove']??'';
-  //     newAddOnArabic = item['addOnArabic']??''+item['addLessArabic']??''+item['addMoreArabic']??''+item['removeArabic']??'';      addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
-  //     addON = newAddOn.isEmpty ? '' : newAddOn.toString();
-  //     double price =
-  //         (double.tryParse(item['price'].toString())! + addOnPrice) * 100 / 115;
-  //     totalAmount += price * double.tryParse(item['qty'].toString())!;
-  //     itemWidgets1.add(Container(
-  //       decoration: const BoxDecoration(
-  //         color: Colors.white,
-  //       ),
-  //       child:
-  //       // ListView(shrinkWrap: true, children: [
-  //         Container(
-  //           width: printWidth * 3,
-  //           child: Column(
-  //             children: [
-  //               Row(
-  //                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: [
-  //                   Expanded(
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(
-  //                           '$arabic $addOnArabic',
-  //                           // textDirection: TextDirection.rtl,
-  //                           style: const TextStyle(
-  //                             fontFamily: 'GE Dinar One Medium',
-  //                             fontSize: 17,
-  //                             fontWeight: FontWeight.w600,
-  //                             color: Colors.black,
-  //                           ),
-  //                         ),
-  //                         Text(
-  //                           '$english $addON',
-  //                           // textDirection: TextDirection.rtl,
-  //                           style: TextStyle(
-  //                             fontFamily: 'GE Dinar One Medium',
-  //                             fontSize: fontSize,
-  //                             fontWeight: FontWeight.w600,
-  //                             color: Colors.black,
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //
-  //                   // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}      ${total.toStringAsFixed(2)}",
-  //                   //   textDirection: TextDirection.ltr,
-  //                   //   textAlign:TextAlign.end,
-  //                   //   style:  TextStyle(
-  //                   //     fontSize: fontSize,
-  //                   //
-  //                   //     fontWeight: FontWeight.w600,
-  //                   //     color: Colors.black,
-  //                   //   ),
-  //                   // ),
-  //                   // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}     ${total.toStringAsFixed(2)}",
-  //                   //
-  //                   Container(
-  //                     width: 45,
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         // Text('${arabicNumber.convert(double.tryParse(item['qty'].toString()).toStringAsFixed(2))}',
-  //                         //   style:  TextStyle(
-  //                         //       fontFamily: 'GE Dinar One Medium',
-  //                         //       color: Colors.black,
-  //                         //       fontSize: fontSize+2,
-  //                         //       fontWeight: FontWeight.w600),
-  //                         // ),
-  //                         Text(
-  //                           '${double.tryParse(item['qty'].toString())}',
-  //                           style: TextStyle(
-  //                               fontFamily: 'GE Dinar One Medium',
-  //                               color: Colors.black,
-  //                               fontSize: fontSize,
-  //                               fontWeight: FontWeight.w600),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     width: 45,
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         // Text('${arabicNumber.convert(price.toStringAsFixed(2))} ',
-  //                         //   style:  TextStyle(
-  //                         //       fontFamily: 'GE Dinar One Medium',
-  //                         //       color: Colors.black,
-  //                         //       fontSize: fontSize+2,
-  //                         //       fontWeight: FontWeight.w600),
-  //                         // ),
-  //                         Text(
-  //                           '${price.toStringAsFixed(2)} ',
-  //                           style: TextStyle(
-  //                               fontFamily: 'GE Dinar One Medium',
-  //                               color: Colors.black,
-  //                               fontSize: fontSize,
-  //                               fontWeight: FontWeight.w600),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     width: 45,
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         // Text('${arabicNumber.convert(vat.toStringAsFixed(2))}',
-  //                         //   style:  TextStyle(
-  //                         //       fontFamily: 'GE Dinar One Medium',
-  //                         //       color: Colors.black,
-  //                         //       fontSize: fontSize+2,
-  //                         //       fontWeight: FontWeight.w600),
-  //                         // ),
-  //                         Text(
-  //                           '${vat.toStringAsFixed(2)}',
-  //                           style: TextStyle(
-  //                               fontFamily: 'GE Dinar One Medium',
-  //                               color: Colors.black,
-  //                               fontSize: fontSize,
-  //                               fontWeight: FontWeight.w600),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     width: 50,
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         // Text('${arabicNumber.convert(total.toStringAsFixed(2))}',
-  //                         //   style:  TextStyle(
-  //                         //       fontFamily: 'GE Dinar One Medium',
-  //                         //       color: Colors.black,
-  //                         //       fontSize: fontSize+2,
-  //                         //       fontWeight: FontWeight.w600),
-  //                         // ),
-  //                         Text(
-  //                           '${total.toStringAsFixed(2)}',
-  //                           style: TextStyle(
-  //                               fontFamily: 'GE Dinar One Medium',
-  //                               color: Colors.black,
-  //                               fontSize: fontSize,
-  //                               fontWeight: FontWeight.w600),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               SizedBox(
-  //                 height: 10,
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       // ]),
-  //     ));
-  //
-  //     print('mid ********************************');
-  //
-  //     itemTotal += (totalAmount * ((100 + gst) / 100) -
-  //             (double.tryParse(discount.toString()) ?? 0))
-  //         .toStringAsFixed(2);
-  //     itemGrossTotal += grossTotal.toStringAsFixed(2);
-  //     itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
-  //     if (itemWidgets1.length == itemCount) {
-  //       var capturedIm = await screenshotController.captureFromWidget(Container(
-  //         width: printWidth * 3,
-  //
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children:
-  //             List.generate(
-  //               itemWidgets1.length,
-  //                   (index) {
-  //                 return itemWidgets1[index];
-  //               },
-  //             )
-  //         ),
-  //         // ListView.builder(
-  //         //     shrinkWrap: true,
-  //         //     itemCount: itemWidgets1.length,
-  //         //     itemBuilder: (context, index) {
-  //         //       return itemWidgets1[index];
-  //         //     }),
-  //       ));
-  //
-  //       final im.Image? image2 = im.decodeImage(capturedIm);
-  //       bytes += generator.image(image2!);
-  //       itemWidgets1 = [];
-  //     }
-  //   }
-  //   if (itemWidgets1.isNotEmpty) {
-  //     print("NOT EMPTYYYYYYYYYYYYYYYY");
-  //
-  //     var capturedIm = await screenshotController.captureFromWidget(Container(
-  //       width: printWidth * 3,
-  //       child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children:
-  //           List.generate(
-  //             itemWidgets1.length,
-  //                 (index) {
-  //               return itemWidgets1[index];
-  //             },
-  //           )
-  //       ),
-  //       // ListView.builder(
-  //       //     shrinkWrap: true,
-  //       //     itemCount: itemWidgets1.length,
-  //       //     itemBuilder: (context, index) {
-  //       //       return itemWidgets1[index];
-  //       //     }),
-  //     ));
-  //
-  //     final im.Image? image25 = im.decodeImage(capturedIm);
-  //     imageList.add(image25!);
-  //     bytes += generator.image(image25);
-  //
-  //     itemWidgets1 = [];
-  //   }
-  //   List<Widget> itemWidgets2 = [];
-  //   itemWidgets.add(Column(
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     children: [
-  //       Container(
-  //           padding: const EdgeInsets.all(1.0),
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //             '=====================',
-  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //           ))),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'Total - الإجمالي     :  ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //             Text(
-  //               totalAmount.toStringAsFixed(2),
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'VAT -  رقم ضريبة  :   ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //             Text(
-  //               '${(totalAmount * gst / 100).toStringAsFixed(2)}',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'Delivery Charge - رسوم التوصيل : ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //             Text(
-  //               '${delivery.toStringAsFixed(2)}',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'Discount -  خصم  : ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //             Text(
-  //               (discount == null ? "0.00" : discount.toStringAsFixed(2)),
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //           padding: const EdgeInsets.all(1.0),
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //             '-------------------------------------------',
-  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //           ))),
-  //       Container(
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'NET - المجموع الإجمالي  : ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 7,
-  //                   fontWeight: FontWeight.w700),
-  //             ),
-  //             Text(
-  //               (grantTotal - discount + delivery).toStringAsFixed(2),
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 7,
-  //                   fontWeight: FontWeight.w700),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //             '-------------------------------------------',
-  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //           ))),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Center(
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 'Cash      :  ${pc.toStringAsFixed(2)}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               Text(
-  //                 'Bank      :  ${pb.toStringAsFixed(2)}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               Text(
-  //                 'Change :  ${bal.toStringAsFixed(2)}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               // Text(
-  //               //   'Waiter   :  $waiterName',
-  //               //   style: TextStyle(
-  //               //       color: Colors.black,
-  //               //       fontSize: fontSize + 2,
-  //               //       fontWeight: FontWeight.w600),
-  //               // ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //       Container(
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //             '-------------------------------------------',
-  //             style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //           ))),
-  //       // ${(grantTotal-discount+delivery).toStringAsFixed(2)}
-  //     ],
-  //   ));
-  //
-  //   String qrVat = (totalAmount * gst / 100).toStringAsFixed(2);
-  //   String qrTotal = (grantTotal - discount + delivery).toStringAsFixed(2);
-  //   // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
-  //   itemWidgets.add(Container(
-  //     color: Colors.white,
-  //     // width: qrCode,
-  //     width: qrCode + 100,
-  //     height: qrCode + 100,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         QrImageView(
-  //           data: qr(qrVat, qrTotal, salesDate),
-  //           version: 6,
-  //           size: size / 1.5,
-  //         ),
-  //       ],
-  //     ),
-  //   ));
-  //
-  //   // await  bluetooth.printImageBytes(capturedImage5);
-  //
-  //   var capturedImage2 = await screenshotController.captureFromWidget(Container(
-  //     width: printWidth * 3,
-  //     color: Colors.black,
-  //     child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children:
-  //         List.generate(
-  //           itemWidgets.length,
-  //               (index) {
-  //             return itemWidgets[index];
-  //           },
-  //         )
-  //     ),
-  //     // ListView.builder(
-  //     //     shrinkWrap: true,
-  //     //     itemCount: itemWidgets.length,
-  //     //     itemBuilder: (context, index) {
-  //     //       return itemWidgets[index];
-  //     //     }),
-  //   ));
-  //   final im.Image? image2 = im.decodeImage(capturedImage2);
-  //   bytes += generator.image(image2!);
-  //   final im.Image? footer = im.decodeImage(footerImage);
-  //   bytes += generator.image(footer!);
-  //
-  //   // try {
-  //
-  //   bytes += generator.feed(2);
-  //
-  //   bytes += generator.cut();
-  //   // await flutterUsbPrinter.connect(1155, 22339);
-  //   flutterUsbPrinter.write(Uint8List.fromList(bytes));
-  //
-  //   print("end");
-  // }
+      double bal, String orderType, )
   async {
     print('start');
     final CapabilityProfile profile = await CapabilityProfile.load();
@@ -934,46 +155,20 @@ class _history_View_WidgetState extends State<history_View_Widget> {
     final im.Image? image1 = im.decodeImage(capturedImage1);
     bytes += generator.imageRaster(image1!);
 
-    // if ( data1!= null) {
-    //   final Uint8List imgBytes = Uint8List.fromList(data!.buffer.asUint8List());
-    //   final im.Image? image = im.decodeImage(imgBytes);
-    //   if (image != null) {
-    //     bytes1.addAll(generator1.encode(image));
-    //     print(image);
-    //     print('2222222222222222222222222');
-    //   } else {
-    //     print('Failed to decode image from data');
-    //   }
-    // } else {
-    //   print('Data is null');
-    // }
-    //
-    // if (capturedImage1 != null) {
-    //   final im.Image? image1 = im.decodeImage(capturedImage1);
-    //   if (image1 != null) {
-    //     bytes1.addAll(generator1.encode(image1));
-    //   } else {
-    //     print('Failed to decode image from capturedImage1');
-    //   }
-    // } else {
-    //   print('capturedImage1 is null');
-    // }
 
-    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
     capturedImage10 = await screenshotController.captureFromWidget(
         Container(
-           height: 50,
+          height: 50,
           color: Colors.white,
           width: printWidth * 3,
           child: Column(
               mainAxisSize: MainAxisSize.min,
-              //shrinkWrap: true,
-              //physics: NeverScrollableScrollPhysics(),
+
               children: [
                 Row(
-                  //changed to center from spacearround
+
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //changed to center from spacearround
+
                   children: [
                     Text(
                       'Date :',
@@ -991,25 +186,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                     ),
                   ],
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Text(
-                //       'Order Type',
-                //       style: TextStyle(
-                //           color: Colors.black,
-                //           fontSize: fontSize + 2,
-                //           fontWeight: FontWeight.w600),
-                //     ),
-                //     Text(
-                //       dropdownvalue!,
-                //       style: TextStyle(
-                //           color: Colors.black,
-                //           fontSize: fontSize,
-                //           fontWeight: FontWeight.w600),
-                //     ),
-                //   ],
-                // ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1031,8 +208,8 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                 ),
               ]),
         ));
-     final im.Image image10 = im.decodeImage(capturedImage10)!;
-     bytes += generator.imageRaster(image10);
+    final im.Image image10 = im.decodeImage(capturedImage10)!;
+    bytes += generator.imageRaster(image10);
 
     bytes += generator.text("-------------------------------------------",
         styles: PosStyles(
@@ -1042,12 +219,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
         ));
 
 
-    // bytes += generator.text("TOKEN NUMBER : $token",
-    //     styles: PosStyles(
-    //         bold: true,
-    //         align: PosAlign.center,
-    //         height: PosTextSize.size2,
-    //         width: PosTextSize.size2));
     bytes += generator.text("ORDER TYPE : $orderType",
         styles: PosStyles(
             bold: true,
@@ -1072,7 +243,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
 
 
 
-    print("77777777777777777777");
 
     String itemString = '';
     String itemStringArabic = '';
@@ -1130,7 +300,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
-                // mainAxisAlignment: MainAxisAlignment.sp,
 
                 children: [
                   Expanded(
@@ -1139,7 +308,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                       children: [
                         Text(
                           '$arabic $addOnArabic',
-                          // textDirection: TextDirection.rtl,
                           style: const TextStyle(
                             fontFamily: 'GE Dinar One Medium',
                             fontSize: 17,
@@ -1149,7 +317,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                         ),
                         Text(
                           '$english $addON',
-                          // textDirection: TextDirection.rtl,
                           style: TextStyle(
                             fontFamily: 'GE Dinar One Medium',
                             fontSize: fontSize,
@@ -1161,30 +328,13 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                     ),
                   ),
 
-                  // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}      ${total.toStringAsFixed(2)}",
-                  //   textDirection: TextDirection.ltr,
-                  //   textAlign:TextAlign.end,
-                  //   style:  TextStyle(
-                  //     fontSize: fontSize,
-                  //
-                  //     fontWeight: FontWeight.w600,
-                  //     color: Colors.black,
-                  //   ),
-                  // ),
-                  // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}     ${total.toStringAsFixed(2)}",
-                  //
+
                   Container(
                     width: 45,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text('${arabicNumber.convert(double.tryParse(item['qty'].toString()).toStringAsFixed(2))}',
-                        //   style:  TextStyle(
-                        //       fontFamily: 'GE Dinar One Medium',
-                        //       color: Colors.black,
-                        //       fontSize: fontSize+2,
-                        //       fontWeight: FontWeight.w600),
-                        // ),
+
                         Text(
                           '${double.tryParse(item['qty'].toString())}',
                           style: TextStyle(
@@ -1201,13 +351,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text('${arabicNumber.convert(price.toStringAsFixed(2))} ',
-                        //   style:  TextStyle(
-                        //       fontFamily: 'GE Dinar One Medium',
-                        //       color: Colors.black,
-                        //       fontSize: fontSize+2,
-                        //       fontWeight: FontWeight.w600),
-                        // ),
+
                         Text(
                           '${price.toStringAsFixed(2)} ',
                           style: TextStyle(
@@ -1224,13 +368,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text('${arabicNumber.convert(vat.toStringAsFixed(2))}',
-                        //   style:  TextStyle(
-                        //       fontFamily: 'GE Dinar One Medium',
-                        //       color: Colors.black,
-                        //       fontSize: fontSize+2,
-                        //       fontWeight: FontWeight.w600),
-                        // ),
+
                         Text(
                           vat.toStringAsFixed(2),
                           style: TextStyle(
@@ -1247,13 +385,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text('${arabicNumber.convert(total.toStringAsFixed(2))}',
-                        //   style:  TextStyle(
-                        //       fontFamily: 'GE Dinar One Medium',
-                        //       color: Colors.black,
-                        //       fontSize: fontSize+2,
-                        //       fontWeight: FontWeight.w600),
-                        // ),
+
                         Text(
                           '${total.toStringAsFixed(2)}',
                           style: TextStyle(
@@ -1275,8 +407,6 @@ class _history_View_WidgetState extends State<history_View_Widget> {
         ),
       ));
 
-      print('111111111111111111111');
-      print('mid ********************************');
 
       itemTotal += (totalAmount * ((100 + gst) / 100) -
           (double.tryParse(discount.toString()) ?? 0))
@@ -1284,16 +414,9 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
 
-      print('gggggggg');
-      print(itemWidgets1.length);
-      print(itemCount);
+
       if (itemWidgets1.length == itemCount) {
-        // var capturedIm = await screenshotController.captureFromWidget(Container(
-        //   width: printWidth * 3,
-        //   children: List.generate(itemWidgets.length, (index) {
-        //   return itemWidgets[index];
-        //       }),
-        // ));
+
         var capturedIm = await screenshotController.captureFromWidget(Container(
           width: printWidth * 3,
           child: Column(
@@ -1321,13 +444,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             return itemWidgets1[index];
           }),
         ),
-        // child: ListView.builder(
-        //     shrinkWrap: true,
-        //     physics: NeverScrollableScrollPhysics(),
-        //     itemCount: itemWidgets1.length,
-        //     itemBuilder: (context, index) {
-        //
-        //     }),
+
       ));
 
       print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -1339,7 +456,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       itemWidgets1 = [];
     }
 
-    print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+
 
     List<Widget> itemWidgets2 = [];
     itemWidgets.add(Column(
@@ -1405,30 +522,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ],
           ),
         ),
-        // Container(    padding: const EdgeInsets.all(1.0),
-        //   decoration: const BoxDecoration(
-        //     color: Colors.white,
-        //   ),
-        //   child:     Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [
-        //       Text('Delivery Charge - رسوم التوصيل : ',style:  TextStyle(color: Colors.black,fontSize: fontSize+4,fontWeight: FontWeight.w600),),
-        //       Text('${delivery.toStringAsFixed(2)} ',style:  TextStyle(color: Colors.black,fontSize: fontSize+4,fontWeight: FontWeight.w600),),
-        //     ],
-        //   ),),
-        // Container(
-        //   padding: const EdgeInsets.all(1.0),
-        //   decoration: const BoxDecoration(
-        //     color: Colors.white,
-        //   ),
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [
-        //       Text('Discount -  خصم  : ', style: TextStyle(color: Colors.black, fontSize: fontSize+4, fontWeight: FontWeight.w600),),
-        //       Text((discount == null ? "0.00" : discount.toStringAsFixed(2)), style: TextStyle(color: Colors.black, fontSize: fontSize+4, fontWeight: FontWeight.w600),),
-        //
-        //     ],
-        //   ),),
+
         Container(
             padding: const EdgeInsets.all(1.0),
             decoration: const BoxDecoration(
@@ -1515,13 +609,13 @@ class _history_View_WidgetState extends State<history_View_Widget> {
                   '-------------------------------------------',
                   style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
                 ))),
-        // ${(grantTotal-discount+delivery).toStringAsFixed(2)}
+
       ],
     ));
 
     String qrVat = (totalAmount * gst / 100).toStringAsFixed(2);
     String qrTotal = (grantTotal - discount + delivery).toStringAsFixed(2);
-    // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
+
     itemWidgets.add(Container(
       height: qrCode + 100,
       width: printWidth * 3.1,
@@ -1540,7 +634,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
     ));
 
 
-    // await  bluetooth.printImageBytes(capturedImage5);
+
 
     var capturedImage2 = await screenshotController.captureFromWidget(Container(
         width: printWidth * 3,
@@ -1553,643 +647,15 @@ class _history_View_WidgetState extends State<history_View_Widget> {
 
     final im.Image image2 = im.decodeImage(capturedImage2)!;
     bytes += generator.imageRaster(image2);
-
-
-
     final im.Image footer = im.decodeImage(footerImage)!;
     bytes += generator.imageRaster(footer);
 
-
-
-    // try {
-
     bytes += generator.feed(2);
-
     bytes += generator.cut();
-    // await flutterUsbPrinter.connect(1155, 22339);
     flutterUsbPrinter.write(Uint8List.fromList(bytes));
 
     print("end");
-  }
-
-  //   print('start');
-  //   final CapabilityProfile profile = await CapabilityProfile.load();
-  //
-  //   final generator = Generator(PaperSize.mm80, profile);
-  //   const PaperSize paper1 = PaperSize.mm80;
-  //   var profile1 = await CapabilityProfile.load();
-  //   var printer1 = NetworkPrinter(paper1, profile1);
-  //   List<int> bytes = [];
-  //
-  //   print('11111111111111111');
-  //
-  //   final Uint8List imgBytes = data!.buffer.asUint8List();
-  //   final im.Image? image = im.decodeImage(imgBytes);
-  //   bytes += generator.image(image!);
-  //
-  //   print('2222222222222222222222222');
-  //
-  //   final im.Image? image1 = im.decodeImage(capturedImage1);
-  //   bytes += generator.image(image1!);
-  //
-  //   print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-  //   capturedImage10 = await screenshotController.captureFromWidget(
-  //       Container(
-  //         height: 100,
-  //         color: Colors.white,
-  //         width: printWidth * 3,
-  //         child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             //shrinkWrap: true,
-  //             //physics: NeverScrollableScrollPhysics(),
-  //             children: [
-  //               Row(
-  //                 //changed to center from spacearround
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 //changed to center from spacearround
-  //                 children: [
-  //                   Text(
-  //                     'Date :',
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: fontSize + 2,
-  //                         fontWeight: FontWeight.w600),
-  //                   ),
-  //                   Text(
-  //                     '${DateTime.now().toString().substring(0, 19)}',
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: fontSize,
-  //                         fontWeight: FontWeight.w600),
-  //                   ),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Text(
-  //                     'Order Type',
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: fontSize + 2,
-  //                         fontWeight: FontWeight.w600),
-  //                   ),
-  //                   Text(
-  //                     dropdownvalue!,
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: fontSize,
-  //                         fontWeight: FontWeight.w600),
-  //                   ),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Text(
-  //                     'Invoice No:',
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: fontSize + 2,
-  //                         fontWeight: FontWeight.w600),
-  //                   ),
-  //                   Text(
-  //                     '$invNo',
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: fontSize,
-  //                         fontWeight: FontWeight.w600),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ]),
-  //       ));
-  //   final im.Image image10 = im.decodeImage(capturedImage10)!;
-  //   bytes += generator.image(image10);
-  //   bytes += generator.text("-------------------------------------------",
-  //       styles: PosStyles(
-  //         bold: true,
-  //         align: PosAlign.center,
-  //         height: PosTextSize.size2,
-  //       ));
-  //
-  //
-  //   bytes += generator.text("TOKEN NUMBER : $token",
-  //       styles: PosStyles(
-  //           bold: true,
-  //           align: PosAlign.center,
-  //           height: PosTextSize.size2,
-  //           width: PosTextSize.size2));
-  //
-  //
-  //
-  //   bytes += generator.text("-------------------------------------------",
-  //       styles: PosStyles(
-  //         bold: true,
-  //         align: PosAlign.center,
-  //         height: PosTextSize.size2,
-  //       ));
-  //
-  //   print("66666666666666666666666666666");
-  //
-  //   final im.Image imagehead = im.decodeImage(capturedhead)!;
-  //   bytes += generator.image(
-  //     imagehead,
-  //   );
-  //
-  //   print("77777777777777777777");
-  //
-  //   String itemString = '';
-  //   String itemStringArabic = '';
-  //   String itemTotal = '';
-  //   String itemGrossTotal = '';
-  //   String itemTax = '';
-  //   String addON = '';
-  //
-  //   double? deliveryCharge = 0;
-  //   double grantTotal = 0;
-  //   double totalAmount = 0;
-  //   String arabic = '';
-  //   String english = '';
-  //   String addOnArabic = '';
-  //   addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
-  //   Map<String, dynamic> config = Map();
-  //   List<Widget> itemWidgets = [];
-  //   List<Widget> itemWidgets1 = [];
-  //   print('888888888888888888888888');
-  //
-  //   //product set up
-  //   for (Map<String, dynamic> item in items) {
-  //     var addOnPrice = item['addOnPrice'];
-  //     double total = (double.tryParse(item['price'].toString())! + addOnPrice) *
-  //         double.tryParse(item['qty'].toString())!;
-  //     double grossTotal = total * 100 / 115;
-  //     double vat =
-  //         (double.tryParse(item['price'].toString())! + addOnPrice) * 15 / 115;
-  //     newAddOn = item['addOns'];
-  //     arabic = item['arabicName'];
-  //     english = item['pdtname'];
-  //
-  //     grantTotal += total;
-  //
-  //     deliveryCharge = item['deliveryCharge'] == null
-  //         ? 0
-  //         : double.tryParse(item['deliveryCharge'].toString());
-  //     newAddOn = item['addOns'];
-  //     newAddOnArabic = item['addOnArabic'];
-  //     addOnArabic = newAddOnArabic.isEmpty ? '' : newAddOnArabic.toString();
-  //     addON = newAddOn.isEmpty ? '' : newAddOn.toString();
-  //     double price =
-  //         (double.tryParse(item['price'].toString())! + addOnPrice) * 100 / 115;
-  //     totalAmount += price * double.tryParse(item['qty'].toString())!;
-  //
-  //     print('00000000000000');
-  //     //PRDT LIST SET UP
-  //     itemWidgets1.add(Container(
-  //       decoration: const BoxDecoration(
-  //         color: Colors.white,
-  //       ),
-  //       child: Container(
-  //         width: printWidth * 3,
-  //         child: Column(
-  //           children: [
-  //             Row(
-  //               mainAxisSize: MainAxisSize.min,
-  //               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //
-  //               children: [
-  //                 Expanded(
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Text(
-  //                         '$arabic $addOnArabic',
-  //                         // textDirection: TextDirection.rtl,
-  //                         style: const TextStyle(
-  //                           fontFamily: 'GE Dinar One Medium',
-  //                           fontSize: 17,
-  //                           fontWeight: FontWeight.w600,
-  //                           color: Colors.black,
-  //                         ),
-  //                       ),
-  //                       Text(
-  //                         '$english $addON',
-  //                         // textDirection: TextDirection.rtl,
-  //                         style: TextStyle(
-  //                           fontFamily: 'GE Dinar One Medium',
-  //                           fontSize: fontSize,
-  //                           fontWeight: FontWeight.w600,
-  //                           color: Colors.black,
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //
-  //                 // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}      ${total.toStringAsFixed(2)}",
-  //                 //   textDirection: TextDirection.ltr,
-  //                 //   textAlign:TextAlign.end,
-  //                 //   style:  TextStyle(
-  //                 //     fontSize: fontSize,
-  //                 //
-  //                 //     fontWeight: FontWeight.w600,
-  //                 //     color: Colors.black,
-  //                 //   ),
-  //                 // ),
-  //                 // Text("${double.tryParse(item['qty'].toString())}     ${price.toStringAsFixed(2)}     ${vat.toStringAsFixed(2)}     ${total.toStringAsFixed(2)}",
-  //                 //
-  //                 Container(
-  //                   width: 45,
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       // Text('${arabicNumber.convert(double.tryParse(item['qty'].toString()).toStringAsFixed(2))}',
-  //                       //   style:  TextStyle(
-  //                       //       fontFamily: 'GE Dinar One Medium',
-  //                       //       color: Colors.black,
-  //                       //       fontSize: fontSize+2,
-  //                       //       fontWeight: FontWeight.w600),
-  //                       // ),
-  //                       Text(
-  //                         '${double.tryParse(item['qty'].toString())}',
-  //                         style: TextStyle(
-  //                             fontFamily: 'GE Dinar One Medium',
-  //                             color: Colors.black,
-  //                             fontSize: fontSize,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   width: 45,
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       // Text('${arabicNumber.convert(price.toStringAsFixed(2))} ',
-  //                       //   style:  TextStyle(
-  //                       //       fontFamily: 'GE Dinar One Medium',
-  //                       //       color: Colors.black,
-  //                       //       fontSize: fontSize+2,
-  //                       //       fontWeight: FontWeight.w600),
-  //                       // ),
-  //                       Text(
-  //                         '${price.toStringAsFixed(2)} ',
-  //                         style: TextStyle(
-  //                             fontFamily: 'GE Dinar One Medium',
-  //                             color: Colors.black,
-  //                             fontSize: fontSize,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   width: 45,
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       // Text('${arabicNumber.convert(vat.toStringAsFixed(2))}',
-  //                       //   style:  TextStyle(
-  //                       //       fontFamily: 'GE Dinar One Medium',
-  //                       //       color: Colors.black,
-  //                       //       fontSize: fontSize+2,
-  //                       //       fontWeight: FontWeight.w600),
-  //                       // ),
-  //                       Text(
-  //                         vat.toStringAsFixed(2),
-  //                         style: TextStyle(
-  //                             fontFamily: 'GE Dinar One Medium',
-  //                             color: Colors.black,
-  //                             fontSize: fontSize,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   width: 50,
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       // Text('${arabicNumber.convert(total.toStringAsFixed(2))}',
-  //                       //   style:  TextStyle(
-  //                       //       fontFamily: 'GE Dinar One Medium',
-  //                       //       color: Colors.black,
-  //                       //       fontSize: fontSize+2,
-  //                       //       fontWeight: FontWeight.w600),
-  //                       // ),
-  //                       Text(
-  //                         '${total.toStringAsFixed(2)}',
-  //                         style: TextStyle(
-  //                             fontFamily: 'GE Dinar One Medium',
-  //                             color: Colors.black,
-  //                             fontSize: fontSize,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 10,
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ));
-  //
-  //     print('111111111111111111111');
-  //     print('mid ********************************');
-  //
-  //     itemTotal += (totalAmount * ((100 + gst) / 100) -
-  //         (double.tryParse(discount.toString()) ?? 0))
-  //         .toStringAsFixed(2);
-  //     itemGrossTotal += grossTotal.toStringAsFixed(2);
-  //     itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
-  //
-  //     print('gggggggg');
-  //     print(itemWidgets1.length);
-  //     print(itemCount);
-  //     if (itemWidgets1.length == itemCount) {
-  //       // var capturedIm = await screenshotController.captureFromWidget(Container(
-  //       //   width: printWidth * 3,
-  //       //   children: List.generate(itemWidgets.length, (index) {
-  //       //   return itemWidgets[index];
-  //       //       }),
-  //       // ));
-  //       var capturedIm = await screenshotController.captureFromWidget(Container(
-  //         width: printWidth * 3,
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: List.generate(itemWidgets1.length, (index) {
-  //             return itemWidgets1[index];
-  //           }),
-  //         ),
-  //       ));
-  //
-  //       final im.Image image2 = im.decodeImage(capturedIm)!;
-  //       bytes += generator.image(image2);
-  //       itemWidgets1 = [];
-  //     }
-  //   }
-  //   if (itemWidgets1.isNotEmpty) {
-  //     print("NOT EMPTYYYYYYYYYYYYYYYY");
-  //
-  //     var capturedIm = await screenshotController.captureFromWidget(Container(
-  //       width: printWidth * 3,
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: List.generate(itemWidgets1.length, (index) {
-  //           return itemWidgets1[index];
-  //         }),
-  //       ),
-  //       // child: ListView.builder(
-  //       //     shrinkWrap: true,
-  //       //     physics: NeverScrollableScrollPhysics(),
-  //       //     itemCount: itemWidgets1.length,
-  //       //     itemBuilder: (context, index) {
-  //       //
-  //       //     }),
-  //     ));
-  //
-  //     print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  //
-  //     final im.Image image25 = im.decodeImage(capturedIm)!;
-  //     imageList.add(image25);
-  //     bytes += generator.image(image25);
-  //
-  //     itemWidgets1 = [];
-  //   }
-  //
-  //   print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
-  //
-  //   List<Widget> itemWidgets2 = [];
-  //   itemWidgets.add(Column(
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     children: [
-  //       Container(
-  //           padding: const EdgeInsets.all(1.0),
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //                 '=====================',
-  //                 style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //               ))),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'Total - الإجمالي     :  ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //             Text(
-  //               totalAmount.toStringAsFixed(2),
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'VAT -  رقم ضريبة  :   ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //             Text(
-  //               '${(totalAmount * gst / 100).toStringAsFixed(2)}',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 4,
-  //                   fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       // Container(    padding: const EdgeInsets.all(1.0),
-  //       //   decoration: const BoxDecoration(
-  //       //     color: Colors.white,
-  //       //   ),
-  //       //   child:     Row(
-  //       //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       //     children: [
-  //       //       Text('Delivery Charge - رسوم التوصيل : ',style:  TextStyle(color: Colors.black,fontSize: fontSize+4,fontWeight: FontWeight.w600),),
-  //       //       Text('${delivery.toStringAsFixed(2)} ',style:  TextStyle(color: Colors.black,fontSize: fontSize+4,fontWeight: FontWeight.w600),),
-  //       //     ],
-  //       //   ),),
-  //       // Container(
-  //       //   padding: const EdgeInsets.all(1.0),
-  //       //   decoration: const BoxDecoration(
-  //       //     color: Colors.white,
-  //       //   ),
-  //       //   child: Row(
-  //       //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       //     children: [
-  //       //       Text('Discount -  خصم  : ', style: TextStyle(color: Colors.black, fontSize: fontSize+4, fontWeight: FontWeight.w600),),
-  //       //       Text((discount == null ? "0.00" : discount.toStringAsFixed(2)), style: TextStyle(color: Colors.black, fontSize: fontSize+4, fontWeight: FontWeight.w600),),
-  //       //
-  //       //     ],
-  //       //   ),),
-  //       Container(
-  //           padding: const EdgeInsets.all(1.0),
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //                 '-------------------------------------------',
-  //                 style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //               ))),
-  //       Container(
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'NET - المجموع الإجمالي  : ',
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 7,
-  //                   fontWeight: FontWeight.w700),
-  //             ),
-  //             Text(
-  //               (grantTotal - discount + delivery).toStringAsFixed(2),
-  //               style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: fontSize + 7,
-  //                   fontWeight: FontWeight.w700),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //                 '-------------------------------------------',
-  //                 style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //               ))),
-  //       Container(
-  //         padding: const EdgeInsets.all(1.0),
-  //         decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //         ),
-  //         child: Center(
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 'Cash      :  ${pc}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               Text(
-  //                 'Bank      :  ${pb}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               Text(
-  //                 'Change :  ${bal}',
-  //                 style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: fontSize + 2,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //       Container(
-  //           decoration: const BoxDecoration(
-  //             color: Colors.white,
-  //           ),
-  //           child: Center(
-  //               child: Text(
-  //                 '-------------------------------------------',
-  //                 style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-  //               ))),
-  //       // ${(grantTotal-discount+delivery).toStringAsFixed(2)}
-  //     ],
-  //   ));
-  //
-  //   String qrVat = (totalAmount * gst / 100).toStringAsFixed(2);
-  //   String qrTotal = (grantTotal - discount + delivery).toStringAsFixed(2);
-  //   // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
-  //   itemWidgets.add(Container(
-  //     color: Colors.white,
-  //     width: qrCode + 100,
-  //     height: qrCode + 100,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         QrImageView(
-  //           data: qr(qrVat, qrTotal, salesDate),
-  //           version: 6,
-  //           size: size / 1.5,
-  //         ),
-  //       ],
-  //     ),
-  //   ));
-  //
-  //   // await  bluetooth.printImageBytes(capturedImage5);
-  //
-  //   var capturedImage2 = await screenshotController.captureFromWidget(Container(
-  //       width: printWidth * 3,
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: List.generate(itemWidgets.length, (index) {
-  //           return itemWidgets[index];
-  //         }),
-  //       )));
-  //
-  //   final im.Image image2 = im.decodeImage(capturedImage2)!;
-  //   bytes += generator.image(image2);
-  //   final im.Image footer = im.decodeImage(footerImage)!;
-  //   bytes += generator.image(
-  //     footer,
-  //   );
-  //
-  //   // try {
-  //
-  //   bytes += generator.feed(2);
-  //
-  //   bytes += generator.cut();
-  //   // await flutterUsbPrinter.connect(1155, 22339);
-  //   flutterUsbPrinter.write(Uint8List.fromList(bytes));
-  //
-  //   print("end");
-  // }
+    }
 
   change() {
     FirebaseFirestore.instance.collection('sales').get().then((value) {
@@ -2230,6 +696,7 @@ class _history_View_WidgetState extends State<history_View_Widget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.primaryColor,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'History',
           style: FlutterFlowTheme.bodyText1.override(
@@ -2289,660 +756,903 @@ class _history_View_WidgetState extends State<history_View_Widget> {
             ),
             search.text == ''
                 ? StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('sales')
-                        .doc(currentBranchId)
-                        .collection('sales')
-                        .orderBy('salesDate', descending: true)
-                        .where('currentBranchId', isEqualTo: currentBranchId)
-                        .where('salesDate', isGreaterThanOrEqualTo: datePicked1)
-                        .where('salesDate', isLessThanOrEqualTo: datePicked2)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      var data = snapshot.data!.docs;
-                      print(data.length);
+                stream: FirebaseFirestore.instance
+                    .collection('sales')
+                    .doc(currentBranchId)
+                    .collection('sales')
+                    .orderBy('salesDate', descending: true)
+                    .where('currentBranchId', isEqualTo: currentBranchId)
+                    .where('salesDate', isGreaterThanOrEqualTo: datePicked1)
+                    .where('salesDate', isLessThanOrEqualTo: datePicked2)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  var data = snapshot.data!.docs;
+                  print(data.length);
 
-                      return data.isEmpty
-                          ? Center(child: Text('No Data'))
-                          : Expanded(
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: data.length,
-                                itemBuilder: (context, index) {
-                                  var billItems = data[index]['billItems'];
-                                  double? grandTotal = double.tryParse(
-                                      data[index]['grandTotal'].toString());
-                                  int token = data[index]['token'];
-                                  int invoice = data[index]['invoiceNo'];
-                                  // String StaffName=PosUserIdToName[data[index]['currentUserId']]==null?'':PosUserIdToName[data[index]['currentUserId']];
-                                  double? deliveryCharge = double.tryParse(
-                                      data[index]['deliveryCharge'].toString());
-                                  DateTime saleDate =
-                                      data[index]['salesDate'].toDate();
+                  return data.isEmpty
+                      ? Center(child: Text('No Data'))
+                      : Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        var billItems = data[index]['billItems'];
+                        double? grandTotal = double.tryParse(
+                            data[index]['grandTotal'].toString());
+                        int token = data[index]['token'];
+                        int invoice = data[index]['invoiceNo'];
+                        // String StaffName=PosUserIdToName[data[index]['currentUserId']]==null?'':PosUserIdToName[data[index]['currentUserId']];
+                        double? deliveryCharge = double.tryParse(
+                            data[index]['deliveryCharge'].toString());
+                        DateTime saleDate =
+                        data[index]['salesDate'].toDate();
 
-                                  double? discount = double.tryParse(
-                                      data[index]['discount'].toString());
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            15, 15, 15, 15),
-                                    child: Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFEEEEEE),
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
+                        double? discount = double.tryParse(
+                            data[index]['discount'].toString());
+                        return Padding(
+                          padding:
+                          const EdgeInsetsDirectional.fromSTEB(
+                              15, 15, 15, 15),
+                          child: Container(
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFEEEEEE),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional
+                                  .fromSTEB(10, 15, 10, 15),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Bill No : ${data[index].id}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                            fontFamily:
+                                            'Lexend Deca',
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight:
+                                            FontWeight.w600),
+                                      ),
+                                      Text(
+                                        'Date : ${data[index]['salesDate'].toDate().toString().substring(0, 16)}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
                                           color: Colors.black,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(10, 15, 10, 15),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Bill No : ${data[index].id}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color: Colors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                ),
-                                                Text(
-                                                  'Date : ${data[index]['salesDate'].toDate().toString().substring(0, 16)}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Total Items : ${billItems.length}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data[index]['currentUserId'] ==
-                                                          null
-                                                      ? ''
-                                                      : 'StaffName : ${PosUserIdToName[data[index]['currentUserId']]}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data[index]['cash'] == true &&
-                                                          data[index]['bank'] ==
-                                                              true
-                                                      ? 'Mode Of Payment : Cash & Bank'
-                                                      : data[index]['creditSale'] ==
-                                                                  true &&
-                                                              data[index][
-                                                                      'bank'] ==
-                                                                  false &&
-                                                              data[index][
-                                                                      'cash'] ==
-                                                                  false
-                                                          ? 'Mode Of Payment : Credit Sale'
-                                                          : data[index]['cash'] ==
-                                                                      true &&
-                                                                  data[index][
-                                                                          'bank'] ==
-                                                                      false
-                                                              ? 'Mode Of Payment : Cash'
-                                                              : data[index][
-                                                                          'dinnerCertificate'] ==
-                                                                      true
-                                                                  ? 'Mode Of Payment : Dinner Certificate'
-                                                                  : 'Mode Of Payment : Bank',
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Total Items : ${billItems.length}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        data[index]['currentUserId'] ==
+                                            null
+                                            ? ''
+                                            : 'StaffName : ${PosUserIdToName[data[index]['currentUserId']]}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        data[index]['cash'] == true &&
+                                            data[index]['bank'] ==
+                                                true
+                                            ? 'Mode Of Payment : Cash & Bank'
+                                            : data[index]['creditSale'] ==
+                                            true &&
+                                            data[index][
+                                            'bank'] ==
+                                                false &&
+                                            data[index][
+                                            'cash'] ==
+                                                false
+                                            ? 'Mode Of Payment : Credit Sale'
+                                            : data[index]['cash'] ==
+                                            true &&
+                                            data[index][
+                                            'bank'] ==
+                                                false
+                                            ? 'Mode Of Payment : Cash'
+                                            : data[index][
+                                        'dinnerCertificate'] ==
+                                            true
+                                            ? 'Mode Of Payment : Dinner Certificate'
+                                            : 'Mode Of Payment : Bank',
 
-                                                  // ?data[index]['dinnerCertificate'] == true?'Mode Of Payment : dinnerCertificate'
+                                        // ?data[index]['dinnerCertificate'] == true?'Mode Of Payment : dinnerCertificate'
 
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Amount : ${grandTotal!.toStringAsFixed(2)}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(0, 10, 0, 0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  FFButtonWidget(
-                                                    onPressed: () {
-                                                      blue
-                                                          ? showDialog(
-                                                              barrierDismissible:
-                                                                  false,
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                items =
-                                                                    billItems;
-                                                                return history_print(
-                                                                  items: items,
-                                                                  token: token,
-                                                                  salesDate: data[
-                                                                              index]
-                                                                          [
-                                                                          'salesDate']
-                                                                      .toDate()
-                                                                      .toString()
-                                                                      .substring(
-                                                                          0,
-                                                                          16),
-                                                                  delivery:
-                                                                      deliveryCharge!,
-                                                                  customer:
-                                                                      'Walking Customer',
-                                                                  discountPrice:
-                                                                      discount!,
-                                                                  invoiceNo: invoice
-                                                                      .toString(),
-                                                                  tableName: data[
-                                                                          index]
-                                                                      ['table'],
-                                                                  cashPaid: double.tryParse(
-                                                                      data[index]
-                                                                              [
-                                                                              'paidCash']
-                                                                          .toString())!,
-                                                                  bankPaid: double.tryParse(
-                                                                      data[index]
-                                                                              [
-                                                                              'paidBank']
-                                                                          .toString())!,
-                                                                  balance: double.tryParse(
-                                                                      data[index]
-                                                                              [
-                                                                              'balance']
-                                                                          .toString())!,
-                                                                );
-                                                              })
-                                                          : abc(
-                                                              invoice,
-                                                              discount!,
-                                                              billItems,
-                                                              token,
-                                                              data[index]
-                                                                  ['table'],
-                                                              deliveryCharge!,
-                                                              data[index][
-                                                                      'salesDate']
-                                                                  .toDate(),
-                                                              double.tryParse(data[
-                                                                          index]
-                                                                      [
-                                                                      'paidCash']
-                                                                  .toString())!,
-                                                              double.tryParse(data[
-                                                                          index]
-                                                                      [
-                                                                      'paidBank']
-                                                                  .toString())!,
-                                                              double.tryParse(data[
-                                                                          index]
-                                                                      [
-                                                                      'balance']
-                                                                  .toString())!,
-                                                          data[
-                                                          index]
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Amount : ${grandTotal!.toStringAsFixed(2)}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsetsDirectional
+                                        .fromSTEB(0, 10, 0, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.end,
+                                      children: [
+                                        FFButtonWidget(
+                                          onPressed: () {
+
+                                            if(Platform.isWindows) {
+                                              final billModel = BillModel(
+                                                vat: data[index]['tax'],
+                                                balance: double.tryParse(
+                                                    data[index]['balance']
+                                                        .toString())!,
+                                                bank: double.tryParse(
+                                                    data[index]['paidBank']
+                                                        .toString())!,
+                                                cash: double.tryParse(
+                                                    data[index] ['paidCash']
+                                                        .toString()) ?? 0,
+                                                cashierName: PosUserIdToArabicName[currentUserId],
+                                                cashierNameArabic: PosUserIdToArabicName[currentUserId],
+                                                date: data[index][ 'salesDate']
+                                                    .toDate(),
+                                                invoiceNumber: invoice,
+                                                mobileNumber: billMobileNo!,
+                                                orderType: data[index]['orderType'],
+                                                productItems: billItems,
+                                                shopName: currentBranchName!,
+                                                shopNameArabic: currentBranchAddressArabic!,
+                                                vatNumber: vatNumber!,
+                                                total: data[index]['totalAmount'],
+                                                delcharge: deliveryCharge!,
+                                                discount: discount!,
+                                                grandTotal: data[index]['grandTotal'],
+                                              );
+
+
+                                              blue
+                                                  ? showDialog(
+                                                  barrierDismissible:
+                                                  false,
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext
+                                                  context) {
+                                                    items =
+                                                        billItems;
+                                                    return history_print(
+                                                      items: items,
+                                                      token: token,
+                                                      salesDate: data[
+                                                      index]
+                                                      [
+                                                      'salesDate']
+                                                          .toDate()
+                                                          .toString()
+                                                          .substring(
+                                                          0,
+                                                          16),
+                                                      delivery:
+                                                      deliveryCharge!,
+                                                      customer:
+                                                      'Walking Customer',
+                                                      discountPrice:
+                                                      discount!,
+                                                      invoiceNo: invoice
+                                                          .toString(),
+                                                      tableName: data[
+                                                      index]
+                                                      ['table'],
+                                                      cashPaid: double.tryParse(
+                                                          data[index]
                                                           [
-                                                          'orderType'],
-                                                        // data[index]['waiterName']
-                                                       );
-                                                    },
-                                                    text: 'Print',
-                                                    icon: const Icon(
-                                                      Icons.print,
-                                                      size: 18,
-                                                    ),
-                                                    options: FFButtonOptions(
-                                                      width: 130,
-                                                      height: 35,
-                                                      color: FlutterFlowTheme
-                                                          .primaryColor,
-                                                      textStyle:
-                                                          FlutterFlowTheme
-                                                              .subtitle2
-                                                              .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color: Colors.red,
-                                                      ),
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 1,
-                                                      ),
-                                                      borderRadius: 12,
-                                                    ), iconData: Icons.print,
-                                                  ),
-                                                ],
-                                              ),
+                                                          'paidCash']
+                                                              .toString())!,
+                                                      bankPaid: double.tryParse(
+                                                          data[index]
+                                                          [
+                                                          'paidBank']
+                                                              .toString())!,
+                                                      balance: double.tryParse(
+                                                          data[index]
+                                                          [
+                                                          'balance']
+                                                              .toString())!,
+                                                    );
+                                                  })
+                                                  :
+                                              //      abc(
+                                              //         invoice,
+                                              //         discount!,
+                                              //         billItems,
+                                              //         token,
+                                              //         data[index]
+                                              //             ['table'],
+                                              //         deliveryCharge!,
+                                              //         data[index][
+                                              //                 'salesDate']
+                                              //             .toDate(),
+                                              //         double.tryParse(data[
+                                              //                     index]
+                                              //                 [
+                                              //                 'paidCash']
+                                              //             .toString())!,
+                                              //         double.tryParse(data[
+                                              //                     index]
+                                              //                 [
+                                              //                 'paidBank']
+                                              //             .toString())!,
+                                              //         double.tryParse(data[
+                                              //                     index]
+                                              //                 [
+                                              //                 'balance']
+                                              //             .toString())!,
+                                              //     data[
+                                              //     index]
+                                              //     [
+                                              //     'orderType'],
+                                              //   // data[index]['waiterName']
+                                              //  );
+
+                                              generatePdfHistory(billModel);
+                                            }
+                                            else if(Platform.isAndroid){
+                                              blue
+                                                  ? showDialog(
+                                                  barrierDismissible:
+                                                  false,
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext
+                                                  context) {
+                                                    items =
+                                                        billItems;
+                                                    return history_print(
+                                                      items: items,
+                                                      token: token,
+                                                      salesDate: data[
+                                                      index]
+                                                      [
+                                                      'salesDate']
+                                                          .toDate()
+                                                          .toString()
+                                                          .substring(
+                                                          0,
+                                                          16),
+                                                      delivery:
+                                                      deliveryCharge!,
+                                                      customer:
+                                                      'Walking Customer',
+                                                      discountPrice:
+                                                      discount!,
+                                                      invoiceNo: invoice
+                                                          .toString(),
+                                                      tableName: data[
+                                                      index]
+                                                      ['table'],
+                                                      cashPaid: double.tryParse(
+                                                          data[index]
+                                                          [
+                                                          'paidCash']
+                                                              .toString())!,
+                                                      bankPaid: double.tryParse(
+                                                          data[index]
+                                                          [
+                                                          'paidBank']
+                                                              .toString())!,
+                                                      balance: double.tryParse(
+                                                          data[index]
+                                                          [
+                                                          'balance']
+                                                              .toString())!,
+                                                    );
+                                                  })
+                                                  : abc(
+                                                invoice,
+                                                discount!,
+                                                billItems,
+                                                token,
+                                                data[index]
+                                                ['table'],
+                                                deliveryCharge!,
+                                                data[index][
+                                                'salesDate']
+                                                    .toDate(),
+                                                double.tryParse(data[
+                                                index]
+                                                [
+                                                'paidCash']
+                                                    .toString())!,
+                                                double.tryParse(data[
+                                                index]
+                                                [
+                                                'paidBank']
+                                                    .toString())!,
+                                                double.tryParse(data[
+                                                index]
+                                                [
+                                                'balance']
+                                                    .toString())!,
+                                                data[
+                                                index]
+                                                [
+                                                'orderType'],
+                                                // data[index]['waiterName']
+                                              );
+                                            }
+
+                                          },
+                                          text: 'Print',
+                                          icon: const Icon(
+                                            Icons.print,
+                                            size: 18,
+                                          ),
+                                          options: FFButtonOptions(
+                                            width: 130,
+                                            height: 35,
+                                            color: FlutterFlowTheme
+                                                .primaryColor,
+                                            textStyle:
+                                            FlutterFlowTheme
+                                                .subtitle2
+                                                .override(
+                                              fontFamily:
+                                              'Lexend Deca',
+                                              color: Colors.red,
                                             ),
-                                          ],
+                                            borderSide: BorderSide(
+                                              color:
+                                              Colors.transparent,
+                                              width: 1,
+                                            ),
+                                            borderRadius: 12,
+                                          ), iconData: Icons.print,
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  );
-                                },
+                                  ),
+                                ],
                               ),
-                            );
-                    })
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                })
                 : StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('sales')
-                        .doc(currentBranchId)
-                        .collection('sales')
-                        .orderBy('salesDate', descending: true)
-                        // .where('search',arrayContains: search.text)
-                        .where('invoiceNo',
-                            isEqualTo: int.tryParse(search.text))
-                        .where('currentBranchId', isEqualTo: currentBranchId)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      var data = snapshot.data!.docs;
+                stream: FirebaseFirestore.instance
+                    .collection('sales')
+                    .doc(currentBranchId)
+                    .collection('sales')
+                    .orderBy('salesDate', descending: true)
+                // .where('search',arrayContains: search.text)
+                    .where('invoiceNo',
+                    isEqualTo: int.tryParse(search.text))
+                    .where('currentBranchId', isEqualTo: currentBranchId)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  var data = snapshot.data!.docs;
 
-                      return data.isEmpty
-                          ? Center(child: Text('No Data'))
-                          : Expanded(
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: data.length,
-                                itemBuilder: (context, index) {
-                                  var billItems = data[index]['billItems'];
-                                  double grandTotal = data[index]['grandTotal'];
-                                  int token = data[index]['token'];
-                                  int invoice = data[index]['invoiceNo'];
-                                  double deliveryCharge = double.tryParse(
-                                      data[index]['deliveryCharge'].toString())!;
-                                  DateTime saleDate =
-                                      data[index]['salesDate'].toDate();
+                  return data.isEmpty
+                      ? Center(child: Text('No Data'))
+                      : Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        var billItems = data[index]['billItems'];
+                        double grandTotal = data[index]['grandTotal'];
+                        int token = data[index]['token'];
+                        int invoice = data[index]['invoiceNo'];
+                        double deliveryCharge = double.tryParse(
+                            data[index]['deliveryCharge'].toString())!;
+                        DateTime saleDate =
+                        data[index]['salesDate'].toDate();
 
-                                  double discount = double.tryParse(
-                                      data[index]['discount'].toString())!;
+                        double discount = double.tryParse(
+                            data[index]['discount'].toString())!;
 
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            15, 15, 15, 15),
-                                    child: Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFEEEEEE),
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(10, 15, 10, 15),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Bill No : ${data[index].id}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color: Colors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                ),
-                                                Text(
-                                                  'Date : ${data[index]['salesDate'].toDate().toString().substring(0, 16)}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Token : ${data[index]['token']}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Total Items : ${billItems.length}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data[index]['currentUserId'] ==
-                                                          null
-                                                      ? ''
-                                                      : 'StaffName : ${PosUserIdToName[data[index]['currentUserId']]}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data[index]['cash'] == true
-                                                      ? 'Mode Of Payment : Cash'
-                                                      : 'Mode Of Payment : Bank',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Amount : ${grandTotal.toStringAsFixed(2)}',
-                                                  style: FlutterFlowTheme
-                                                      .bodyText1
-                                                      .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Colors.black,
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(0, 10, 0, 0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  FFButtonWidget(
-                                                    onPressed: () {
-                                                      try {
-                                                        blue
-                                                            ? showDialog(
-                                                                barrierDismissible:
-                                                                    false,
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  items =
-                                                                      billItems;
-                                                                  return history_print(
-                                                                    items:
-                                                                        items,
-                                                                    token:
-                                                                        token,
-                                                                    salesDate: data[index]
-                                                                            [
-                                                                            'salesDate']
-                                                                        .toDate()
-                                                                        .toString()
-                                                                        .substring(
-                                                                            0,
-                                                                            16),
-                                                                    delivery:
-                                                                        deliveryCharge,
-                                                                    customer:
-                                                                        'Walking Customer',
-                                                                    discountPrice:
-                                                                        discount,
-                                                                    invoiceNo:
-                                                                        invoice
-                                                                            .toString(),
-                                                                    tableName: data[
-                                                                            index]
-                                                                        [
-                                                                        'table'],
-                                                                    cashPaid: double.tryParse(data[index]
-                                                                            [
-                                                                            'paidCash']
-                                                                        .toString())!,
-                                                                    bankPaid: double.tryParse(data[index]
-                                                                            [
-                                                                            'paidBank']
-                                                                        .toString())!,
-                                                                    balance: double.tryParse(data[index]
-                                                                            [
-                                                                            'balance']
-                                                                        .toString())!,
-                                                                  );
-                                                                })
-                                                            : abc(
-                                                                invoice,
-                                                                discount,
-                                                                billItems,
-                                                                token,
-                                                                data[index]
-                                                                    ['table'],
-                                                                deliveryCharge,
-                                                                data[index][
-                                                                        'salesDate']
-                                                                    .toDate(),
-                                                                double.tryParse(data[
-                                                                            index]
-                                                                        [
-                                                                        'paidCash']
-                                                                    .toString())!,
-                                                                double.tryParse(data[
-                                                                            index]
-                                                                        [
-                                                                        'paidBank']
-                                                                    .toString())!,
-                                                                double.tryParse(data[index]['balance'].toString())!,
-                                                            data[index]['orderType'],
-                                                            // data[index]['waiterName'],
-
-                                                              );
-                                                      } catch (e) {
-                                                        print('${e}llllllllllllllllllll');
-                                                        // showDialog<void>(
-                                                        //   context: context,
-                                                        //   barrierDismissible:
-                                                        //       false,
-                                                        //   // user must tap button!
-                                                        //   builder: (BuildContext
-                                                        //       context) {
-                                                        //     return AlertDialog(
-                                                        //       title: Text(
-                                                        //           e.toString()),
-                                                        //       actions: <Widget>[
-                                                        //         TextButton(
-                                                        //           child: const Text(
-                                                        //               'Approve'),
-                                                        //           onPressed:
-                                                        //               () {
-                                                        //             Navigator.of(
-                                                        //                     context)
-                                                        //                 .pop();
-                                                        //           },
-                                                        //         ),
-                                                        //       ],
-                                                        //     );
-                                                        //   },
-                                                        // );
-                                                      }
-                                                    },
-                                                    text: 'Print',
-                                                    icon: const Icon(
-                                                      Icons.print,
-                                                      size: 18,
-                                                    ),
-                                                    options: FFButtonOptions(
-                                                      width: 130,
-                                                      height: 35,
-                                                      color: FlutterFlowTheme
-                                                          .primaryColor,
-                                                      textStyle:
-                                                          FlutterFlowTheme
-                                                              .subtitle2
-                                                              .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color: Colors.white,
-                                                      ),
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 1,
-                                                      ),
-                                                      borderRadius: 12,
-                                                    ), iconData: Icons.history,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
+                        return Padding(
+                          padding:
+                          const EdgeInsetsDirectional.fromSTEB(
+                              15, 15, 15, 15),
+                          child: Container(
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFEEEEEE),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.black,
                               ),
-                            );
-                    }),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional
+                                  .fromSTEB(10, 15, 10, 15),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Bill No : ${data[index].id}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                            fontFamily:
+                                            'Lexend Deca',
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight:
+                                            FontWeight.w600),
+                                      ),
+                                      Text(
+                                        'Date : ${data[index]['salesDate'].toDate().toString().substring(0, 16)}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Token : ${data[index]['token']}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Total Items : ${billItems.length}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        data[index]['currentUserId'] ==
+                                            null
+                                            ? ''
+                                            : 'StaffName : ${PosUserIdToName[data[index]['currentUserId']]}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text(
+                                        data[index]['cash'] == true
+                                            ? 'Mode Of Payment : Cash'
+                                            : 'Mode Of Payment : Bank',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Amount : ${grandTotal.toStringAsFixed(2)}',
+                                        style: FlutterFlowTheme
+                                            .bodyText1
+                                            .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsetsDirectional
+                                        .fromSTEB(0, 10, 0, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.end,
+                                      children: [
+                                        FFButtonWidget(
+                                          onPressed: () {
+                                            try {
+
+                                              if(Platform.isWindows) {
+                                                final billModel = BillModel(
+                                                  vat: totalAmount * gst /
+                                                      (100 + gst),
+                                                  grandTotal: totalAmount -
+                                                      (discount) +
+                                                      (double.tryParse(
+                                                          delivery) ?? 0),
+                                                  balance: double.tryParse(
+                                                      data[index]['balance']
+                                                          .toString())!,
+                                                  bank: double.tryParse(
+                                                      data[index]['paidBank']
+                                                          .toString())!,
+                                                  cash: double.tryParse(
+                                                      data[index] ['paidCash']
+                                                          .toString()) ?? 0,
+                                                  cashierName: PosUserIdToArabicName[currentUserId],
+                                                  cashierNameArabic: PosUserIdToArabicName[currentUserId],
+                                                  date: data[index][ 'salesDate']
+                                                      .toDate(),
+                                                  invoiceNumber: invoice,
+                                                  mobileNumber: billMobileNo!,
+                                                  orderType: data[index]['orderType'],
+                                                  productItems: billItems,
+                                                  shopName: currentBranchName!,
+                                                  shopNameArabic: currentBranchAddressArabic!,
+                                                  vatNumber: vatNumber!,
+                                                  total: totalAmount *
+                                                      100 /
+                                                      (100 + gst),
+                                                  delcharge: deliveryCharge,
+                                                  discount: discount,
+                                                );
+
+
+                                                blue
+                                                    ? showDialog(
+                                                    barrierDismissible:
+                                                    false,
+                                                    context:
+                                                    context,
+                                                    builder:
+                                                        (BuildContext
+                                                    context) {
+                                                      items =
+                                                          billItems;
+                                                      return history_print(
+                                                        items:
+                                                        items,
+                                                        token:
+                                                        token,
+                                                        salesDate: data[index]
+                                                        [
+                                                        'salesDate']
+                                                            .toDate()
+                                                            .toString()
+                                                            .substring(
+                                                            0,
+                                                            16),
+                                                        delivery:
+                                                        deliveryCharge,
+                                                        customer:
+                                                        'Walking Customer',
+                                                        discountPrice:
+                                                        discount,
+                                                        invoiceNo:
+                                                        invoice
+                                                            .toString(),
+                                                        tableName: data[
+                                                        index]
+                                                        [
+                                                        'table'],
+                                                        cashPaid: double
+                                                            .tryParse(
+                                                            data[index]
+                                                            [
+                                                            'paidCash']
+                                                                .toString())!,
+                                                        bankPaid: double
+                                                            .tryParse(
+                                                            data[index]
+                                                            [
+                                                            'paidBank']
+                                                                .toString())!,
+                                                        balance: double
+                                                            .tryParse(
+                                                            data[index]
+                                                            [
+                                                            'balance']
+                                                                .toString())!,
+                                                      );
+                                                    })
+                                                    :
+                                                //  abc(
+                                                //     invoice,
+                                                //     discount,
+                                                //     billItems,
+                                                //     token,
+                                                //     data[index]
+                                                //         ['table'],
+                                                //     deliveryCharge,
+                                                //     data[index][
+                                                //             'salesDate']
+                                                //         .toDate(),
+                                                //     double.tryParse(data[
+                                                //                 index]
+                                                //             [
+                                                //             'paidCash']
+                                                //         .toString())!,
+                                                //     double.tryParse(data[
+                                                //                 index]
+                                                //             [
+                                                //             'paidBank']
+                                                //         .toString())!,
+                                                //     double.tryParse(data[index]['balance'].toString())!,
+                                                // data[index]['orderType'],
+                                                //   );
+                                                generatePdfHistory(billModel);
+                                              }
+                                              else if(Platform.isAndroid){
+                                                blue
+                                                    ? showDialog(
+                                                    barrierDismissible:
+                                                    false,
+                                                    context:
+                                                    context,
+                                                    builder:
+                                                        (BuildContext
+                                                    context) {
+                                                      items =
+                                                          billItems;
+                                                      return history_print(
+                                                        items:
+                                                        items,
+                                                        token:
+                                                        token,
+                                                        salesDate: data[index]
+                                                        [
+                                                        'salesDate']
+                                                            .toDate()
+                                                            .toString()
+                                                            .substring(
+                                                            0,
+                                                            16),
+                                                        delivery:
+                                                        deliveryCharge,
+                                                        customer:
+                                                        'Walking Customer',
+                                                        discountPrice:
+                                                        discount,
+                                                        invoiceNo:
+                                                        invoice
+                                                            .toString(),
+                                                        tableName: data[
+                                                        index]
+                                                        [
+                                                        'table'],
+                                                        cashPaid: double.tryParse(data[index]
+                                                        [
+                                                        'paidCash']
+                                                            .toString())!,
+                                                        bankPaid: double.tryParse(data[index]
+                                                        [
+                                                        'paidBank']
+                                                            .toString())!,
+                                                        balance: double.tryParse(data[index]
+                                                        [
+                                                        'balance']
+                                                            .toString())!,
+                                                      );
+                                                    })
+                                                    : abc(
+                                                  invoice,
+                                                  discount,
+                                                  billItems,
+                                                  token,
+                                                  data[index]
+                                                  ['table'],
+                                                  deliveryCharge,
+                                                  data[index][
+                                                  'salesDate']
+                                                      .toDate(),
+                                                  double.tryParse(data[
+                                                  index]
+                                                  [
+                                                  'paidCash']
+                                                      .toString())!,
+                                                  double.tryParse(data[
+                                                  index]
+                                                  [
+                                                  'paidBank']
+                                                      .toString())!,
+                                                  double.tryParse(data[index]['balance'].toString())!,
+                                                  data[index]['orderType'],
+                                                  // data[index]['waiterName'],
+
+                                                );
+                                              }
+                                            } catch (e) {
+                                              print('${e}llllllllllllllllllll');
+                                              // showDialog<void>(
+                                              //   context: context,
+                                              //   barrierDismissible:
+                                              //       false,
+                                              //   // user must tap button!
+                                              //   builder: (BuildContext
+                                              //       context) {
+                                              //     return AlertDialog(
+                                              //       title: Text(
+                                              //           e.toString()),
+                                              //       actions: <Widget>[
+                                              //         TextButton(
+                                              //           child: const Text(
+                                              //               'Approve'),
+                                              //           onPressed:
+                                              //               () {
+                                              //             Navigator.of(
+                                              //                     context)
+                                              //                 .pop();
+                                              //           },
+                                              //         ),
+                                              //       ],
+                                              //     );
+                                              //   },
+                                              // );
+                                            }
+                                          },
+                                          text: 'Print',
+                                          icon: const Icon(
+                                            Icons.print,
+                                            size: 18,
+                                          ),
+                                          options: FFButtonOptions(
+                                            width: 130,
+                                            height: 35,
+                                            color: FlutterFlowTheme
+                                                .primaryColor,
+                                            textStyle:
+                                            FlutterFlowTheme
+                                                .subtitle2
+                                                .override(
+                                              fontFamily:
+                                              'Lexend Deca',
+                                              color: Colors.white,
+                                            ),
+                                            borderSide: BorderSide(
+                                              color:
+                                              Colors.transparent,
+                                              width: 1,
+                                            ),
+                                            borderRadius: 12,
+                                          ), iconData: Icons.history,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
           ],
         ),
       ),

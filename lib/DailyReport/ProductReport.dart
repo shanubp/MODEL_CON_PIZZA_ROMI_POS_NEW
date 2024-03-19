@@ -130,7 +130,8 @@ print(widget.To);
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product Report"),
+        title: Text("Product Report",style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         backgroundColor: primaryColor,
         actions: [

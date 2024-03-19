@@ -1,13 +1,15 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:awafi_pos/Branches/branches.dart';
+// import 'package:awafi_pos/pickedUpBillModel.dart';
+// import 'package:awafi_pos/pickedUpBillPdf.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:awafi_pos/flutter_flow/upload_media.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -15,6 +17,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as im;
 import '../main.dart';
+import '../model/pickedUpBillModel.dart';
+import '../pdf/pickedUpBillPdf.dart';
 import '../product_card.dart';
 
 class PickedOrdersWidget extends StatefulWidget {
@@ -65,10 +69,10 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
 
     //date
     bytesBuilder.addByte(3);
-    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(DateTime.now());
-    List<int> date = utf8.encode(time);
+    List<int> date = utf8.encode(DateTime.now().toString().substring(0, 10));
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
+    print(date);
 
     //invoice total
 
@@ -118,7 +122,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
   List<int> bytes = [];
   List<int> kotBytes = [];
   abc(int invNo,List items,int token,String tableName, double pc,double pb, double balance, double netTotal, double discount1, double totalSum, ) async {
- //abc(invoiceNo, billItem, token,data[0]['table'],double.tryParse(paidCashOrder.text)??0,double.tryParse(paidBankOrder.text)??0,balance??0,netTotal,double.tryParse(discountVale.text)??0,totalSum,);
+    //abc(invoiceNo, billItem, token,data[0]['table'],double.tryParse(paidCashOrder.text)??0,double.tryParse(paidBankOrder.text)??0,balance??0,netTotal,double.tryParse(discountVale.text)??0,totalSum,);
 
     List test=List.from(items);
 
@@ -138,8 +142,8 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
         .captureFromWidget(Container(
       color: Colors.white,
       width: printWidth*3,
-      child:  Column(
-          mainAxisSize: MainAxisSize.min,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
       // ListView(
       //     shrinkWrap: true,
           // physics: NeverScrollableScrollPhysics(),
@@ -218,7 +222,6 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
 
       itemWidgets1.add(
           Container(
-              width: printWidth * 3,
               padding: const EdgeInsets.all(1.0),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -361,18 +364,12 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
             .captureFromWidget(Container(
           width: printWidth*3,
 
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(itemWidgets1.length, (index) {
-              return itemWidgets1[index];
-            }),
-          ),
-          // ListView.builder(
-          //     shrinkWrap: true,
-          //     itemCount: itemWidgets1.length,
-          //     itemBuilder: (context, index) {
-          //       return itemWidgets1[index];
-          //     }),
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: itemWidgets1.length,
+              itemBuilder: (context, index) {
+                return itemWidgets1[index];
+              }),
         ));
 
         final im.Image? image2 = im.decodeImage(capturedIm);
@@ -386,7 +383,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
     }
-    if(itemWidgets1.isNotEmpty){
+    if(itemWidgets1.length>0){
       var capturedIm = await screenshotController
           .captureFromWidget(Container(
         width: printWidth*3,
@@ -396,7 +393,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
           children: List.generate(itemWidgets1.length, (index) {
             return itemWidgets1[index];
           }),
-        ),
+        )
         // ListView.builder(
         //     shrinkWrap: true,
         //     itemCount: itemWidgets1.length,
@@ -537,7 +534,6 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
     itemWidgets.add(Container(
       color: Colors.white,
       width: printWidth*3.1,
-      height: qrCode + 100,
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -563,7 +559,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
         children: List.generate(itemWidgets.length, (index) {
           return itemWidgets[index];
         }),
-      ),
+      )
       // ListView.builder(
       //     shrinkWrap: true,
       //     itemCount: itemWidgets.length,
@@ -643,6 +639,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
             appBar: AppBar(
               backgroundColor: FlutterFlowTheme.primaryColor,
               automaticallyImplyLeading: true,
+              iconTheme: IconThemeData(color: Colors.white),
               title: Text(
                 'Order Details',
                 style: FlutterFlowTheme.bodyText1.override(
@@ -986,37 +983,37 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                           List addlessName=[];
                           List removeName=[];
 
-                          List<dynamic>? addOn = bag[index]['addOn'];
-                          List<dynamic>? addLess = bag[index]['addLess'];
-                          List<dynamic>? addMore = bag[index]['addMore'];
-                          List<dynamic>? remove = bag[index]['remove'];
+                          List<dynamic> addOn = bag[index]['addOn'];
+                          List<dynamic> addLess = bag[index]['addLess'];
+                          List<dynamic> addMore = bag[index]['addMore'];
+                          List<dynamic> remove = bag[index]['remove'];
 
-                          List<dynamic>? arabicAddOn = bag[index]['addOnArabic'];
-                          List<dynamic>? arabicAddLess = bag[index]['addLessArabic'];
-                          List<dynamic>? arabicAddMore = bag[index]['addMoreArabic'];
-                          List<dynamic>? arabicRemove = bag[index]['removeArabic'];
+                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'] ?? [];
+                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'] ?? [];
+                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'] ?? [];
+                          List<dynamic> arabicRemove = bag[index]['removeArabic']?? [];
 
 
-                          if(addOn!.isNotEmpty){
+                          if(addOn.isNotEmpty){
                             for(Map<String,dynamic> items in addOn){
                               addOnName.add(items['addOn']);
                               //   addOnPrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(remove!.isNotEmpty){
+                          if(remove.isNotEmpty){
                             for(Map<String,dynamic> items in remove){
 
                               removeName.add(items['addOn']);
                               // removePrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(addMore!.isNotEmpty){
+                          if(addMore.isNotEmpty){
                             for(Map<String,dynamic> items in addMore){
                               addmoreName.add(items['addOn']);
                               // addmorePrice+=double.tryParse(items['price']);
                             }
                           }
-                          if(addLess!.isNotEmpty){
+                          if(addLess.isNotEmpty){
                             for(Map<String,dynamic> items in addLess){
 
                               addlessName.add(items['addOn']);
@@ -1106,35 +1103,35 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                               ),
                                               addOnName.isNotEmpty
                                                   ? Row(
-                                                    children: [
-                                                      Text("INCLUDE : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                                      Text("${addOnName.toString().substring(1,addOnName.toString().length-1)}",),
-                                                    ],
-                                                  )
+                                                children: [
+                                                  Text("INCLUDE : ",style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Text("${addOnName.toString().substring(1,addOnName.toString().length-1)}",),
+                                                ],
+                                              )
                                                   : Container(),
                                               removeName.isNotEmpty
                                                   ? Row(
-                                                    children: [
-                                                      Text("REMOVE : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                                      Text("${removeName.toString().substring(1,removeName.toString().length-1)}",),
-                                                    ],
-                                                  )
+                                                children: [
+                                                  Text("REMOVE : ",style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Text("${removeName.toString().substring(1,removeName.toString().length-1)}",),
+                                                ],
+                                              )
                                                   : Container(),
                                               addlessName.isNotEmpty
                                                   ? Row(
-                                                    children: [
-                                                      Text("ADD LESS : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                                      Text("${addlessName.toString().substring(1,addlessName.toString().length-1)}",),
-                                                    ],
-                                                  )
+                                                children: [
+                                                  Text("ADD LESS : ",style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Text("${addlessName.toString().substring(1,addlessName.toString().length-1)}",),
+                                                ],
+                                              )
                                                   : Container(),
                                               addmoreName.isNotEmpty
                                                   ? Row(
-                                                    children: [
-                                                      Text("ADD MORE : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                                      Text("${addmoreName.toString().substring(1,addmoreName.toString().length-1)}",),
-                                                    ],
-                                                  )
+                                                children: [
+                                                  Text("ADD MORE : ",style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Text("${addmoreName.toString().substring(1,addmoreName.toString().length-1)}",),
+                                                ],
+                                              )
                                                   : Container(),
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1321,8 +1318,8 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                           });
                                         },
                                         controller: mobileNo,
-                                            keyboardType:TextInputType.number,
-                                            decoration: InputDecoration(
+                                        keyboardType:TextInputType.number,
+                                        decoration: InputDecoration(
                                             hoverColor: default_color,
                                             hintText: arabicLanguage?'رقمالهتف  :  ':'Mobile NO:',
                                             border:
@@ -1463,7 +1460,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                   children:  [
                                     Expanded(
                                       child: Text(
-                                       "DISCOUNT   :-",
+                                        "DISCOUNT   :-",
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
@@ -1548,7 +1545,7 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                     ):InkWell(
                                       onTap: () async {
 
-                                       tape=true;
+                                        tape=true;
 
                                         setState(() {
 
@@ -2408,6 +2405,237 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                             FFButtonWidget(
                               onPressed: () async {
 
+                                if(Platform.isWindows) {
+                                  if (double.tryParse(paidCashOrder.text)!
+                                      > 0 || double.tryParse(amex.text)! > 0
+                                      || double.tryParse(visa.text)! > 0 ||
+                                      double.tryParse(master.text)! > 0 ||
+
+                                      double.tryParse(mada.text)! > 0 ||
+                                      dinnerCertificate == true ||
+                                      approve == true) {
+                                    // if(currentWaiterOnline!=null){
+
+
+                                    setState(() => _loadingButton = true);
+                                    // if(data[0]['table']=='Home Delivery'){
+                                    //   log('TRUEEE');
+                                    //   try {
+                                    //     pin=data[0]['deliveryPin'];
+                                    //     if(deliveryPin.text!=''&&deliveryPin.text==pin.toString()){
+                                    //       DocumentSnapshot order=data[0];
+                                    //       order.reference.update({
+                                    //         // 'cash':cash==true?true:false,
+                                    //         'currentUserId':currentUserId,
+                                    //         'status':2,
+                                    //         'DeliveredTime':DateTime.now(),
+                                    //       });
+                                    //       Navigator.pop(context);
+                                    //       showUploadMessage(context, ' Order Delivered');
+                                    //     }else{
+                                    //       deliveryPin.text==''?
+                                    //       showUploadMessage(context, 'Please Enter Delivery Pin'):
+                                    //       showUploadMessage(context, 'Wrong Delivery Pin');
+                                    //     }
+                                    //   } finally {
+                                    //     setState(() => _loadingButton = false);
+                                    //   }
+                                    //
+                                    // }elseif(data[0]['table']!='Home Delivery'){
+                                    // double  netTotal=  dinnerCertificate?0.00:(double.tryParse(paidCashOrder.text??0) +(double.tryParse(paidBankOrder.text??0)));
+                                    double netTotal = dinnerCertificate
+                                        ? 0.00
+                                        : (double.tryParse(data[0]['total']))! -
+                                        double.tryParse(discountVale.text)!;
+                                    double totalSum = (double.tryParse(
+                                        data[0]['total']))! -
+                                        double.tryParse(discountVale.text)!;
+                                    // double  bankPaid1=totalSum-double.tryParse(paidCashOrder.text);
+                                    double bankPaid1 = amexPaid + visaPaid +
+                                        madaPaid + masterPaid;
+
+                                    billItem = [];
+                                    for (int i = 0; i < bag.length; i++) {
+                                      double addOnPrice = 0;
+
+                                      List addOnName = [];
+                                      for (Map<String,
+                                          dynamic> items in addOn) {
+                                        addOnName.add(items['addOn']);
+                                        addOnPrice +=
+                                        double.tryParse(items['price'])!;
+                                      }
+                                      Map<String, dynamic> variants = {};
+                                      if (bag.isNotEmpty) {
+                                        variants = bag[i]['variant'];
+                                      }
+
+                                      billItem.add({
+                                        'addOnPrice': double.tryParse(
+                                            addOnPrice.toStringAsFixed(2)),
+                                        'addOns': addOnName,
+                                        'addOnArabic': [],
+                                        'variant': variants,
+                                        'arabicName': bag[i]['arabicName'],
+                                        'pdtname': bag[i]['productName'],
+                                        'price': bag[i]['price'] /
+                                            bag[i]['qty'],
+                                        'qty': int.tryParse(
+                                            bag[i]['qty'].toString()),
+                                      });
+                                    }
+
+
+                                    List<String> ingredientIds = [];
+                                    for (var a in items) {
+                                      for (var b in a['ingredients'] ?? []) {
+                                        ingredientIds.add(b['ingredientId']);
+                                      }
+                                    }
+
+
+                                    DocumentSnapshot order = data[0];
+                                    order.reference.update({
+
+                                      'currentUserId': currentUserId,
+                                      // 'status':2,
+                                      'DeliveredTime': DateTime.now(),
+                                    });
+                                    final billModel = BillModelOrderPicked(
+                                      vat: double.tryParse(data[0]['tax']) ?? 0,
+                                      grandTotal: double.tryParse(
+                                          data[0]['total']) ?? 0,
+                                      cashierName: PosUserIdToArabicName[currentUserId],
+                                      cashierNameArabic: PosUserIdToArabicName[currentUserId],
+                                      date: DateTime.now(),
+                                      invoiceNumber: invoiceNo,
+                                      mobileNumber: billMobileNo!,
+                                      orderType: "online Order",
+                                      productItems: billItem,
+                                      shopName: currentBranchName!,
+                                      shopNameArabic: currentBranchAddressArabic!,
+                                      vatNumber: vatNumber!,
+                                      total: double.tryParse(
+                                          data[0]['subTotal']) ?? 0,
+                                      table: data[0]['table'],
+                                      cash: double.tryParse(
+                                          paidCashOrder.text) ?? 0,
+                                      bank: bankPaid1 ?? 0,
+                                      balance: balance ?? 0,
+                                      // delcharge: null,
+                                      discount: double.tryParse(
+                                          discountVale.text) ?? 0,
+
+                                    );
+
+                                    generatePickedUpBillPdf(billModel);
+                                    // }
+                                    // abc(invoiceNo, billItem, token,data[0]['table'],double.tryParse(paidCashOrder.text)??0,bankPaid1??0,balance??0,netTotal,double.tryParse(discountVale.text)??0,totalSum,);
+                                    FirebaseFirestore.instance
+                                        .collection("sales")
+                                        .doc(currentBranchId)
+                                        .collection("sales")
+                                        .doc(data[0]['invoiceNo'].toString())
+                                        .update({
+                                      'currentUserId': currentUserId,
+                                      'salesDate': DateTime.now(),
+                                      'invoiceNo': invoiceNo,
+                                      'token': token,
+                                      'currentBranchId': currentBranchId,
+                                      'currentBranchPhNo': currentBranchPhNo,
+                                      'currentBranchAddress': currentBranchAddress,
+                                      'currentBranchArabic': currentBranchAddressArabic,
+                                      'deliveryCharge': double.tryParse(
+                                          delivery) ?? 0,
+                                      'table': selectedTable,
+                                      // 'billItems': billItem,
+                                      // 'discount': double.tryParse(discount) ?? 0,
+                                      'totalAmount': totalAmount * 100 /
+                                          (100 + gst),
+                                      'tax': totalAmount * gst / (100 + gst),
+                                      'paidCash': double.tryParse(
+                                          paidCashOrder.text) ?? 0,
+                                      'paidBank': approve || dinnerCertificate
+                                          ? 0
+                                          : bankPaid1 ?? 0,
+                                      'cash': approve ? false : paidCashOrder
+                                          .text == '' ||
+                                          paidCashOrder.text == '0.0' ||
+                                          paidCashOrder.text == '0.0' ||
+                                          paidCashOrder.text == null ||
+                                          dinnerCertificate ? false : true,
+                                      'bank': approve == true ||
+                                          dinnerCertificate == true
+                                          ? false
+                                          : bankPaid1 > 0 ? true : false,
+                                      'balance': balance,
+                                      "ingredientIds": ingredientIds,
+                                      'creditSale': approve ? true : false,
+                                      "creditName": approve
+                                          ? userMap["name"]
+                                          : "" ?? '',
+                                      "creditNumber": approve
+                                          ? userMap["phone"]
+                                          : "" ?? '',
+                                      "AMEX": amex.text != "0" &&
+                                          amex.text != "0.0" &&
+                                          amex.text != "" && amex.text != null
+                                          ? true
+                                          : false,
+                                      "VISA": visa.text != "0" &&
+                                          visa.text != "0.0" &&
+                                          visa.text != "" && visa.text != null
+                                          ? true
+                                          : false,
+                                      "MASTER": master.text != "0" &&
+                                          master.text != "0.0" &&
+                                          master.text != "" &&
+                                          master.text != null ? true : false,
+                                      "MADA": mada.text != "0" &&
+                                          mada.text != "0.0" &&
+                                          mada.text != "" && mada.text != null
+                                          ? true
+                                          : false,
+                                      "dinnerCertificate": dinnerCertificate
+                                          ? true
+                                          : false,
+                                      "amexAmount": double.tryParse(amex.text),
+                                      "madaAmount": double.tryParse(mada.text),
+                                      "visaAmount": double.tryParse(visa.text),
+                                      "masterAmount": double.tryParse(
+                                          master.text),
+                                      "discount": double.tryParse(
+                                          discountVale.text),
+                                      'grandTotal': totalSum,
+                                      // "waiterName":currentWaiterOnline
+                                    });
+                                    setState(() {
+                                      creditMap = {};
+                                      userMap = {};
+                                      approve = false;
+                                      amexPaid = 0;
+                                      masterPaid = 0;
+                                      visaPaid = 0;
+                                      madaPaid = 0;
+
+                                      amex.text = "0";
+                                      visa.text = "0";
+                                      master.text = "0";
+                                      mada.text = "0";
+                                      currentWaiterOnline = null;
+                                      balance = 0;
+                                      Navigator.pop(context);
+
+                                      showUploadMessage(
+                                          context, ' Order Delivered');
+                                    });
+                                  }
+                                  else {
+                                    showUploadMessage(context,
+                                        "PLEASE CHOOSE PAYMENT METHOD");
+                                  }
+                                }
+                                else if(Platform.isAndroid){
                                   if(double.tryParse(paidCashOrder.text)!
                                       >0 ||double.tryParse(amex.text)!>0
                                       ||double.tryParse(visa.text)!>0||
@@ -2419,157 +2647,160 @@ class _PickedOrdersWidgetState extends State<PickedOrdersWidget> {
                                     // if(currentWaiterOnline!=null){
 
 
-                                      setState(() => _loadingButton = true);
-                                      // if(data[0]['table']=='Home Delivery'){
-                                      //   log('TRUEEE');
-                                      //   try {
-                                      //     pin=data[0]['deliveryPin'];
-                                      //     if(deliveryPin.text!=''&&deliveryPin.text==pin.toString()){
-                                      //       DocumentSnapshot order=data[0];
-                                      //       order.reference.update({
-                                      //         // 'cash':cash==true?true:false,
-                                      //         'currentUserId':currentUserId,
-                                      //         'status':2,
-                                      //         'DeliveredTime':DateTime.now(),
-                                      //       });
-                                      //       Navigator.pop(context);
-                                      //       showUploadMessage(context, ' Order Delivered');
-                                      //     }else{
-                                      //       deliveryPin.text==''?
-                                      //       showUploadMessage(context, 'Please Enter Delivery Pin'):
-                                      //       showUploadMessage(context, 'Wrong Delivery Pin');
-                                      //     }
-                                      //   } finally {
-                                      //     setState(() => _loadingButton = false);
-                                      //   }
-                                      //
-                                      // }elseif(data[0]['table']!='Home Delivery'){
-                                      // double  netTotal=  dinnerCertificate?0.00:(double.tryParse(paidCashOrder.text??0) +(double.tryParse(paidBankOrder.text??0)));
-                                      double  netTotal=  approve?0.00:(double.tryParse(data[0]['total']))!-double.tryParse(discountVale.text)!;
-                                      double totalSum=(double.tryParse(data[0]['total']))!- double.tryParse(discountVale.text)!;
-                                      // double  bankPaid1=totalSum-double.tryParse(paidCashOrder.text);
-                                      double  bankPaid1=amexPaid+visaPaid+madaPaid+masterPaid;
+                                    setState(() => _loadingButton = true);
+                                    // if(data[0]['table']=='Home Delivery'){
+                                    //   log('TRUEEE');
+                                    //   try {
+                                    //     pin=data[0]['deliveryPin'];
+                                    //     if(deliveryPin.text!=''&&deliveryPin.text==pin.toString()){
+                                    //       DocumentSnapshot order=data[0];
+                                    //       order.reference.update({
+                                    //         // 'cash':cash==true?true:false,
+                                    //         'currentUserId':currentUserId,
+                                    //         'status':2,
+                                    //         'DeliveredTime':DateTime.now(),
+                                    //       });
+                                    //       Navigator.pop(context);
+                                    //       showUploadMessage(context, ' Order Delivered');
+                                    //     }else{
+                                    //       deliveryPin.text==''?
+                                    //       showUploadMessage(context, 'Please Enter Delivery Pin'):
+                                    //       showUploadMessage(context, 'Wrong Delivery Pin');
+                                    //     }
+                                    //   } finally {
+                                    //     setState(() => _loadingButton = false);
+                                    //   }
+                                    //
+                                    // }elseif(data[0]['table']!='Home Delivery'){
+                                    // double  netTotal=  dinnerCertificate?0.00:(double.tryParse(paidCashOrder.text??0) +(double.tryParse(paidBankOrder.text??0)));
+                                    double  netTotal=  approve?0.00:(double.tryParse(data[0]['total']))!-double.tryParse(discountVale.text)!;
+                                    double totalSum=(double.tryParse(data[0]['total']))!- double.tryParse(discountVale.text)!;
+                                    // double  bankPaid1=totalSum-double.tryParse(paidCashOrder.text);
+                                    double  bankPaid1=amexPaid+visaPaid+madaPaid+masterPaid;
 
-                                      billItem=[];
-                                      for(int i=0;i<bag.length;i++){
-                                        double addOnPrice=0;
+                                    billItem=[];
+                                    for(int i=0;i<bag.length;i++){
+                                      double addOnPrice=0;
 
-                                        List addOnName=[];
-                                        for(Map<String,dynamic> items in addOn){
-                                          addOnName.add(items['addOn']);
-                                          addOnPrice+=double.tryParse(items['price'])!;
+                                      List addOnName=[];
+                                      for(Map<String,dynamic> items in addOn){
+                                        addOnName.add(items['addOn']);
+                                        addOnPrice+=double.tryParse(items['price'])!;
 
-                                        }
-                                        Map<String,dynamic> variants={};
-                                        if(bag.isNotEmpty){
-                                          variants=bag[i]['variant'];
-                                        }
-
-                                        billItem.add({
-                                          'addOnPrice':double.tryParse(addOnPrice.toStringAsFixed(2)),
-                                          'addOns':addOnName,
-                                          'addOnArabic':[],
-                                          'variant':variants,
-                                          'arabicName':bag[i]['arabicName'],
-                                          'pdtname':bag[i]['productName'],
-                                          'price':bag[i]['price']/bag[i]['qty'],
-                                          'qty':int.tryParse(bag[i]['qty'].toString()),
-                                        });
+                                      }
+                                      Map<String,dynamic> variants={};
+                                      if(bag.isNotEmpty){
+                                        variants=bag[i]['variant'];
                                       }
 
-                                      List<String> ingredientIds = [];
-                                      for (var a in items) {
-                                        for (var b in a['ingredients'] ?? []) {
-                                          ingredientIds.add(b['ingredientId']);
-                                        }
+                                      billItem.add({
+                                        'addOnPrice':double.tryParse(addOnPrice.toStringAsFixed(2)),
+                                        'addOns':addOnName,
+                                        'addOnArabic':[],
+                                        'variant':variants,
+                                        'arabicName':bag[i]['arabicName'],
+                                        'pdtname':bag[i]['productName'],
+                                        'price':bag[i]['price']/bag[i]['qty'],
+                                        'qty':int.tryParse(bag[i]['qty'].toString()),
+                                      });
+                                    }
+
+                                    List<String> ingredientIds = [];
+                                    for (var a in items) {
+                                      for (var b in a['ingredients'] ?? []) {
+                                        ingredientIds.add(b['ingredientId']);
                                       }
+                                    }
 
 
-                                      DocumentSnapshot order=data[0];
-                                      order.reference.update({
+                                    DocumentSnapshot order=data[0];
+                                    order.reference.update({
 
-                                        'currentUserId':currentUserId,
-                                         // 'status':2,
-                                        'DeliveredTime':DateTime.now(),
-                                      });
+                                      'currentUserId':currentUserId,
+                                      // 'status':2,
+                                      'DeliveredTime':DateTime.now(),
+                                    });
 
 
-                                      // }
-                                      print(billItem.length);
-                                      abc(invoiceNo, billItem, token,data[0]['table'],double.tryParse(paidCashOrder.text)??0,bankPaid1??0,balance??0,netTotal,double.tryParse(discountVale.text)??0,totalSum,);
-                                      FirebaseFirestore.instance
-                                          .collection("sales")
-                                          .doc(currentBranchId)
-                                          .collection("sales")
-                                          .doc(data[0]['invoiceNo'].toString())
-                                          .update({
-                                        'currentUserId': currentUserId,
-                                        'salesDate': DateTime.now(),
-                                        'invoiceNo': invoiceNo,
-                                        'token': token,
-                                        'currentBranchId': currentBranchId,
-                                        'currentBranchPhNo': currentBranchPhNo,
-                                        'currentBranchAddress': currentBranchAddress,
-                                        'currentBranchArabic': currentBranchAddressArabic,
-                                        'deliveryCharge': double.tryParse(delivery) ?? 0,
-                                        'table': selectedTable,
-                                        // 'billItems': billItem,
-                                        // 'discount': double.tryParse(discount) ?? 0,
-                                        'totalAmount': totalAmount * 100 / (100 + gst),
-                                        'tax': totalAmount * gst / (100 + gst),
-                                        'paidCash': double.tryParse(paidCashOrder.text) ?? 0,
-                                        'paidBank': approve||dinnerCertificate?0:bankPaid1 ?? 0,
-                                        'cash': approve?false:paidCashOrder.text==''|| paidCashOrder.text=='0.0'||paidCashOrder.text=='0.0'||paidCashOrder.text==null||dinnerCertificate?false:true ,
-                                        'bank': approve==true||dinnerCertificate==true?false:bankPaid1>0?true:false,
-                                        'balance': balance,
-                                        "ingredientIds": ingredientIds,
-                                        'creditSale':approve?true:false,
-                                        "creditName":approve?userMap["name"]:""??'',
-                                        "creditNumber":approve?userMap["phone"]:""??'',
-                                        "AMEX":amex.text!="0"&&amex.text!="0.0"&&amex.text!=""&&amex.text!=null?true:false,
-                                        "VISA":visa.text!="0"&&visa.text!="0.0"&&visa.text!=""&&visa.text!=null?true:false,
-                                        "MASTER":master.text!="0"&&master.text!="0.0"&&master.text!=""&&master.text!=null?true:false,
-                                        "MADA":mada.text!="0"&&mada.text!="0.0"&&mada.text!=""&&mada.text!=null?true:false,
-                                        "dinnerCertificate":dinnerCertificate?true:false,
-                                        "amexAmount":double.tryParse(amex.text),
-                                        "madaAmount":double.tryParse(mada.text),
-                                        "visaAmount":double.tryParse(visa.text),
-                                        "masterAmount":double.tryParse(master.text),
-                                        "discount":double.tryParse(discountVale.text),
-                                        'grandTotal': totalSum,
-                                        // "waiterName":currentWaiterOnline
-                                      });
-                                      setState(() {
-                                        creditMap={};
-                                        userMap={};
-                                        approve=false;
-                                        amexPaid=0;
-                                        masterPaid=0;
-                                        visaPaid=0;
-                                        madaPaid=0;
+                                    // }
+                                    print(billItem.length);
+                                    abc(invoiceNo, billItem, token,data[0]['table'],double.tryParse(paidCashOrder.text)??0,bankPaid1??0,balance??0,netTotal,double.tryParse(discountVale.text)??0,totalSum,);
+                                    FirebaseFirestore.instance
+                                        .collection("sales")
+                                        .doc(currentBranchId)
+                                        .collection("sales")
+                                        .doc(data[0]['invoiceNo'].toString())
+                                        .update({
+                                      'currentUserId': currentUserId,
+                                      'salesDate': DateTime.now(),
+                                      'invoiceNo': invoiceNo,
+                                      'token': token,
+                                      'currentBranchId': currentBranchId,
+                                      'currentBranchPhNo': currentBranchPhNo,
+                                      'currentBranchAddress': currentBranchAddress,
+                                      'currentBranchArabic': currentBranchAddressArabic,
+                                      'deliveryCharge': double.tryParse(delivery) ?? 0,
+                                      'table': selectedTable,
+                                      // 'billItems': billItem,
+                                      // 'discount': double.tryParse(discount) ?? 0,
+                                      'totalAmount': totalAmount * 100 / (100 + gst),
+                                      'tax': totalAmount * gst / (100 + gst),
+                                      'paidCash': double.tryParse(paidCashOrder.text) ?? 0,
+                                      'paidBank': approve||dinnerCertificate?0:bankPaid1 ?? 0,
+                                      'cash': approve?false:paidCashOrder.text==''|| paidCashOrder.text=='0.0'||paidCashOrder.text=='0.0'||paidCashOrder.text==null||dinnerCertificate?false:true ,
+                                      'bank': approve==true||dinnerCertificate==true?false:bankPaid1>0?true:false,
+                                      'balance': balance,
+                                      "ingredientIds": ingredientIds,
+                                      'creditSale':approve?true:false,
+                                      "creditName":approve?userMap["name"]:""??'',
+                                      "creditNumber":approve?userMap["phone"]:""??'',
+                                      "AMEX":amex.text!="0"&&amex.text!="0.0"&&amex.text!=""&&amex.text!=null?true:false,
+                                      "VISA":visa.text!="0"&&visa.text!="0.0"&&visa.text!=""&&visa.text!=null?true:false,
+                                      "MASTER":master.text!="0"&&master.text!="0.0"&&master.text!=""&&master.text!=null?true:false,
+                                      "MADA":mada.text!="0"&&mada.text!="0.0"&&mada.text!=""&&mada.text!=null?true:false,
+                                      "dinnerCertificate":dinnerCertificate?true:false,
+                                      "amexAmount":double.tryParse(amex.text),
+                                      "madaAmount":double.tryParse(mada.text),
+                                      "visaAmount":double.tryParse(visa.text),
+                                      "masterAmount":double.tryParse(master.text),
+                                      "discount":double.tryParse(discountVale.text),
+                                      'grandTotal': totalSum,
+                                      // "waiterName":currentWaiterOnline
+                                    });
+                                    setState(() {
+                                      creditMap={};
+                                      userMap={};
+                                      approve=false;
+                                      amexPaid=0;
+                                      masterPaid=0;
+                                      visaPaid=0;
+                                      madaPaid=0;
 
-                                        amex.text="0";
-                                        visa.text="0";
-                                        master.text="0";
-                                        mada.text="0";
-                                        currentWaiterOnline=null;
-                                        balance=0;
-                                        Navigator.pop(context);
+                                      amex.text="0";
+                                      visa.text="0";
+                                      master.text="0";
+                                      mada.text="0";
+                                      currentWaiterOnline=null;
+                                      balance=0;
+                                      Navigator.pop(context);
 
-                                        showUploadMessage(context, ' Order Delivered');
-                                      });
+                                      showUploadMessage(context, ' Order Delivered');
+                                    });
 
-                                }
+                                  }
                                   else{
                                     showUploadMessage(context, "PLEASE CHOOSE PAYMENT METHOD");
                                   }
 
 
 
+                                }
+
+
                               },
                               text: 'FINAL INVOICE',
                               options: FFButtonOptions(
-                                width:160,
+                                // width:160,
                                 height: 45,
                                 color: const Color(0xFF04C130),
                                 textStyle: FlutterFlowTheme.subtitle2.override(

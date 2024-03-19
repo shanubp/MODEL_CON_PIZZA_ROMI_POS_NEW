@@ -45,8 +45,10 @@ class PdfInvoiceApi {
     //   footer: (context) => buildFooter(invoice),
     // ));
 
-    await Printing.layoutPdf(
-        onLayout: (PdfPageFormat format) async => doc.save());
+
+   await Printing.layoutPdf(
+       onLayout: (PdfPageFormat format) async => doc.save());
+
 
     return PdfApi.saveDocument(name: 'PerfoPowa-${DateTime.now()}.pdf', pdf: pdf);
   }

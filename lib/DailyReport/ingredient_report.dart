@@ -38,7 +38,8 @@ class _IngredientReportState extends State<IngredientReport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ingredient Report"),
+        title: Text("Ingredient Report",style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         backgroundColor: default_color,
         actions: [

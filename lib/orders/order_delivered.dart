@@ -41,6 +41,7 @@ class _DeliveredDetailsWidgetState extends State<DeliveredDetailsWidget> {
             appBar: AppBar(
               backgroundColor: FlutterFlowTheme.primaryColor,
               automaticallyImplyLeading: true,
+              iconTheme: IconThemeData(color: Colors.white),
               title: Text(
                 'Delivery Details',
                 style: FlutterFlowTheme.bodyText1.override(
@@ -274,10 +275,10 @@ class _DeliveredDetailsWidgetState extends State<DeliveredDetailsWidget> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context,int index){
 
-                          double addOnPrice=double.tryParse(bag[index]['addOnPrice'].toString())!;
-                          double addmorePrice=double.tryParse(bag[index]['addMorePrice'].toString())!;
-                          double addlessPrice=double.tryParse(bag[index]['addLessPrice'].toString())!;
-                          double removePrice=double.tryParse(bag[index]['removePrice'].toString())!;
+                          double addOnPrice=double.tryParse(bag[index]['addOnPrice'].toString())??0;
+                          double addmorePrice=double.tryParse(bag[index]['addMorePrice'].toString())??0;
+                          double addlessPrice=double.tryParse(bag[index]['addLessPrice'].toString())??0;
+                          double removePrice=double.tryParse(bag[index]['removePrice'].toString())??0;
 
                           List addOnName=[];
                           List addmoreName=[];
@@ -289,10 +290,10 @@ class _DeliveredDetailsWidgetState extends State<DeliveredDetailsWidget> {
                           List<dynamic> addMore = bag[index]['addMore'];
                           List<dynamic> remove = bag[index]['remove'];
 
-                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'];
-                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'];
-                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'];
-                          List<dynamic> arabicRemove = bag[index]['removeArabic'];
+                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'] ?? [];
+                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'] ?? [];
+                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'] ?? [];
+                          List<dynamic> arabicRemove = bag[index]['removeArabic'] ?? [];
 
                           if(addOn.isNotEmpty){
                             for(Map<String,dynamic> items in addOn){

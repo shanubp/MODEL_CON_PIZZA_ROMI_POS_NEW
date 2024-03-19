@@ -28,6 +28,7 @@ class _Live_Orders_WidgetState extends State<Live_Orders_Widget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.primaryColor,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Orders',
           style: FlutterFlowTheme.bodyText1.override(

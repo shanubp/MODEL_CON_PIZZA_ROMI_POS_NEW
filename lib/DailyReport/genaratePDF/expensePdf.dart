@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:awafi_pos/DailyReport/genaratePDF/productReport_model.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -116,7 +117,7 @@ class ExpensePdfPage {
                 List.generate(invoice.InvoiceList.length, (index) {
                   final item =invoice.InvoiceList[index];
                   double? total=double.tryParse(item["amount"].toString());
-                  gdtotal+=total!;
+                  gdtotal+=total??0;
                   print(item.toString()+'                    $index');
                   return [
                     item['voucherNo'],

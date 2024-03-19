@@ -3,19 +3,21 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:arabic_numbers/arabic_numbers.dart';
+// import 'package:awafi_pos/billModelReturn.dart';
 import 'package:awafi_pos/flutter_flow/flutter_flow_theme.dart';
 import 'package:awafi_pos/flutter_flow/upload_media.dart';
+// import 'package:awafi_pos/returnBillPdf.dart';
 import 'package:awafi_pos/view_invoice/return_Sales_Print.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../Branches/branches.dart';
 import '../main.dart';
 import 'package:image/image.dart' as im;
-
+import '../model/billModelReturn.dart';
+import '../pdf/returnBillPdf.dart';
 import '../product_card.dart';
 
 List<Map<String, dynamic>> returnItems = [];
@@ -70,8 +72,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     //date
     bytesBuilder.addByte(3);
-    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(salesDate);
-    List<int> date = utf8.encode(time);
+    List<int> date = utf8.encode(salesDate.toString());
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
 
@@ -125,7 +126,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       color: Colors.white,
       width: printWidth * 3,
       child: Column(
-          mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min,
       // ListView(
       //     shrinkWrap: true,
           // physics: NeverScrollableScrollPhysics(),
@@ -426,20 +427,12 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       if (itemWidgets1.length == itemCount) {
         var capturedIm = await screenshotController.captureFromWidget(Container(
           width: printWidth * 3,
-          child:Column(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(itemWidgets1.length, (index){
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: itemWidgets1.length,
+              itemBuilder: (context, index) {
                 return itemWidgets1[index];
-                      }),
-
-          ),
-
-          // ListView.builder(
-          //     shrinkWrap: true,
-          //     itemCount: itemWidgets1.length,
-          //     itemBuilder: (context, index) {
-          //       return itemWidgets1[index];
-          //     }),
+              }),
         ));
 
         final im.Image? image2 = im.decodeImage(capturedIm);
@@ -450,7 +443,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       print('mid ********************************');
 
       itemTotal += (totalAmount * ((100 + gst) / 100) -
-              (double.tryParse(discount.toString()) ?? 0))
+          (double.tryParse(discount.toString()) ?? 0))
           .toStringAsFixed(2);
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
@@ -458,12 +451,14 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     if (itemWidgets1.length > 0) {
       var capturedIm = await screenshotController.captureFromWidget(Container(
         width: printWidth * 3,
-        child:  Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(itemWidgets1.length, (index) {
-            return itemWidgets1[index];
-          }),
-        ),
+          children: List.generate(
+              itemWidgets1.length,
+                  (index) {
+                    return itemWidgets1[index];
+                  }),
+        )
         // ListView.builder(
         //     shrinkWrap: true,
         //     itemCount: itemWidgets1.length,
@@ -488,9 +483,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             ),
             child: Center(
                 child: Text(
-              '=====================',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '=====================',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         Container(
           padding: const EdgeInsets.all(1.0),
           decoration: const BoxDecoration(
@@ -548,9 +543,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             ),
             child: Center(
                 child: Text(
-              '-------------------------------------------',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '-------------------------------------------',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         Container(
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -582,9 +577,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             ),
             child: Center(
                 child: Text(
-              '-------------------------------------------',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '-------------------------------------------',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
         Container(
           padding: const EdgeInsets.all(1.0),
           decoration: const BoxDecoration(
@@ -626,22 +621,21 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             ),
             child: Center(
                 child: Text(
-              '-------------------------------------------',
-              style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-            ))),
+                  '-------------------------------------------',
+                  style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+                ))),
       ],
     ));
 
     deliveryCharge = double.tryParse(delivery);
     String qrVat = (totalAmount * gst / 100).toStringAsFixed(2);
     String qrTotal =
-        (grantTotal - discount + deliveryCharge).toStringAsFixed(2);
+    (grantTotal - discount + deliveryCharge).toStringAsFixed(2);
 
     // bluetooth.printQRcode(qr(qrVat, qrTotal), 200, 200, 1);
     itemWidgets.add(Container(
-      height: qrCode + 100,
-      width: printWidth * 3.1,
       color: Colors.white,
+      width: printWidth * 3.1,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -663,9 +657,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           child: Center(
               child: Text(
-            'العناصر المرتجعة',
-            style: TextStyle(color: Colors.black, fontSize: fontSize),
-          ))),
+                'العناصر المرتجعة',
+                style: TextStyle(color: const Color.fromARGB(255, 183, 173, 173), fontSize: fontSize),
+              ))),
     );
 
     itemWidgets.add(
@@ -676,9 +670,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           child: Center(
               child: Text(
-            '-------------------------------------------',
-            style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-          ))),
+                '-------------------------------------------',
+                style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+              ))),
     );
     itemWidgets.add(
       Container(
@@ -688,9 +682,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           child: Center(
               child: Text(
-            'RETURN ITEMS',
-            style: TextStyle(color: Colors.black, fontSize: fontSize + 5),
-          ))),
+                'RETURN ITEMS',
+                style: TextStyle(color: Colors.black, fontSize: fontSize + 5),
+              ))),
     );
     itemWidgets.add(
       Container(
@@ -700,9 +694,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           child: Center(
               child: Text(
-            '-------------------------------------------',
-            style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
-          ))),
+                '-------------------------------------------',
+                style: TextStyle(color: Colors.black, fontSize: printWidth * .25),
+              ))),
     );
     for (Map<String, dynamic> item in rItems) {
       addOnPrice = item['addOnPrice'] ??
@@ -855,7 +849,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ])));
 
       itemTotal += (totalAmount * ((100 + gst) / 100) -
-              (double.tryParse(discount.toString()) ?? 0))
+          (double.tryParse(discount.toString()) ?? 0))
           .toStringAsFixed(2);
       itemGrossTotal += grossTotal.toStringAsFixed(2);
       itemTax += (totalAmount * gst / 100).toStringAsFixed(2);
@@ -863,12 +857,14 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     var capturedImage2 = await screenshotController.captureFromWidget(Container(
       width: printWidth * 3,
-      child:  Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(itemWidgets.length, (index) {
-          return itemWidgets[index];
-        }),
-      ),
+        children: List.generate(
+            itemWidgets.length,
+                (index) {
+                  return itemWidgets[index];
+                }),
+      )
       // ListView.builder(
       //     shrinkWrap: true,
       //     itemCount: itemWidgets.length,
@@ -880,14 +876,17 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     bytes += generator.imageRaster(image2!);
 
     var capturedImage20 =
-        await screenshotController.captureFromWidget(Container(
+    await screenshotController.captureFromWidget(Container(
       width: printWidth * 3,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(itemWidgets1.length, (index) {
-          return itemWidgets1[index];
-        }),
-      ),
+        children: List.generate(
+            itemWidgets1.length,
+                (index) {
+                  return itemWidgets1[index];
+                }),
+
+      )
       // ListView.builder(
       //     shrinkWrap: true,
       //     itemCount: itemWidgets1.length,
@@ -900,7 +899,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     itemWidgets1 = [];
 
     var capturedImage15 =
-        await screenshotController.captureFromWidget(Container(
+    await screenshotController.captureFromWidget(Container(
       color: Colors.white,
       width: printWidth * 3,
       height: 120,
@@ -913,10 +912,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
               ),
               child: Center(
                   child: Text(
-                '-------------------------------------------',
-                style:
+                    '-------------------------------------------',
+                    style:
                     TextStyle(color: Colors.black, fontSize: printWidth * .25),
-              ))),
+                  ))),
           Container(
             padding: const EdgeInsets.all(1.0),
             decoration: const BoxDecoration(
@@ -949,10 +948,12 @@ class _ViewInvoiceState extends State<ViewInvoice> {
               ),
               child: Center(
                   child: Text(
-                '-------------------------------------------',
-                style:
+                    '-------------------------------------------',
+                    style:
                     TextStyle(color: Colors.black, fontSize: printWidth * .25),
-              ))),
+                  ))),
+
+
         ],
       ),
     ));
@@ -1063,7 +1064,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     for (dynamic item in returnItems) {
       print(item['qty']);
       returnTotal += (double.tryParse(item['price'].toString())! +
-              double.tryParse(item['addOnPrice'].toString())!) *
+          double.tryParse(item['addOnPrice'].toString())!) *
           item['qty'];
     }
     List items = returnItems;
@@ -1082,6 +1083,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'View Invoice',
           style: FlutterFlowTheme.title1
@@ -1092,141 +1094,304 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: 900,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFF2b0e10),
-                      border: Border.all(color: Color(0xFF2b0e10))),
-                  child: Center(
-                    child: Text(
-                      invoice == null ? '' : invoice!.id,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 900,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF2b0e10),
+                          border: Border.all(color: Color(0xFF2b0e10))),
+                      child: Center(
+                        child: Text(
+                          invoice == null ? '' : invoice!.id,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                    onPressed: () async {
-                      // userName.text="manager@gmail.com";
-                      // password.text= "123456";
-                      // discription.text="hddduu";
+                    SizedBox(
+                      width: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          // userName.text="manager@gmail.com";
+                          // password.text= "123456";
+                          // discription.text="hddduu";
 
-                      if (returnItems.isNotEmpty) {
-                        DocumentSnapshot invoiceNoDoc = await FirebaseFirestore
-                            .instance
-                            .collection('invoiceNo')
-                            .doc(currentBranchId)
-                            .get();
-                        FirebaseFirestore.instance
-                            .collection('invoiceNo')
-                            .doc(currentBranchId)
-                            .update({
-                          'return': FieldValue.increment(1),
-                        });
-                        int returns = invoiceNoDoc.get('return');
+                          if(Platform.isWindows) {
+                            if (returnItems.isNotEmpty) {
+                              DocumentSnapshot invoiceNoDoc = await FirebaseFirestore
+                                  .instance
+                                  .collection('invoiceNo')
+                                  .doc(currentBranchId)
+                                  .get();
+                              FirebaseFirestore.instance
+                                  .collection('invoiceNo')
+                                  .doc(currentBranchId)
+                                  .update({
+                                'return': FieldValue.increment(1),
+                              });
+                              int returns = invoiceNoDoc.get('return');
 
-                        returns++;
+                              returns++;
 
-                        FirebaseFirestore.instance
-                            .collection('salesReturn')
-                            .doc(currentBranchId)
-                            .collection('salesReturn')
-                            .doc(returns.toString())
-                            .set({
-                          'salesReturnDate': DateTime.now(),
-                          'invoiceNo': returns,
-                          'salesInvoiceNo': invoice!.id,
-                          'cash': cash,
-                          'token': token,
-                          'currentBranchId': currentBranchId,
-                          'search': setSearchParam(returns.toString()),
-                          'currentBranchPhNo': currentBranchPhNo,
-                          'currentBranchAddress': currentBranchAddress,
-                          'currentBranchArabic': currentBranchAddressArabic,
-                          'deliveryCharge': double.tryParse(delivery) ?? 0,
-                          'table': selectedTable,
-                          'billItems': returnItems,
-                          'discount': 0,
-                          'totalAmount': returnTotal * 100 / (100 + gst),
-                          'tax': returnTotal * gst / (100 + gst),
-                          'grandTotal': returnTotal,
-                          'currentUserId': currentUserId,
-                          "returnReason": discription!.text ?? '',
-                        }).then((value) async {
-                          DocumentSnapshot abc = await FirebaseFirestore
-                              .instance
-                              .collection('sales')
-                              .doc(currentBranchId)
-                              .collection('sales')
-                              .doc(widget.invoiceNo.toString())
-                              .get();
+                              FirebaseFirestore.instance
+                                  .collection('salesReturn')
+                                  .doc(currentBranchId)
+                                  .collection('salesReturn')
+                                  .doc(returns.toString())
+                                  .set({
+                                'salesReturnDate': DateTime.now(),
+                                'invoiceNo': returns,
+                                'salesInvoiceNo': invoice!.id,
+                                'cash': cash,
+                                'token': token,
+                                'currentBranchId': currentBranchId,
+                                'search': setSearchParam(returns.toString()),
+                                'currentBranchPhNo': currentBranchPhNo,
+                                'currentBranchAddress': currentBranchAddress,
+                                'currentBranchArabic': currentBranchAddressArabic,
+                                'deliveryCharge': double.tryParse(delivery) ??
+                                    0,
+                                'table': selectedTable,
+                                'billItems': returnItems,
+                                'discount': 0,
+                                'totalAmount': returnTotal * 100 / (100 + gst),
+                                'tax': returnTotal * gst / (100 + gst),
+                                'grandTotal': returnTotal,
+                                'currentUserId': currentUserId,
+                                "returnReason": discription!.text ?? '',
+                              }).then((value) async {
+                                DocumentSnapshot abc = await FirebaseFirestore
+                                    .instance
+                                    .collection('sales')
+                                    .doc(currentBranchId)
+                                    .collection('sales')
+                                    .doc(widget.invoiceNo.toString())
+                                    .get();
 
-                          List testList = abc.get('billItems');
+                                List testList = abc.get('billItems');
 
-                          for (var a in testList) {
-                            for (var b in returnItems) {
-                              if (a['pdtname'] == b['pdtname']) {
-                                a['returnQty'] += b['qty'];
-                              }
+                                for (var a in testList) {
+                                  for (var b in returnItems) {
+                                    if (a['pdtname'] == b['pdtname']) {
+                                      a['returnQty'] += b['qty'];
+                                    }
+                                  }
+                                }
+
+                                print(testList.toString() + '          hhhhh');
+                                abc.reference.update({'billItems': testList});
+                              });
+                              final modelReturn = BillModelReturn(
+                                vat: invoice!.get('tax'),
+                                balance: double.tryParse(
+                                    invoice!.get('balance').toString()) ?? 0,
+                                bank: double.tryParse(
+                                    invoice!.get('paidBank').toString()) ?? 0,
+                                cash: double.tryParse(
+                                    invoice!.get('paidCash').toString()) ?? 0,
+                                cashierName: PosUserIdToArabicName[currentUserId],
+                                cashierNameArabic: PosUserIdToArabicName[currentUserId],
+                                date: invoice!.get('salesDate').toDate(),
+                                invoiceNumber: int.tryParse(
+                                    invoice!.id.toString())!,
+                                mobileNumber: billMobileNo!,
+                                orderType: invoice!.get('orderType'),
+                                productItems: invoice!.get('billItems'),
+                                shopName: currentBranchName!,
+                                shopNameArabic: currentBranchAddressArabic!,
+                                vatNumber: vatNumber!,
+                                total: invoice!.get('totalAmount'),
+                                delcharge: double.tryParse(delivery) ?? 0,
+                                discount: double.tryParse(
+                                    invoice!.get('discount').toString())!,
+                                grandTotal: invoice!.get('grandTotal'),
+                                returns: returns,
+                                returnItems: returnItems,
+                              );
+                              blue
+                                  ? await showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    items = invoice!.get('billItems');
+
+                                    return return_salesPrint(
+                                      salesDate:
+                                      invoice!.get('salesDate').toDate(),
+                                      tableName: invoice!.get('table'),
+                                      items: items,
+                                      grandTotal: invoice!.get('grandTotal'),
+                                      vatTotal: invoice!.get('tax'),
+                                      total: invoice!.get('totalAmount'),
+                                      returnItems: returnItems,
+                                      token: token,
+                                      delivery: double.tryParse(delivery) ?? 0,
+                                      customer: 'Walking Customer',
+                                      discountPrice:
+                                      double.tryParse(discount.toString()) ??
+                                          0,
+                                      invoiceNo: invoice!.id.toString(),
+                                      cashPaid: double.tryParse(invoice
+                                      !.get('paidCash')
+                                          .toString()) ??
+                                          0,
+                                      bankPaid: double.tryParse(invoice
+                                      !.get('paidBank')
+                                          .toString()) ??
+                                          0,
+                                      balance: double.tryParse(invoice
+                                      !.get('balance')
+                                          .toString()) ??
+                                          0,
+                                    );
+                                  })
+                                  :
+                              // await efg(
+                              //     int.tryParse(invoice!.id.toString())!,
+                              //     double.tryParse(invoice!.get('discount').toString())!,
+                              //     returns,
+                              //     returnItems,
+                              //     invoice!.get('billItems'),
+                              //     token,
+                              //     double.tryParse(delivery) ?? 0,
+                              //     invoice!.get('salesDate').toDate(),
+                              //     double.tryParse( invoice!.get('paidCash').toString()) ??0,
+                              //     double.tryParse( invoice!.get('paidBank').toString()) ??0,
+                              //     double.tryParse(invoice!.get('balance').toString()) ??0,
+                              //     invoice!.get('orderType'),
+                              //   );
+
+                              generatePdfReturn(modelReturn);
+
+
+                              showUploadMessage(
+                                  context, 'Return Successfully...');
+                              setState(() {
+                                password!.text = "";
+                                userName!.text = "";
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              });
+                            } else {
+                              showUploadMessage(
+                                  context, 'Please Choose Products');
                             }
                           }
+                          else if(Platform.isAndroid){
 
-                          print(testList.toString() + '          hhhhh');
-                          abc.reference.update({'billItems': testList});
-                        });
-                        blue
-                            ? await showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  items = invoice!.get('billItems');
+                            if (returnItems.isNotEmpty) {
+                              DocumentSnapshot invoiceNoDoc = await FirebaseFirestore
+                                  .instance
+                                  .collection('invoiceNo')
+                                  .doc(currentBranchId)
+                                  .get();
+                              FirebaseFirestore.instance
+                                  .collection('invoiceNo')
+                                  .doc(currentBranchId)
+                                  .update({
+                                'return': FieldValue.increment(1),
+                              });
+                              int returns = invoiceNoDoc.get('return');
 
-                                  return return_salesPrint(
-                                    salesDate:
-                                        invoice!.get('salesDate').toDate(),
-                                    tableName: invoice!.get('table'),
-                                    items: items,
-                                    grandTotal: invoice!.get('grandTotal'),
-                                    vatTotal: invoice!.get('tax'),
-                                    total: invoice!.get('totalAmount'),
-                                    returnItems: returnItems,
-                                    token: token,
-                                    delivery: double.tryParse(delivery) ?? 0,
-                                    customer: 'Walking Customer',
-                                    discountPrice:
-                                        double.tryParse(discount.toString()) ??
-                                            0,
-                                    invoiceNo: invoice!.id.toString(),
-                                    cashPaid: double.tryParse(invoice
-                                            !.get('paidCash')
-                                            .toString()) ??
-                                        0,
-                                    bankPaid: double.tryParse(invoice
-                                            !.get('paidBank')
-                                            .toString()) ??
-                                        0,
-                                    balance: double.tryParse(invoice
-                                            !.get('balance')
-                                            .toString()) ??
-                                        0,
-                                  );
-                                })
-                            : await efg(
+                              returns++;
+
+                              FirebaseFirestore.instance
+                                  .collection('salesReturn')
+                                  .doc(currentBranchId)
+                                  .collection('salesReturn')
+                                  .doc(returns.toString())
+                                  .set({
+                                'salesReturnDate': DateTime.now(),
+                                'invoiceNo': returns,
+                                'salesInvoiceNo': invoice!.id,
+                                'cash': cash,
+                                'token': token,
+                                'currentBranchId': currentBranchId,
+                                'search': setSearchParam(returns.toString()),
+                                'currentBranchPhNo': currentBranchPhNo,
+                                'currentBranchAddress': currentBranchAddress,
+                                'currentBranchArabic': currentBranchAddressArabic,
+                                'deliveryCharge': double.tryParse(delivery) ?? 0,
+                                'table': selectedTable,
+                                'billItems': returnItems,
+                                'discount': 0,
+                                'totalAmount': returnTotal * 100 / (100 + gst),
+                                'tax': returnTotal * gst / (100 + gst),
+                                'grandTotal': returnTotal,
+                                'currentUserId': currentUserId,
+                                "returnReason": discription!.text ?? '',
+                              }).then((value) async {
+                                DocumentSnapshot abc = await FirebaseFirestore
+                                    .instance
+                                    .collection('sales')
+                                    .doc(currentBranchId)
+                                    .collection('sales')
+                                    .doc(widget.invoiceNo.toString())
+                                    .get();
+
+                                List testList = abc.get('billItems');
+
+                                for (var a in testList) {
+                                  for (var b in returnItems) {
+                                    if (a['pdtname'] == b['pdtname']) {
+                                      a['returnQty'] += b['qty'];
+                                    }
+                                  }
+                                }
+
+                                print(testList.toString() + '          hhhhh');
+                                abc.reference.update({'billItems': testList});
+                              });
+                              blue
+                                  ? await showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    items = invoice!.get('billItems');
+
+                                    return return_salesPrint(
+                                      salesDate:
+                                      invoice!.get('salesDate').toDate(),
+                                      tableName: invoice!.get('table'),
+                                      items: items,
+                                      grandTotal: invoice!.get('grandTotal'),
+                                      vatTotal: invoice!.get('tax'),
+                                      total: invoice!.get('totalAmount'),
+                                      returnItems: returnItems,
+                                      token: token,
+                                      delivery: double.tryParse(delivery) ?? 0,
+                                      customer: 'Walking Customer',
+                                      discountPrice:
+                                      double.tryParse(discount.toString()) ??
+                                          0,
+                                      invoiceNo: invoice!.id.toString(),
+                                      cashPaid: double.tryParse(invoice
+                                      !.get('paidCash')
+                                          .toString()) ??
+                                          0,
+                                      bankPaid: double.tryParse(invoice
+                                      !.get('paidBank')
+                                          .toString()) ??
+                                          0,
+                                      balance: double.tryParse(invoice
+                                      !.get('balance')
+                                          .toString()) ??
+                                          0,
+                                    );
+                                  })
+                                  : await efg(
                                 int.tryParse(invoice!.id.toString())!,
                                 double.tryParse(
                                     invoice!.get('discount').toString())!,
@@ -1237,236 +1402,239 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                 double.tryParse(delivery) ?? 0,
                                 invoice!.get('salesDate').toDate(),
                                 double.tryParse(
-                                        invoice!.get('paidCash').toString()) ??
+                                    invoice!.get('paidCash').toString()) ??
                                     0,
                                 double.tryParse(
-                                        invoice!.get('paidBank').toString()) ??
+                                    invoice!.get('paidBank').toString()) ??
                                     0,
                                 double.tryParse(
-                                        invoice!.get('balance').toString()) ??
+                                    invoice!.get('balance').toString()) ??
                                     0,
                                 invoice!.get('orderType'),
                               );
 
-                        showUploadMessage(context, 'Return Successfully...');
-                        setState(() {
-                          password!.text = "";
-                          userName!.text = "";
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        });
-                      } else {
-                        showUploadMessage(context, 'Please Choose Products');
-                      }
-                    },
-                    child: const Text('Return')),
-                const SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancel')),
-              ]),
-              Container(
-                height: 40,
-                color: Colors.grey.shade200,
-                child: Row(
-                  children: const [
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                          child: Text(
-                        "NO:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 6,
-                      child: Center(
-                          child: Text(
-                        "NAME",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Center(
-                          child: Text(
-                        "PRICE",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Center(
-                          child: Text(
-                        "Total qty",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Center(
-                          child: Text(
-                        "Available qty",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Center(
-                          child: Text(
-                        "Return qty",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                          child: Text(
-                        "",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * .8,
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: invoice == null ? 0 : itemsList.length,
-                      itemBuilder: (context, index) {
-                        Map items = itemsList[index];
+                              showUploadMessage(context, 'Return Successfully...');
+                              setState(() {
+                                password!.text = "";
+                                userName!.text = "";
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              });
+                            } else {
+                              showUploadMessage(context, 'Please Choose Products');
+                            }
 
-                        String item = items['pdtname'];
-                        double addOnPrice = items['addOnPrice'] ??
-                            0 + items['removePrice'] ??
-                            0 + items['addLessPrice'] ??
-                            0 + items['addMorePrice'] ??
-                            0;
-                        List addOns = items['addOns'];
-
-                        return itemRow(
-                            item: items,
-                            index: index,
-                            invoiceNo: widget.invoiceNo,
-                            calculate: calculate,
-                            itemsList: itemsList);
-                      }),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                color: Colors.blueGrey.shade100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Total Amount",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
+                          }
+                        },
+                        child: const Text('Return')),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Cancel')),
+                  ]),
+                  Container(
+                    height: 40,
+                    color: Colors.grey.shade200,
+                    child: Row(
+                      children: const [
+                        Expanded(
+                          flex: 1,
+                          child: Center(
+                              child: Text(
+                                "NO:",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                         ),
-                        Text(
-                          "Discount",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
+                        Expanded(
+                          flex: 6,
+                          child: Center(
+                              child: Text(
+                                "NAME",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                         ),
-                        Text(
-                          "Tax ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
+                        Expanded(
+                          flex: 3,
+                          child: Center(
+                              child: Text(
+                                "PRICE",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                         ),
-                        SizedBox(
-                          height: 10,
+                        Expanded(
+                          flex: 3,
+                          child: Center(
+                              child: Text(
+                                "Total qty",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                         ),
-                        Text(
-                          "Grand Total",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.grey.shade700),
+                        Expanded(
+                          flex: 2,
+                          child: Center(
+                              child: Text(
+                                "Available qty",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                         ),
-                        Text(
-                          "Return Amount",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.grey.shade700),
+                        Expanded(
+                          flex: 3,
+                          child: Center(
+                              child: Text(
+                                "Return qty",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                         ),
+                        Expanded(
+                          flex: 1,
+                          child: Center(
+                              child: Text(
+                                "",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                        )
                       ],
                     ),
-                    Column(
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * .8,
+                      child:
+                      ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: invoice == null ? 0 : itemsList.length,
+                          itemBuilder: (context, index) {
+                            Map items = itemsList[index];
+
+                            String item = items['pdtname'];
+                            double addOnPrice = items['addOnPrice'] ??
+                                0 + items['removePrice'] ??
+                                0 + items['addLessPrice'] ??
+                                0 + items['addMorePrice'] ??
+                                0;
+                            List addOns = items['addOns'];
+
+                            return itemRow(
+                                item: items,
+                                index: index,
+                                invoiceNo: widget.invoiceNo,
+                                calculate: calculate,
+                                itemsList: itemsList);
+                          }),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    color: Colors.blueGrey.shade100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          "SAR ${invoice == null ? 0 : invoice!.get('totalAmount').toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Total Amount",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                            Text(
+                              "Discount",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                            Text(
+                              "Tax ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Grand Total",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.grey.shade700),
+                            ),
+                            Text(
+                              "Return Amount",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.grey.shade700),
+                            ),
+                          ],
                         ),
-                        Text(
-                          invoice == null
-                              ? "0.00"
-                              : "SAR ${double.tryParse(invoice!.get('discount').toString())!.toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.grey.shade700),
-                        ),
-                        Text(
-                          " SAR ${(invoice == null ? 0 : invoice!.get('tax')).toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "SAR ${(invoice == null ? 0 : invoice!.get('grandTotal')).toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
-                        ),
-                        Text(
-                          "SAR ${returnTotal.toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.grey.shade700),
-                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "SAR ${invoice == null ? 0 : invoice!.get('totalAmount').toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                            Text(
+                              invoice == null
+                                  ? "0.00"
+                                  : "SAR ${double.tryParse(invoice!.get('discount').toString())!.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.grey.shade700),
+                            ),
+                            Text(
+                              " SAR ${(invoice == null ? 0 : invoice!.get('tax')).toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "SAR ${(invoice == null ? 0 : invoice!.get('grandTotal')).toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                            Text(
+                              "SAR ${returnTotal.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey.shade700),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      )),
+            ),
+          )),
     );
   }
 }
@@ -1479,11 +1647,11 @@ class itemRow extends StatefulWidget {
   final List? itemsList;
   const itemRow(
       {Key? key,
-      this.item,
-      this.index,
-      this.calculate,
-      this.invoiceNo,
-      this.itemsList})
+        this.item,
+        this.index,
+        this.calculate,
+        this.invoiceNo,
+        this.itemsList})
       : super(key: key);
 
   @override
@@ -1507,7 +1675,7 @@ class _itemRowState extends State<itemRow> {
         (widget.item['price'] + widget.item['addOnPrice']).toStringAsFixed(2);
     qty = widget.item['qty'].toString();
     double rtnQty = double.tryParse(widget.item['qty'].toString())! -
-            double.tryParse(widget.item['returnQty'].toString())! ??
+        double.tryParse(widget.item['returnQty'].toString())! ??
         0;
     _controller = TextEditingController(text: rtnQty.toString());
 
@@ -1524,158 +1692,158 @@ class _itemRowState extends State<itemRow> {
               flex: 1,
               child: Center(
                   child: Text(
-                (index! + 1).toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              )),
+                    (index! + 1).toString(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )),
             ),
             Expanded(
               flex: 6,
               child: Center(
                   child: Text(
-                item!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              )),
+                    item!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )),
             ),
             Expanded(
               flex: 3,
               child: Center(
                   child: Text(
-                price!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              )),
+                    price!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )),
             ),
             Expanded(
               flex: 3,
               child: Center(
                   child: Text(
-                double.tryParse(qty.toString()).toString(),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )),
+                    double.tryParse(qty.toString()).toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
             ),
             //AVAILABLE QTY
             Expanded(
               flex: 2,
               child: Center(
                   child: Text(
-                "${double.tryParse(qty!) !- widget.item['returnQty']}",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              )),
+                    "${double.tryParse(qty!) !- widget.item['returnQty']}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )),
             ),
 
             double.tryParse(qty!)! - widget.item['returnQty'] <= 0
                 ? Expanded(
-                    flex: 3,
-                    child: Center(
-                        child: Text(
-                      "${widget.item['returnQty']}",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
-                  )
+              flex: 3,
+              child: Center(
+                  child: Text(
+                    "${widget.item['returnQty']}",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+            )
                 : Expanded(
-                    flex: 3,
-                    child: Container(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            // child: Text(
-                            //   progrss.toString(),
-                            // ),
+                flex: 3,
+                child: Container(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        // child: Text(
+                        //   progrss.toString(),
+                        // ),
 
-                            width: 50,
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              onFieldSubmitted: (value) {
-                                int i = 0;
-                                for (int k = 0; k < items.length; k++) {
-                                  if (items[k]['pdtname'] == item &&
-                                      items[k]['price'] == price) {
-                                    i = k;
-                                    break;
-                                  }
-                                }
-                                // items.insert(i, {
-                                //   'pdtname': widget.name,
-                                //   'arabicName': widget.arabicName,
-                                //   'price': widget.price,
-                                //   'qty': double.tryParse(value.toString()),
-                                //   'addOns': widget.addOns,
-                                //   'addOnArabic': widget.addOnsArabic,
-                                //   'addOnPrice': widget.addOnPrice
-                                // });
-                                // FirebaseFirestore.instance
-                                //     .collection('tables')
-                                //     .doc(selectedTable)
-                                //     .update({
-                                //   'items': items
-                                // });
-                                //
-                                //
-                                setState(() {
-                                  progress = double.tryParse(value.toString())!;
-                                  print(progress);
-                                });
-                              },
-                              controller: _controller,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder()),
-                            ),
-                          ),
-                        ],
+                        width: 50,
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          onFieldSubmitted: (value) {
+                            int i = 0;
+                            for (int k = 0; k < items.length; k++) {
+                              if (items[k]['pdtname'] == item &&
+                                  items[k]['price'] == price) {
+                                i = k;
+                                break;
+                              }
+                            }
+                            // items.insert(i, {
+                            //   'pdtname': widget.name,
+                            //   'arabicName': widget.arabicName,
+                            //   'price': widget.price,
+                            //   'qty': double.tryParse(value.toString()),
+                            //   'addOns': widget.addOns,
+                            //   'addOnArabic': widget.addOnsArabic,
+                            //   'addOnPrice': widget.addOnPrice
+                            // });
+                            // FirebaseFirestore.instance
+                            //     .collection('tables')
+                            //     .doc(selectedTable)
+                            //     .update({
+                            //   'items': items
+                            // });
+                            //
+                            //
+                            setState(() {
+                              progress = double.tryParse(value.toString())!;
+                              print(progress);
+                            });
+                          },
+                          controller: _controller,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder()),
+                        ),
                       ),
-                    )),
+                    ],
+                  ),
+                )),
 
             double.tryParse(qty!)! - widget.item['returnQty'] <= 0
                 ? Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: 40,
-                    ))
+                flex: 1,
+                child: Container(
+                  height: 40,
+                ))
                 : Expanded(
-                    flex: 1,
-                    child: Center(
-                        child: Checkbox(
-                            value: checked,
-                            onChanged: (value) {
-                              checked = value!;
+              flex: 1,
+              child: Center(
+                  child: Checkbox(
+                      value: checked,
+                      onChanged: (value) {
+                        checked = value!;
 
-                              Map<String, dynamic> item = widget.item;
+                        Map<String, dynamic> item = widget.item;
 
-                              item['qty'] = double.tryParse(_controller.text);
+                        item['qty'] = double.tryParse(_controller.text);
 
-                              //  print("item-------------------------456776556656-----");
-                              //    for(var a in widget.itemsList){
-                              //    if(a['name']==item['name']){
-                              //      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                              //      print(a['returnQty']=double.tryParse(_controller.text));
-                              //    }
-                              //  }
-                              //  print(widget.itemsList.toString()+'          hhhhh');
-                              // FirebaseFirestore.instance.collection("sales").
-                              // doc(currentBranchId)
-                              //     .collection("sales").
-                              // doc(widget.invoiceNo.toString())
-                              //     .update({
-                              //    'billItems':widget.itemsList
-                              //  });
+                        //  print("item-------------------------456776556656-----");
+                        //    for(var a in widget.itemsList){
+                        //    if(a['name']==item['name']){
+                        //      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        //      print(a['returnQty']=double.tryParse(_controller.text));
+                        //    }
+                        //  }
+                        //  print(widget.itemsList.toString()+'          hhhhh');
+                        // FirebaseFirestore.instance.collection("sales").
+                        // doc(currentBranchId)
+                        //     .collection("sales").
+                        // doc(widget.invoiceNo.toString())
+                        //     .update({
+                        //    'billItems':widget.itemsList
+                        //  });
 
-                              setState(() {
-                                // checked = value;
-                                if (value) {
-                                  returnItems.add(item);
-                                } else {
-                                  int index2 = returnItems.indexWhere((map) {
-                                    return map['category'] ==
-                                            item['category'] &&
-                                        map['pdtname'] == item['pdtname'];
-                                  });
-                                  returnItems.removeAt(index2);
-                                }
-                                widget.calculate!();
-                              });
-                            })),
-                  )
+                        setState(() {
+                          // checked = value;
+                          if (value) {
+                            returnItems.add(item);
+                          } else {
+                            int index2 = returnItems.indexWhere((map) {
+                              return map['category'] ==
+                                  item['category'] &&
+                                  map['pdtname'] == item['pdtname'];
+                            });
+                            returnItems.removeAt(index2);
+                          }
+                          widget.calculate!();
+                        });
+                      })),
+            )
           ],
         ),
         const Divider(),

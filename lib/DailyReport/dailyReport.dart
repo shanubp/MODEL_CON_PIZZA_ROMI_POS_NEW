@@ -49,7 +49,6 @@ class _DailyReportsWidgetState extends State<DailyReportsWidget> {
   DateTime selectedDate1 = DateTime.now();
   DateTime selectedDate2 = DateTime.now();
   double totalvat=0;
-  
   List<int> bytes=[];
   List<int> kotBytes=[];
   abc(List items) async {
@@ -686,6 +685,7 @@ if(mounted) {
       appBar: AppBar(
         backgroundColor: default_color,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Daily Report',
           style: FlutterFlowTheme.bodyText1.override(
@@ -1068,8 +1068,8 @@ if(mounted) {
                       ),));
                     },
                     child: Container(
-                      width: 150,
-                      height: 40,
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      width: MediaQuery.of(context).size.width * 0.1,
                       decoration: BoxDecoration(
                           color: const Color(0xFF2b0e10),
                           borderRadius: BorderRadius.circular(10)
@@ -1092,8 +1092,8 @@ if(mounted) {
                       ),));
                     },
                     child: Container(
-                      width: 150,
-                      height: 40,
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      width: MediaQuery.of(context).size.width * 0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF2b0e10),
                           borderRadius: BorderRadius.circular(10)
@@ -1116,8 +1116,8 @@ if(mounted) {
                       ),));
                     },
                     child: Container(
-                      width: 150,
-                      height: 40,
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      width: MediaQuery.of(context).size.width * 0.12,
                       decoration: BoxDecoration(
                           color: Color(0xFF2b0e10),
                           borderRadius: BorderRadius.circular(10)
@@ -1140,8 +1140,8 @@ if(mounted) {
                       ),));
                     },
                     child: Container(
-                      width: 150,
-                      height: 40,
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      width: MediaQuery.of(context).size.width * 0.12,
                       decoration: BoxDecoration(
                           color: Color(0xFF2b0e10),
                           borderRadius: BorderRadius.circular(10)
@@ -1175,8 +1175,8 @@ if(mounted) {
                       }
                     },
                     child: Container(
-                      width: 150,
-                      height: 40,
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      width: MediaQuery.of(context).size.width * 0.1,
                       decoration: BoxDecoration(
                           color: const Color(0xFF2b0e10),
                           borderRadius: BorderRadius.circular(10)
@@ -1241,8 +1241,8 @@ if(mounted) {
 
                     },
                     child: Container(
-                      width: 150,
-                      height: 40,
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      width: MediaQuery.of(context).size.width * 0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF2b0e10),
                           borderRadius: BorderRadius.circular(10)
@@ -1938,12 +1938,12 @@ if(mounted) {
                                 if(userPurchase.get('currentUserId')==uId){
                                   userPurchaseNo+=1;
                                   // userPurchaseAmount+=(double.tryParse(userPurchase.get('amount').toString()))+(double.tryParse(userPurchase.get('gst').toString()))??0;
-                                  userPurchaseAmount+=(double.tryParse(userPurchase.get('amount').toString())!);
+                                  userPurchaseAmount+=(double.tryParse(userPurchase.get('amount').toString())??0);
                                   if(userPurchase.get('cash')==true){
                                     // userPurchaseAmountInCash+=(double.tryParse(userPurchase.get('amount').toString())+double.tryParse(userPurchase.get('gst').toString()));
-                                    userPurchaseAmountInCash+=double.tryParse(userPurchase.get('amount').toString())!;
+                                    userPurchaseAmountInCash+=double.tryParse(userPurchase.get('amount').toString())??0;
                                   }else{
-                                    userPurchaseAmountInBank+=double.tryParse(userPurchase.get('amount').toString())!;
+                                    userPurchaseAmountInBank+=double.tryParse(userPurchase.get('amount').toString())??0;
                                   }
                                 }
                               }
@@ -1958,11 +1958,11 @@ if(mounted) {
                               for(var userPurchase in expense){
                                 if(userPurchase.get('currentUserId')==uId){
                                   userExpNo+=1;
-                                  userExpAmount+=userPurchase.get('amount');
+                                  userExpAmount+=userPurchase.get('amount')??0;
                                   if(userPurchase.get('cash')==true){
-                                    userExpAmountInCash+=userPurchase.get('amount');
+                                    userExpAmountInCash+=userPurchase.get('amount')??0;
                                   }else{
-                                    userExpAmountInBank+=userPurchase.get('amount');
+                                    userExpAmountInBank+=userPurchase.get('amount')??0;
                                   }
                                 }
                               }

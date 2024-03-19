@@ -97,6 +97,7 @@ class _ViewReturnInvoiceState extends State<ViewReturnInvoice> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Return Invoice',
           style: FlutterFlowTheme.title1

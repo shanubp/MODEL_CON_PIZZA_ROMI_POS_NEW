@@ -20,6 +20,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../flutter_flow/upload_media.dart';
 import '../main.dart';
+import 'expense_reports.dart';
 
 class PurchaseReport extends StatefulWidget {
   const PurchaseReport({Key? key}) : super(key: key);
@@ -115,7 +116,7 @@ class _PurchaseReportState extends State<PurchaseReport> {
             'voucherNo': item['voucherNo'],
             'salesDate':item['salesDate']
           });
-          setState(() {});
+           setState(() {});
         }
       });
     }
@@ -159,6 +160,7 @@ class _PurchaseReportState extends State<PurchaseReport> {
       appBar: AppBar(
         backgroundColor: default_color,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Purchase Report',
           style: FlutterFlowTheme.title1.override(
@@ -229,30 +231,33 @@ class _PurchaseReportState extends State<PurchaseReport> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  Container(
-                    width: 200,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: Colors.white),
-                    child: Center(
-                      child: TextFormField(
-                        controller: invoiceController,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          labelText: 'Bill No',
-                          hoverColor: Colors.red,
-                          hintText: 'search bill no 🔍',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.pink.shade900, width: 1.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.16,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: Colors.white),
+                      child: Center(
+                        child: TextFormField(
+                          controller: invoiceController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Bill No',
+                            hoverColor: Colors.red,
+                            hintText: 'search bill no 🔍',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.pink.shade900, width: 1.0),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 20,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   TextButton(
                     onPressed: (){
                       FocusScope.of(context).unfocus();
@@ -312,10 +317,10 @@ class _PurchaseReportState extends State<PurchaseReport> {
                   //     ),
                   //   ),
                   // ),
-                  const SizedBox(width: 50,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Container(
-                    height: 50,
-                    width: 220,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.18,
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Colors.white,
@@ -365,17 +370,17 @@ class _PurchaseReportState extends State<PurchaseReport> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 50,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Text(
                     'To',
                     style: FlutterFlowTheme.bodyText1.override(
                       fontFamily: 'Poppins',fontWeight: FontWeight.bold
                     ),
                   ),
-                  const SizedBox(width: 50,),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Container(
-                    height: 50,
-                    width: 220,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.18,
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Colors.white,
@@ -425,19 +430,23 @@ class _PurchaseReportState extends State<PurchaseReport> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 50,),
-                  TextButton(
-                    onPressed: (){
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    child: TextButton(
+                      onPressed: (){
 
-                      getInvoiceByDate();
+                        getInvoiceByDate();
 
-                    },
-                    child: const Icon(Icons.search,color: Colors.black,size:35 ),
+                      },
+                      child: const Icon(Icons.search,color: Colors.black,size:35 ),
+                    ),
                   ),
                 ],
 
               ),
             ),
+
             Expanded(
               child: GridView.builder(
                 shrinkWrap: true,
@@ -450,7 +459,6 @@ class _PurchaseReportState extends State<PurchaseReport> {
                   mainAxisSpacing:10,
                   childAspectRatio: .7,
                 ),
-
                 itemCount:
                 invoices==null?0:invoices!.docs.length,
                 itemBuilder: (context, index) {
@@ -458,39 +466,48 @@ class _PurchaseReportState extends State<PurchaseReport> {
                   invoices!.docs[index];
                   return invoices!.docs==null?Center(child: CircularProgressIndicator()):
                   invoices!.docs.length==0?Center(child: Text('No Data')):InkWell(
-                    // onTap: () async {
-                    //   await Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) =>  ViewInvoice(invoiceNo: int.tryParse(invoice.id)??0,)),
-                    //   );
-                    // },
                     child: Card(
                       child: Column(
                         children: [
                           Expanded(
                             child: InkWell(
-                              onTap: (){
-                                showDialog(
-                                    context: context,
+                              onTap: () {
+                                final currentContext = context; // Store a reference to the context
+                                if (invoice.get('image') != '' && invoice.get('image') != null) {
+                                  showDialog(
+                                    context: currentContext, // Use the stored context
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: Container(
-                                          height: MediaQuery.of(context).size.height*0.7,
-                                          width: MediaQuery.of(context).size.width*0.5,
-                                          decoration: BoxDecoration(image: DecorationImage( image: NetworkImage(invoice.get('image')))),
+                                          height: MediaQuery.of(context).size.height * 0.7,
+                                          width: MediaQuery.of(context).size.width * 0.5,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(invoice.get('image')),
+                                            ),
+                                          ),
                                         ),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
-
+                                              downloadImage(invoice.get('image'), currentContext); // Pass the stored context
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Download'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
                                               Navigator.pop(context);
                                             },
                                             child: const Text('OK'),
                                           ),
                                         ],
                                       );
-                                    });
-
+                                    },
+                                  );
+                                } else {
+                                  showUploadMessage(context, 'Image Not Exist!');
+                                }
                               },
                               child: Container(
                                 color: Colors.grey.shade300,
@@ -499,19 +516,12 @@ class _PurchaseReportState extends State<PurchaseReport> {
                                     ? CachedNetworkImage(
                                   imageUrl: invoice.get('image')
                                   ,fit: BoxFit.cover,
-
                                 )
-                                    :InkWell(
-                                  onTap: (){
-                                    showUploadMessage(context, "Image Not Found");
-                                  },
-                                      child: Container(
-                                          height:220
-                                      ),
-                                    ),
+                                    :Container(
+                                    height:220
+                                ),
                               ),
                             ),
-
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10,right: 10),
@@ -546,24 +556,24 @@ class _PurchaseReportState extends State<PurchaseReport> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Total Amount"),
+                                  Text("Taxable Amount"),
                                   Text(":"),
                                   Text(
                                       invoice.get('amount').toString()),
                                 ]),
                           ),
                           Divider(),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 10,right: 10),
-                              child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Vat Amount"),
-                                    Text(":"),
-                                    Text(invoice.get('gst').toString()),
-                                  ])),
-                          Divider(),
+                          // Padding(
+                          //     padding: const EdgeInsets.only(left: 10,right: 10),
+                          //     child: Row(
+                          //         mainAxisAlignment:
+                          //         MainAxisAlignment.spaceBetween,
+                          //         children: [
+                          //           Text("Vat Amount"),
+                          //           Text(":"),
+                          //           Text(invoice.get('gst').toString()),
+                          //         ])),
+                          // Divider(),
                           Padding(
                               padding: const EdgeInsets.only(left: 10,right: 10),
                               child: Row(
@@ -584,7 +594,6 @@ class _PurchaseReportState extends State<PurchaseReport> {
                                   MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Staff"),
-
                                     Text(":"),
                                     Text(PosUserIdToName[invoice
                                         .get('currentUserId')
@@ -600,9 +609,6 @@ class _PurchaseReportState extends State<PurchaseReport> {
                               });
                               Navigator.pop(context);
                             }
-
-
-
                           }, icon: Icon(Icons.delete,color: Colors.red,))
                         ],
                       ),
@@ -611,6 +617,180 @@ class _PurchaseReportState extends State<PurchaseReport> {
                 },
               ),
             )
+
+            // Expanded(
+            //   child: GridView.builder(
+            //     shrinkWrap: true,
+            //     primary: false,
+            //     padding: const EdgeInsets.all(10),
+            //     gridDelegate:
+            //     const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 5,
+            //       crossAxisSpacing: 10,
+            //       mainAxisSpacing:10,
+            //       childAspectRatio: .7,
+            //     ),
+            //
+            //     itemCount:
+            //     invoices==null?0:invoices!.docs.length,
+            //     itemBuilder: (context, index) {
+            //       DocumentSnapshot invoice =
+            //       invoices!.docs[index];
+            //       return invoices!.docs==null?Center(child: CircularProgressIndicator()):
+            //       invoices!.docs.length==0?Center(child: Text('No Data')):InkWell(
+            //         // onTap: () async {
+            //         //   await Navigator.push(
+            //         //     context,
+            //         //     MaterialPageRoute(builder: (context) =>  ViewInvoice(invoiceNo: int.tryParse(invoice.id)??0,)),
+            //         //   );
+            //         // },
+            //         child: Card(
+            //           child: Column(
+            //             children: [
+            //               Expanded(
+            //                 child: InkWell(
+            //                   onTap: (){
+            //                     showDialog(
+            //                         context: context,
+            //                         builder: (BuildContext context) {
+            //                           return AlertDialog(
+            //                             title: Container(
+            //                               height: MediaQuery.of(context).size.height*0.7,
+            //                               width: MediaQuery.of(context).size.width*0.5,
+            //                               decoration: BoxDecoration(image: DecorationImage( image: NetworkImage(invoice.get('image')))),
+            //                             ),
+            //                             actions: <Widget>[
+            //                               TextButton(
+            //                                 onPressed: () {
+            //
+            //                                   Navigator.pop(context);
+            //                                 },
+            //                                 child: const Text('OK'),
+            //                               ),
+            //                             ],
+            //                           );
+            //                         });
+            //
+            //                   },
+            //                   child: Container(
+            //                     color: Colors.grey.shade300,
+            //                     height: 200,
+            //                     child:invoice.get('image')!='' && invoice.get('image')!=null
+            //                         ? CachedNetworkImage(
+            //                       imageUrl: invoice.get('image')
+            //                       ,fit: BoxFit.cover,
+            //
+            //                     )
+            //                         :InkWell(
+            //                       onTap: (){
+            //                         showUploadMessage(context, "Image Not Found");
+            //                       },
+            //                           child: Container(
+            //                               height:220
+            //                           ),
+            //                         ),
+            //                   ),
+            //                 ),
+            //
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 10,right: 10),
+            //                 child: Row(
+            //                     mainAxisAlignment:
+            //                     MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text("Voucher No"),
+            //                       Text(":"),
+            //                       Text(invoice
+            //                           .get('voucherNo')
+            //                           .toString())
+            //                     ]),
+            //               ),
+            //               Divider(),
+            //               Padding(
+            //                   padding: const EdgeInsets.only(left: 10,right: 10),
+            //                   child: Row(
+            //                       mainAxisAlignment:
+            //                       MainAxisAlignment.spaceBetween,
+            //                       children: [
+            //                         Text("Invoice No"),
+            //                         Text(":"),
+            //                         Text(invoice
+            //                             .get('invoiceNo')
+            //                             .toString()),
+            //                       ])),
+            //               Divider(),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 10,right: 10),
+            //                 child: Row(
+            //                     mainAxisAlignment:
+            //                     MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       Text("Total Amount"),
+            //                       Text(":"),
+            //                       Text(
+            //                           invoice.get('amount').toString()),
+            //                     ]),
+            //               ),
+            //               Divider(),
+            //               Padding(
+            //                   padding: const EdgeInsets.only(left: 10,right: 10),
+            //                   child: Row(
+            //                       mainAxisAlignment:
+            //                       MainAxisAlignment.spaceBetween,
+            //                       children: [
+            //                         Text("Vat Amount"),
+            //                         Text(":"),
+            //                         Text(invoice.get('gst').toString()),
+            //                       ])),
+            //               Divider(),
+            //               Padding(
+            //                   padding: const EdgeInsets.only(left: 10,right: 10),
+            //                   child: Row(
+            //                       mainAxisAlignment:
+            //                       MainAxisAlignment.spaceBetween,
+            //                       children: [
+            //                         Text("Description"),
+            //                         Text(":"),
+            //                         Text(invoice
+            //                             .get('description')
+            //                             .toString()),
+            //                       ])),
+            //               Divider(),
+            //               Padding(
+            //                   padding: const EdgeInsets.only(left: 10,right: 10),
+            //                   child: Row(
+            //                       mainAxisAlignment:
+            //                       MainAxisAlignment.spaceBetween,
+            //                       children: [
+            //                         Text("Staff"),
+            //
+            //                         Text(":"),
+            //                         Text(PosUserIdToName[invoice
+            //                             .get('currentUserId')
+            //                             .toString()]),
+            //                       ]
+            //                   )
+            //               ),
+            //               IconButton(onPressed: () async {
+            //                 bool proceed = await alert(context, 'You want to Delete?');
+            //                 if(proceed){
+            //                   invoice.reference.delete();
+            //                   setState(() {
+            //                   });
+            //                   Navigator.pop(context);
+            //                 }
+            //
+            //
+            //
+            //               }, icon: Icon(Icons.delete,color: Colors.red,))
+            //             ],
+            //           ),
+            //         ),
+            //       ) ;
+            //     },
+            //   ),
+            // )
           ],
         ),
       ),

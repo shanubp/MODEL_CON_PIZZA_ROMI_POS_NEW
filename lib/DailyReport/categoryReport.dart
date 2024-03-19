@@ -144,7 +144,8 @@ class _CategoryReportState extends State<CategoryReport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Category Report"),
+        title: Text("Category Report",style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         backgroundColor:default_color,
         actions: [

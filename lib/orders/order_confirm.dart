@@ -9,7 +9,6 @@ import 'package:awafi_pos/flutter_flow/upload_media.dart';
 import 'package:awafi_pos/salesPrint/new_sales_print.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -58,8 +57,7 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
 
     //date
     bytesBuilder.addByte(3);
-    String time =DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(DateTime.now());
-    List<int> date = utf8.encode(time);
+    List<int> date = utf8.encode(DateTime.now().toString().substring(0, 10));
     bytesBuilder.addByte(date.length);
     bytesBuilder.add(date);
 
@@ -815,6 +813,7 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
             appBar: AppBar(
               backgroundColor: FlutterFlowTheme.primaryColor,
               automaticallyImplyLeading: true,
+              iconTheme: IconThemeData(color: Colors.white),
               title: Text(
                 'Confirm Order',
                 style: FlutterFlowTheme.bodyText1.override(
@@ -1034,10 +1033,10 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context,int index){
 
-                          double addOnPrice=double.tryParse(bag[index]['addOnPrice'].toString())!;
-                          double addmorePrice=double.tryParse(bag[index]['addMorePrice'].toString())!;
-                          double addlessPrice=double.tryParse(bag[index]['addLessPrice'].toString())!;
-                          double removePrice=double.tryParse(bag[index]['removePrice'].toString())!;
+                          double addOnPrice=double.tryParse(bag[index]['addOnPrice'].toString())??0;
+                          double addmorePrice=double.tryParse(bag[index]['addMorePrice'].toString())??0;
+                          double addlessPrice=double.tryParse(bag[index]['addLessPrice'].toString())??0;
+                          double removePrice=double.tryParse(bag[index]['removePrice'].toString())??0;
 
                           List addOnName=[];
                           List addmoreName=[];
@@ -1049,25 +1048,25 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
                           List<dynamic> addMore = bag[index]['addMore'];
                           List<dynamic> remove = bag[index]['remove'];
 
-                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'];
-                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'];
-                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'];
-                          List<dynamic> arabicRemove = bag[index]['removeArabic'];
+                          List<dynamic> arabicAddOn = bag[index]['addOnArabic'] ?? [];
+                          List<dynamic> arabicAddLess = bag[index]['addLessArabic'] ?? [];
+                          List<dynamic> arabicAddMore = bag[index]['addMoreArabic'] ?? [];
+                          List<dynamic> arabicRemove = bag[index]['removeArabic'] ?? [];
 
                           if(addOn.isNotEmpty){
                             for(Map<String,dynamic> items in addOn){
                               print(items['addOn']);
                               addOnName.add(items['addOn']);
-                           //   addOnPrice+=double.tryParse(items['price']);
+                              //   addOnPrice+=double.tryParse(items['price']);
                             }
                           }
-                         if(remove.isNotEmpty){
-                           for(Map<String,dynamic> items in remove){
-                             print("remove   ${items['addOn']}");
-                             removeName.add(items['addOn']);
-                             // removePrice+=double.tryParse(items['price']);
-                           }
-                         }
+                          if(remove.isNotEmpty){
+                            for(Map<String,dynamic> items in remove){
+                              print("remove   ${items['addOn']}");
+                              removeName.add(items['addOn']);
+                              // removePrice+=double.tryParse(items['price']);
+                            }
+                          }
                           if(addMore.isNotEmpty){
                             for(Map<String,dynamic> items in addMore){
                               print("addmore  $items");
@@ -1610,12 +1609,12 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
                                             (BuildContext context) {
                                           items = billItem;
                                           return  mytest(
-                                            items: billItem,
-                                            token:token,
-                                            customer: data[0]['name'],
-                                            discountPrice:0,
-                                            invoiceNo: invoiceNo.toString(),
-                                            selectedTable: data[0]['table'],  salesDate: DateTime.now(), delivery: null, cashPaid: null, bankPaid:0.0
+                                              items: billItem,
+                                              token:token,
+                                              customer: data[0]['name'],
+                                              discountPrice:0,
+                                              invoiceNo: invoiceNo.toString(),
+                                              selectedTable: data[0]['table'],  salesDate: DateTime.now(), delivery: null, cashPaid: null, bankPaid:0.0
                                           );
 
                                         }):
@@ -1623,7 +1622,7 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
                                     abc(invoiceNo, 0, billItem, token,data[0]['table']);
                                     await order.reference.update({
                                       'acceptedTime': DateTime.now(),
-                                       'status': 1,
+                                      'status': 1,
                                       // 'status': 0,
                                       'token': token,
                                       'invoiceNo': invoiceNo,
@@ -1636,8 +1635,8 @@ class _OrderConfirmWidgetState extends State<OrderConfirmWidget> {
                                     cashPaid=0;
                                     bankPaid=0;
 
-                                      // Navigator.pop(context);
-                                     // Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                    // Navigator.pop(context);
                                     showUploadMessage(
                                         context, 'Order Confirmed...');
                                     Navigator.pop(context);

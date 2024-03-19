@@ -66,19 +66,22 @@ void showUploadMessage(BuildContext context, String message,
       SnackBar(
         backgroundColor: Colors.black,
         duration: showLoading?Duration(minutes: 30):Duration(seconds: 4),
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (showLoading)
-              Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: CircularProgressIndicator(),
-              ),
-            Text(message,style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20
-            ),),
-          ],
+        content: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (showLoading)
+                Padding(
+                  padding: EdgeInsets.only(right: 10.0),
+                  child: CircularProgressIndicator(),
+                ),
+              Text(message,style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20
+              ),),
+            ],
+          ),
         ),
       ),
     );

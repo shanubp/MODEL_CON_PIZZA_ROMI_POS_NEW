@@ -48,7 +48,7 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
   getInvoiceByDate() async {
     if (fromDate != null && toDate != null) {
       Timestamp fromDateTimeStamp = Timestamp.fromDate(selectedFromDate);
-      Timestamp toDateTimeStamp = Timestamp.fromDate(DateTime(toDate.year, toDate.month, toDate.day));
+      Timestamp toDateTimeStamp = Timestamp.fromDate(selectedOutDate);
       invoices = await FirebaseFirestore.instance
           .collection('salesReturn')
           .doc(currentBranchId)
@@ -81,6 +81,7 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
       appBar: AppBar(
         backgroundColor: default_color,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Returns',
           style: FlutterFlowTheme.title1
@@ -95,32 +96,35 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
           children: [
             Row(
               children: [
-                Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Colors.white),
-                  child: Center(
-                    child: TextFormField(
-                      controller: invoiceController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: 'Return No',
-                        hoverColor: Colors.red,
-                        hintText: 'search Return no',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.pink.shade900, width: 1.0),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10,top: 10,left: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.16,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: Colors.white),
+                    child: Center(
+                      child: TextFormField(
+                        controller: invoiceController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          labelText: 'Return No',
+                          hoverColor: Colors.red,
+                          hintText: 'search Return no',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.pink.shade900, width: 1.0),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
+                 SizedBox(
+                   width: MediaQuery.of(context).size.width * 0.02
                 ),
                 TextButton(
                   onPressed: () {
@@ -129,8 +133,8 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
                   },
                   child: const Text('Search By Return no'),
                 ),
-                const SizedBox(
-                  width: 50,
+                 SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.04,
                 ),
                 // InkWell(
                 //   onTap: () async {
@@ -188,10 +192,10 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
                 // const SizedBox(
                 //   width: 20,
                 // ),
-                const SizedBox(width: 50,),
+                // const SizedBox(width: 50,),
                 Container(
-                  height: 50,
-                  width: 220,
+                 height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width * 0.18,
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Colors.white,
@@ -241,17 +245,17 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
                     },
                   ),
                 ),
-                const SizedBox(width: 50,),
+                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                 Text(
                   'To',
                   style: FlutterFlowTheme.bodyText1.override(
                       fontFamily: 'Poppins',fontWeight: FontWeight.bold
                   ),
                 ),
-                const SizedBox(width: 50,),
+                 SizedBox(width:MediaQuery.of(context).size.width * 0.04),
                 Container(
-                  height: 50,
-                  width: 220,
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width * 0.18,
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Colors.white,
@@ -301,12 +305,15 @@ class _SalesReturnReportState extends State<SalesReturnReport> {
                     },
                   ),
                 ),
-                const SizedBox(width: 50,),
-                TextButton(
-                  onPressed: () {
-                    getInvoiceByDate();
-                  },
-                  child: const Text('Search By Date'),
+                 SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+                Container(
+                   width: MediaQuery.of(context).size.width * 0.12,
+                  child: TextButton(
+                    onPressed: () {
+                      getInvoiceByDate();
+                    },
+                    child: const Text('Search By Date'),
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -272,7 +273,7 @@ class B2bPdfInvoiceApi {
     // print('bbbbbbbbbbbbbbbbbbbbbbbb');
 
     //android
-    return PdfApi.saveDocument(name: '${DateFormat("yyyy-MM-dd   hh:mm  aaa").format(invoice.from)} - ${DateFormat("yyyy-MM-dd   hh:mm  aaa").format(invoice.to)}.pdf', pdf: pdf);
+    return PdfApi.saveDocument(name: 'Daily Report.pdf', pdf: pdf);
   }
 
 

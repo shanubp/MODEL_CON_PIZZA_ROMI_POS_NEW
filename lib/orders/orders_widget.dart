@@ -51,7 +51,7 @@ class _SalesReportState extends State<SalesReport> {
   getInvoiceByDate() async {
     if(fromDate!=null && toDate!=null) {
       Timestamp fromDateTimeStamp =Timestamp.fromDate(selectedFromDate);
-      Timestamp toDateTimeStamp =Timestamp.fromDate(DateTime(toDate.year, toDate.month, toDate.day));
+      Timestamp toDateTimeStamp =Timestamp.fromDate(selectedOutDate);
       invoices = await FirebaseFirestore.instance.collection('sales')
           .doc(currentBranchId)
           .collection('sales')
@@ -87,6 +87,7 @@ class _SalesReportState extends State<SalesReport> {
       appBar: AppBar(
         backgroundColor:default_color,
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Bills',
           style: FlutterFlowTheme.title1.override(
@@ -103,30 +104,33 @@ class _SalesReportState extends State<SalesReport> {
 
           Row(
             children: [
-              Container(
-                width: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: Colors.white),
-                child: Center(
-                  child: TextFormField(
-                    controller: invoiceController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: 'Bill No',
-                      hoverColor: Colors.red,
-                      hintText: 'search bill no 🔍',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.pink.shade900, width: 1.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.16,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: Colors.white),
+                  child: Center(
+                    child: TextFormField(
+                      controller: invoiceController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: 'Bill No',
+                        hoverColor: Colors.red,
+                        hintText: 'search bill no 🔍',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.pink.shade900, width: 1.0),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 20,),
+               SizedBox(width: MediaQuery.of(context).size.width * 0.02),
               TextButton(
                 onPressed: (){
                   FocusScope.of(context).unfocus();
@@ -188,10 +192,10 @@ class _SalesReportState extends State<SalesReport> {
       //           ),
       //         ),
       //         const SizedBox(width: 20,),
-              const SizedBox(width: 50,),
+               SizedBox(width: MediaQuery.of(context).size.width * 0.04),
               Container(
-                height: 50,
-                width: 220,
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.width * 0.18,
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Colors.white,
@@ -241,17 +245,17 @@ class _SalesReportState extends State<SalesReport> {
                   },
                 ),
               ),
-              const SizedBox(width: 50,),
+               SizedBox( width: MediaQuery.of(context).size.width * 0.04),
               Text(
                 'To',
                 style: FlutterFlowTheme.bodyText1.override(
                     fontFamily: 'Poppins',fontWeight: FontWeight.bold
                 ),
               ),
-              const SizedBox(width: 50,),
+               SizedBox(width: MediaQuery.of(context).size.width * 0.04),
               Container(
-                height: 50,
-                width: 220,
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.width * 0.18,
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Colors.white,
@@ -301,12 +305,20 @@ class _SalesReportState extends State<SalesReport> {
                   },
                 ),
               ),
-              const SizedBox(width: 50,),
-              TextButton(
-                onPressed: (){
-                  getInvoiceByDate();
-                },
-                child: const Icon(Icons.search,color: Colors.black,size:35 ),
+               SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+              Container(
+                 width: MediaQuery.of(context).size.width * 0.05,
+                child: TextButton(
+                  onPressed: (){
+                    print("selectedFromDate");
+                    print(selectedFromDate);
+                    print("selectedOutDate");
+                    print(selectedOutDate);
+                    getInvoiceByDate();
+
+                  },
+                  child: const Icon(Icons.search,color: Colors.black,size:35 ),
+                ),
               ),
             ],
           ),
