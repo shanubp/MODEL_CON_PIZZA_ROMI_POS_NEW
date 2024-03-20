@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_usb_printer/flutter_usb_printer.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:awafi_pos/productandcat.dart';
@@ -42,7 +43,7 @@ import 'expenses.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_widgets.dart';
 import 'flutter_flow/upload_media.dart';
-import 'login.dart';
+import 'features/auth/screen/login.dart';
 import 'modals/user.dart';
 import 'model/billModel.dart';
 import 'orders/live_orders.dart';
@@ -870,7 +871,7 @@ Future<void> main() async {
       // The following lines are the same as previously explained in "Handling uncaught errors"
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-      runApp(HomePage());
+      runApp(const ProviderScope(child: HomePage()));
     },
             (error, stack) =>
             FirebaseCrashlytics.instance.recordError(error, stack));
@@ -881,7 +882,7 @@ Future<void> main() async {
 
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
-    runApp(HomePage());
+    runApp(const ProviderScope(child: HomePage()));
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -898,7 +899,7 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    runApp(HomePage());
+    runApp(const ProviderScope(child: HomePage()));
   }
 }
 

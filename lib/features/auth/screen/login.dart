@@ -1,23 +1,25 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:awafi_pos/features/auth/controller/authController.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 // import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:awafi_pos/services/userService.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_usb_printer/flutter_usb_printer.dart';
-import 'Branches/branches.dart';
-import 'flutter_flow/upload_media.dart';
-import 'main.dart';
+import '../../../Branches/branches.dart';
+import '../../../flutter_flow/upload_media.dart';
+import '../../../main.dart';
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({Key? key}) : super(key: key);
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<Login> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController userName = TextEditingController();
   TextEditingController passWord = TextEditingController();
@@ -33,32 +35,47 @@ class _LoginState extends State<Login> {
     passwordVisibility = false;
   }
 
-  _getDevicelist() async {
-    List<Map<String, dynamic>> results = [];
-    results = await FlutterUsbPrinter.getUSBDeviceList();
-    for (dynamic device in results) {
-      _connect(int.parse(device['vendorId']), int.parse(device['productId']));
+  loginUser(){
+    if (userName.text != '' &&
+        passWord.text != '') {
+      ref.read(authControllerProvider).loginUser(
+          email: userName.text, password: passWord.text, context: context);
+    } else {
+      userName.text == ''
+          ? showUploadMessage(context,
+          'Please Enter Username')
+          : showUploadMessage(context,
+          'Please Enter Password');
     }
-    if (mounted) {
-      setState(() {
-        devices = results;
-      });
-    }
+
   }
 
-  _connect(int vendorId, int productId) async {
-    bool? returned;
-    try {
-      returned = await flutterUsbPrinter.connect(vendorId, productId);
-    } on PlatformException {
-      //response = 'Failed to get platform version.';
-    }
-    if (returned!) {
-      setState(() {
-        connected = true;
-      });
-    }
-  }
+  // _getDevicelist() async {
+  //   List<Map<String, dynamic>> results = [];
+  //   results = await FlutterUsbPrinter.getUSBDeviceList();
+  //   for (dynamic device in results) {
+  //     _connect(int.parse(device['vendorId']), int.parse(device['productId']));
+  //   }
+  //   if (mounted) {
+  //     setState(() {
+  //       devices = results;
+  //     });
+  //   }
+  // }
+
+  // _connect(int vendorId, int productId) async {
+  //   bool? returned;
+  //   try {
+  //     returned = await flutterUsbPrinter.connect(vendorId, productId);
+  //   } on PlatformException {
+  //     //response = 'Failed to get platform version.';
+  //   }
+  //   if (returned!) {
+  //     setState(() {
+  //       connected = true;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -276,14 +293,14 @@ class _LoginState extends State<Login> {
                                                       ),
                                                     ),
                                                     focusedBorder:
-                                                    UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                       borderSide: BorderSide(
                                                         color:
                                                         Color(0x00000000),
                                                         width: 1,
                                                       ),
                                                       borderRadius:
-                                                      const BorderRadius
+                                                      BorderRadius
                                                           .only(
                                                         topLeft:
                                                         Radius.circular(
@@ -309,7 +326,7 @@ class _LoginState extends State<Login> {
                                                       ),
                                                     ),
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontFamily: 'Poppins',
                                                     color: Colors.black,
                                                   ),
@@ -325,7 +342,7 @@ class _LoginState extends State<Login> {
                                           MainAxisAlignment.end,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.fromLTRB(
+                                              padding: const EdgeInsets.fromLTRB(
                                                   0, 10, 10, 0),
                                               child: Text(
                                                 'Forgot Password ?',
@@ -349,59 +366,8 @@ class _LoginState extends State<Login> {
                                               left: 30, right: 30, bottom: 20),
                                           child: TextButton(
                                             onPressed: () async {
-                                              if (userName.text != '' &&
-                                                  passWord.text != '') {
-                                                HashMap userValues =
-                                                new HashMap<String,
-                                                    String>();
-                                                userValues['email'] =
-                                                    userName.text;
-                                                userValues['password'] =
-                                                    passWord.text;
-                                                UserService _userService =
-                                                UserService();
-                                                bool success =
-                                                await _userService
-                                                    .login(userValues);
-
-                                                if (success) {
-                                                  showUploadMessage(context,
-                                                      'Please Check Your Username & Password');
-
-                                                  return;
-                                                }
-                                                loggedInAs = 'Kattan';
-                                                print(
-                                                    '_userService.getUserId()');
-
-                                                print(_userService.userId());
-                                                currentUserId =
-                                                    _userService.userId();
-                                                setState(() {});
-                                                print(currentUserId! +
-                                                    '              hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-                                                await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BranchPageWidget()),
-                                                );
-                                              } else {
-                                                userName.text == ''
-                                                    ? showUploadMessage(context,
-                                                    'Please Enter Username')
-                                                    : showUploadMessage(context,
-                                                    'Please Enter Password');
-                                              }
+                                              loginUser();
                                             },
-                                            child: Center(
-                                              child: Text(
-                                                "LOGIN",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
                                             style: ButtonStyle(
                                                 backgroundColor:
                                                 MaterialStateColor
@@ -414,6 +380,14 @@ class _LoginState extends State<Login> {
                                                       borderRadius:
                                                       BorderRadius.circular(6),
                                                     ))),
+                                            child: const Center(
+                                              child: Text(
+                                                "LOGIN",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         const Text(

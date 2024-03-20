@@ -12,7 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'dart:io' show Platform;
 
 
-import '../login.dart';
+import '../features/auth/screen/login.dart';
 
 class UserService{
   FirebaseAuth _auth= FirebaseAuth.instance;
@@ -53,35 +53,35 @@ class UserService{
     );
   }
 
-  Future<bool> login(userValues) async{
-    String email = userValues['email'];
-    String password = userValues['password'];
-
-    await _auth.signInWithEmailAndPassword(email: email, password: password).then((dynamic user) async{
-      try {
-        final User? currentUser = _auth.currentUser;
-        // FirebaseMessaging.instance.subscribeToTopic("admin-app");
-        DocumentSnapshot userRef = await FirebaseFirestore.instance.collection(
-            'users').doc(currentUser!.uid).get();
-        if (userRef.exists) {
-          currentUserModel = modal.User.fromDocument(userRef);
-          if (Platform.isAndroid) {
-            String? token = await FirebaseMessaging.instance.getToken();
-            await FirebaseFirestore.instance.collection('users').doc(
-                currentUser!.uid).update({
-              'token': FieldValue.arrayUnion([token])
-            });
-          }
-          return true;
-        }
-        return false;
-      }catch(e){
-        print(e.toString());
-      }
-
-    });
-    return false;
-  }
+  // Future<bool> login(userValues) async{
+  //   String email = userValues['email'];
+  //   String password = userValues['password'];
+  //
+  //   await _auth.signInWithEmailAndPassword(email: email, password: password).then((dynamic user) async{
+  //     try {
+  //       final User? currentUser = _auth.currentUser;
+  //       // FirebaseMessaging.instance.subscribeToTopic("admin-app");
+  //       DocumentSnapshot userRef = await FirebaseFirestore.instance.collection(
+  //           'users').doc(currentUser!.uid).get();
+  //       if (userRef.exists) {
+  //         currentUserModel = modal.User.fromDocument(userRef);
+  //         if (Platform.isAndroid) {
+  //           String? token = await FirebaseMessaging.instance.getToken();
+  //           await FirebaseFirestore.instance.collection('users').doc(
+  //               currentUser!.uid).update({
+  //             'token': FieldValue.arrayUnion([token])
+  //           });
+  //         }
+  //         return true;
+  //       }
+  //       return false;
+  //     }catch(e){
+  //       print(e.toString());
+  //     }
+  //
+  //   });
+  //   return false;
+  // }
 
   Future<String> getUserId() async{ try {
     // var token = await _storage.read(key: 'idToken');
